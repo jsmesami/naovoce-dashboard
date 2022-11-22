@@ -1,0 +1,54 @@
+[project]
+name = "dashboard"
+authors = [
+    {name = "Ondřej Nejedlý", email = "jsmesami@gmail.com"},
+]
+dynamic = ["version"]
+description = "Statistics Dashboard for Na-ovoce.cz"
+readme = "README.md"
+license = {file = "LICENSE.txt"}
+requires-python = ">=3.11"
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "flask",
+    "gunicorn",
+    "gunicorn[gevent]",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "pip-tools",
+    "watchdog",
+]
+
+[project.urls]
+homepage = "https://github.com/jsmesami/naovoce-dashboard"
+repository = "https://github.com/jsmesami/naovoce-dashboard"
+
+[build-system]
+requires = ["setuptools", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.dynamic]
+version = {attr = "dashboard.__version__"}
+
+[tool.setuptools.package-data]
+dashboard = ["templates/*.html"]
+
+[tool.black]
+target-version = ["py311"]
+src_paths = ["dashboard"]
+
+[tool.isort]
+profile = "black"
+src_paths = ["dashboard"]

@@ -1,0 +1,10 @@
+__pycache__
+*.swp
+*~
+.env
+.idea
+naovoce-dashboard.iml
+dashboard.egg-info
+/venv
+/build
+/dist
