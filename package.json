@@ -1,0 +1,45 @@
+{
+    "name": "dashboard",
+    "description": "Na ovoce dashboard",
+    "version": "0.0.1",
+    "license": "MIT",
+    "author": "Ondřej Nejedlý",
+    "devDependencies": {
+        "frontend-dependencies": "^2.0.0",
+        "npm-watch": "^0.11.0",
+        "sass": "^1.57.1"
+    },
+    "watch": {
+        "dev": {
+            "patterns": [
+                "dashboard/resources/styles"
+            ],
+            "extensions": "sass"
+        }
+    },
+    "scripts": {
+        "postinstall": "frontend-dependencies",
+        "watch": "npm-watch dev",
+        "dev": "sass dashboard/resources/styles/dashboard.sass dashboard/static/css/dashboard.css --embed-source-map",
+        "build": "sass dashboard/resources/styles/dashboard.sass dashboard/static/css/dashboard.css --style=compressed"
+    },
+    "dependencies": {
+        "bulma": "^0.9.4",
+        "htmx.org": "^1.8.4"
+    },
+    "frontendDependencies": {
+        "packages": {
+            "bulma": {
+                "version": "^0.9.4",
+                "src": "sass/*",
+                "target": "dashboard/resources/vendor",
+                "namespaced": true
+            },
+            "htmx.org": {
+                "version": "^1.8.4",
+                "src": "dist/htmx.min.js",
+                "target": "dashboard/static/js"
+            }
+        }
+    }
+}

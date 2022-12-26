@@ -8,8 +8,11 @@ fmt:
 	isort .
 	black .
 
+compile-assets:
+	yarn && yarn build
+
 run:
 	gunicorn -b :8888 dashboard.main:app
 
 dev:
-	flask --app dashboard.main --debug run
+	honcho start

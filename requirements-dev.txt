@@ -21,6 +21,8 @@ greenlet==2.0.1
     # via gevent
 gunicorn[gevent]==20.1.0
     # via dashboard (pyproject.toml)
+honcho==1.1.0
+    # via dashboard (pyproject.toml)
 isort==5.11.4
     # via dashboard (pyproject.toml)
 itsdangerous==2.1.2

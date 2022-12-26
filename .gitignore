@@ -5,6 +5,10 @@ __pycache__
 .idea
 naovoce-dashboard.iml
 dashboard.egg-info
+/node_modules
 /venv
 /build
 /dist
+/dashboard/resources/vendor
+/dashboard/static/css
+/dashboard/static/js
