@@ -12,7 +12,7 @@ compile-assets:
 	yarn && yarn build
 
 run:
-	gunicorn -b :8888 dashboard.main:app
+	gunicorn -b :8888 dashboard:app
 
 dev:
 	honcho start

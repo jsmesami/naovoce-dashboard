@@ -16,8 +16,11 @@ classifiers = [
 ]
 dependencies = [
     "flask",
+    "flask-login",
+    "flask-sqlalchemy",
     "gunicorn",
     "gunicorn[gevent]",
+    "python-dotenv"
 ]
 
 [project.optional-dependencies]

@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+
+{% block body %}
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            {% block header %}
+            {% endblock %}
+        </div>
+        <hr>
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</section>
+{% endblock body %}
