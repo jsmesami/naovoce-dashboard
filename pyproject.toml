@@ -18,8 +18,10 @@ dependencies = [
     "flask",
     "flask-login",
     "flask-sqlalchemy",
+    "geoalchemy2",
     "gunicorn",
     "gunicorn[gevent]",
+    "psycopg2-binary",
     "python-dotenv"
 ]
 

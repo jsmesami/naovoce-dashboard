@@ -26,7 +26,5 @@ BASE_DIR = Path(__file__).parent.parent
 
 class Config:
     SECRET_KEY = env("SECRET_KEY")
-    SQLALCHEMY_DATABASE_URI = env("DATABASE_URI") or "sqlite:///" + str(
-        BASE_DIR / "dashboard.db"
-    )
+    SQLALCHEMY_DATABASE_URI = env("DATABASE_URI")
     SQLALCHEMY_TRACK_MODIFICATIONS = False

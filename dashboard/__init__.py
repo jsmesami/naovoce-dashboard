@@ -3,6 +3,7 @@ from flask import Flask
 
 from .auth.models import User
 from .config import Config
+from .core.models import *
 from .extensions import db, login_manager
 
 __version__ = "0.1.0"
