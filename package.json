@@ -25,7 +25,8 @@
     },
     "dependencies": {
         "bulma": "^0.9.4",
-        "htmx.org": "^1.8.4"
+        "htmx.org": "^1.8.4",
+        "hyperscript.org": "^0.9.7"
     },
     "frontendDependencies": {
         "packages": {
@@ -38,6 +39,11 @@
             "htmx.org": {
                 "version": "^1.8.4",
                 "src": "dist/htmx.min.js",
+                "target": "dashboard/static/js"
+            },
+            "hyperscript.org": {
+                "version": "^0.9.7",
+                "src": "dist/_hyperscript.min.js",
                 "target": "dashboard/static/js"
             }
         }

@@ -16,6 +16,7 @@ classifiers = [
 ]
 dependencies = [
     "flask",
+    "flask-htmx",
     "flask-login",
     "flask-sqlalchemy",
     "geoalchemy2",

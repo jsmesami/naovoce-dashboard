@@ -1,0 +1,45 @@
+<div class="modal-background"></div>
+<div class="modal-content">
+    <div class="box">
+        {% if errors and errors.login_modal %}
+            <div class="notification is-danger is-light">
+                {{ errors.login_modal }}
+            </div>
+        {% endif %}
+        <form hx-post="{{ url_for('auth.login') }}"
+              hx-target="#content"
+              hx-swap="outerHTML">
+            <div class="field">
+                <label class="label control" for="email">Email</label>
+                <input class="input"
+                       type="email"
+                       name="email"
+                       id="email"
+                       placeholder="Email"
+                       required>
+            </div>
+            <div class="field">
+                <label class="label control" for="password">Heslo</label>
+                <input class="input"
+                       type="password"
+                       name="password"
+                       id="password"
+                       placeholder="Heslo"
+                       required>
+            </div>
+            <div class="field">
+                <label class="checkbox">
+                    <input type="checkbox" name="remember">
+                    Zapamatovat
+                </label>
+            </div>
+            <button class="button is-block is-link is-rounded">
+                Přihlásit se
+            </button>
+        </form>
+    </div>
+</div>
+<button class="modal-close is-large"
+        aria-label="close"
+        _="on click remove .is-active from #login-modal">
+</button>
