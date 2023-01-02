@@ -14,16 +14,12 @@
     <meta name="theme-color" content="#ffffff">
     <link rel="canonical" href="https://dashboard.na-ovoce.cz/" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fa/css/font-awesome.min.css') }}">
     <script src="{{ url_for('static', filename='js/htmx.min.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/_hyperscript.min.js') }}" defer></script>
     <title>Statistiky Na ovoce</title>
 </head>
 <body>
-    <section id="content" class="section">
-        {% block content %}
-        {% endblock %}
-        <div id="login-modal" class="modal {% if login_modal %}is-active{% endif %}">
-            {% include "inc/login_modal.html" %}
-        </div>
-    </section>
+    {% block content %}
+    {% endblock %}
 </body>

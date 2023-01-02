@@ -20,16 +20,18 @@ def login():
 
     if user and check_password_hash(user.password, password):
         login_user(user, remember=remember)
-        return render_template("index.html", current_user=user, login_modal=False)
+        return render_template("inc/index-content.html", current_user=user)
 
     return render_template(
-        "index.html",
-        login_modal=True,
+        "inc/index-content.html",
         errors={"login_modal": "Nesprávné přihlašovací údaje."},
     )
 
 
 @auth.route("/logout", methods=["POST"])
 def logout():
+    if not htmx:
+        abort(403)
+
     logout_user()
-    return render_template("index.html", login_modal=False)
+    return render_template("inc/index-content.html", login_modal=False)

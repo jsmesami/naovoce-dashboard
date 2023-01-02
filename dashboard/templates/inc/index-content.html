@@ -1,0 +1,9 @@
+<section id="content" class="section">
+    {% include 'inc/header.html' %}
+    <hr>
+    {% if current_user.is_authenticated %}
+        {% include 'inc/dashboard.html' %}
+    {% else %}
+        {% include 'inc/login.html' %}
+    {% endif %}
+</section>

@@ -13,3 +13,4 @@ dashboard.egg-info
 /dashboard/resources/vendor
 /dashboard/static/css
 /dashboard/static/js
+/dashboard/static/fa

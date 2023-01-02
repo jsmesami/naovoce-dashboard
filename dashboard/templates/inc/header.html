@@ -1,0 +1,15 @@
+<div id="header"
+     class="columns">
+    <div class="column is-10">
+        <h1 class="title is-3">Statistiky</h1>
+    </div>
+    <div class="column is-2 has-text-right">
+        {% if current_user.is_authenticated %}
+            <a href="#" class="button is-small is-rounded"
+               hx-post="{{ url_for('auth.logout') }}"
+               hx-confirm="Opravdu odhlásit?"
+               hx-target="#content"
+               hx-swap="outerHTML">odhlásit</a>
+        {% endif %}
+    </div>
+</div>

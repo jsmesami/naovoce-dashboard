@@ -1,26 +1,5 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="columns">
-        <div class="column is-10">
-            <h1 class="title is-3">Statistiky</h1>
-        </div>
-        <div class="column is-2 has-text-right">
-            {% if current_user.is_authenticated %}
-                <a href="#" class="button is-small is-rounded"
-                   hx-post="{{ url_for('auth.logout') }}"
-                   hx-confirm="Opravdu odhlásit?"
-                   hx-target="#content"
-                   hx-swap="outerHTML">odhlásit</a>
-            {% else %}
-                <a href="#" class="button is-small is-rounded is-link"
-                   _="on click add .is-active to #login-modal then halt">přihlásit</a>
-            {% endif %}
-        </div>
-    </div>
-    <hr>
-
-    {% if current_user.is_authenticated %}
-        {% include 'inc/dashboard.html' %}
-    {% endif %}
+    {% include 'inc/index-content.html' %}
 {% endblock content %}

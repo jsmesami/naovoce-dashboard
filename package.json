@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "bulma": "^0.9.4",
+        "font-awesome": "^4.7.0",
         "htmx.org": "^1.8.4",
         "hyperscript.org": "^0.9.7"
     },
@@ -35,6 +36,11 @@
                 "src": "sass/*",
                 "target": "dashboard/resources/vendor",
                 "namespaced": true
+            },
+            "font-awesome": {
+                "version": "^4.7.0",
+                "src": "{fonts,css}",
+                "target": "dashboard/static/fa"
             },
             "htmx.org": {
                 "version": "^1.8.4",
