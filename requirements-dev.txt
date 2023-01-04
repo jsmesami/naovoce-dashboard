@@ -6,6 +6,12 @@
 #
 black==22.12.0
     # via dashboard (pyproject.toml)
+boto3==1.26.43
+    # via dashboard (pyproject.toml)
+botocore==1.29.43
+    # via
+    #   boto3
+    #   s3transfer
 build==0.9.0
     # via pip-tools
 click==8.1.3
@@ -41,6 +47,10 @@ itsdangerous==2.1.2
     # via flask
 jinja2==3.1.2
     # via flask
+jmespath==1.0.1
+    # via
+    #   boto3
+    #   botocore
 markupsafe==2.1.1
     # via
     #   jinja2
@@ -61,13 +71,21 @@ platformdirs==2.6.2
     # via black
 psycopg2-binary==2.9.5
     # via dashboard (pyproject.toml)
+python-dateutil==2.8.2
+    # via botocore
 python-dotenv==0.21.0
     # via dashboard (pyproject.toml)
-sqlalchemy==1.4.45
+s3transfer==0.6.0
+    # via boto3
+six==1.16.0
+    # via python-dateutil
+sqlalchemy==1.4.46
     # via
     #   flask-sqlalchemy
     #   geoalchemy2
-watchdog==2.2.0
+urllib3==1.26.13
+    # via botocore
+watchdog==2.2.1
     # via dashboard (pyproject.toml)
 werkzeug==2.2.2
     # via
