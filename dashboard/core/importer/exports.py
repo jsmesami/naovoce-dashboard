@@ -35,13 +35,15 @@ def get_todays_exports(bucket, export_groups):
 
 
 def download_export(bucket, dl_path, filename):
-    downloaded = dl_path / f"{filename}.csv"
+    current_app.logger.info(f"Downloading export {filename}")
+    downloaded = dl_path / filename
     bucket.download_file(filename, downloaded)
 
     return downloaded
 
 
 def read_export_data(export, adapter):
+    current_app.logger.info(f"Reading export {export.name}")
     with export.open() as input_file:
         reader = csv.DictReader(input_file, delimiter=";")
         return {row["id"]: row for row in map(adapter, reader)}
