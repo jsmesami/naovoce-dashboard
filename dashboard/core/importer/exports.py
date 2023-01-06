@@ -19,9 +19,9 @@ def get_bucket():
 def get_todays_exports(bucket, export_groups):
     def check_name(name):
         today = datetime.today().strftime("%Y-%m-%d")
-        re_group = f"({'|'.join(export_groups)})"
-        re_today = f"{today}_\\d{{2}}-\\d{{2}}-\\d{{2}}"
-        if match := re.match(f"9288_{re_group}-{re_today}.csv", name):
+        re_group = rf"({'|'.join(export_groups)})"
+        re_today = rf"{today}_\d{{2}}-\d{{2}}-\d{{2}}"
+        if match := re.match(rf"9288_{re_group}-{re_today}.csv", name):
             return match.group(1), match.group(0)
 
     return dict(

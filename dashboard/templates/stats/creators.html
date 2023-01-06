@@ -1,0 +1,30 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Registrace</th>
+            <th>Jméno</th>
+            <th>Příjmení</th>
+            <th>E-mail</th>
+            <th>Posl. návštěva</th>
+            <th># Značek</th>
+            <th># Fotek</th>
+            <th># Komentářů</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <th>{{ row.id }}</th>
+            <td>{{ row.created }}</td>
+            <td>{{ row.first_name }}</td>
+            <td>{{ row.last_name }}</td>
+            <td><a href="mailto:{{ row.email }}">{{ row.email }}</a></td>
+            <td>{{ row.last_visit|default("", true) }}</td>
+            <td>{{ row.n_pois }}</td>
+            <td>{{ row.n_images }}</td>
+            <td>{{ row.n_comments }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

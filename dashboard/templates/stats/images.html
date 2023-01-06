@@ -1,0 +1,24 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Vytvořeno</th>
+            <th>Fotka</th>
+            <th>Uživatel</th>
+            <th>Značka</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <th>{{ row.id }}</th>
+            <td>{{ row.created }}</td>
+            <td>
+                <a href="{{ row.image_url }}" target="_blank">{{ row.file_name }}</a>
+            </td>
+            <td>{{ row.user_id }}</td>
+            <td>{{ row.poi_id }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

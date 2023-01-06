@@ -61,9 +61,7 @@ def db_insert(db, model, export_rows, db_rows):
 
 
 def read_db_data(db, query, adapter):
-    session = Session(db)
-    with session.begin():
-        return {
-            row["id"]: row
-            for row in map(adapter, map(dict, session.execute(query).mappings().all()))
-        }
+    return {
+        row["id"]: row
+        for row in map(adapter, map(dict, db.session.execute(query).mappings().all()))
+    }

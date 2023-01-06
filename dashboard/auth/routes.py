@@ -1,4 +1,4 @@
-from flask import abort, render_template, request
+from flask import abort, make_response, render_template, request, url_for
 from flask_login import login_user, logout_user
 from werkzeug.security import check_password_hash
 
@@ -20,7 +20,9 @@ def login():
 
     if user and check_password_hash(user.password, password):
         login_user(user, remember=remember)
-        return render_template("inc/index-content.html", current_user=user)
+        response = make_response("")
+        response.headers["HX-Redirect"] = url_for("core.index")
+        return response
 
     return render_template(
         "inc/index-content.html",
@@ -34,4 +36,4 @@ def logout():
         abort(403)
 
     logout_user()
-    return render_template("inc/index-content.html", login_modal=False)
+    return render_template("inc/index-content.html")

@@ -1,0 +1,20 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Vytvořeno</th>
+            <th>Jméno</th>
+            <th># Značek</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <th>{{ row.id }}</th>
+            <td>{{ row.created }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.n_pois }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
