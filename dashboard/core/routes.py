@@ -9,7 +9,7 @@ from . import core
 
 
 def creators(**args):
-    statement = """
+    query = """
         SELECT
         c.id, c.created, c.first_name, c.last_name, c.email, c.last_visit,
         (SELECT COUNT(*)
@@ -25,13 +25,20 @@ def creators(**args):
          WHERE comment.creator_id = c.id
          AND comment.is_published = true) AS n_comments
         FROM creator c
+        ORDER BY c.created DESC
         LIMIT :limit OFFSET :offset;
     """
-    return {"rows": db.session.execute(statement, args).mappings().all()}
+    count = """
+        SELECT COUNT(*)
+        FROM creator
+    """
+    return {"rows": db.session.execute(query, args).mappings().all()} | dict(
+        db.session.execute(count).mappings().fetchone()
+    )
 
 
 def categories(**args):
-    statement = """
+    query = """
         SELECT
         cat.id, cat.created, cat.name,
         (SELECT COUNT(*)
@@ -40,19 +47,26 @@ def categories(**args):
          AND poi.is_published = true) AS n_pois
         FROM category cat
         WHERE cat.is_published = true
+        ORDER BY cat.created DESC
         LIMIT :limit OFFSET :offset;
     """
-    return {"rows": db.session.execute(statement, args).mappings().all()}
+    count = """
+        SELECT COUNT(*)
+        FROM category
+        WHERE is_published = true
+    """
+    return {"rows": db.session.execute(query, args).mappings().all()} | dict(
+        db.session.execute(count).mappings().fetchone()
+    )
 
 
 def pois(**args):
-    statement = """
+    query = """
         SELECT
-        poi.id, poi.created, poi.display_count,
+        poi.id, poi.created, poi.display_count, poi.creator_id, poi.category_id,
+        cat.name AS category,
         ST_X(poi.position) AS lng,
         ST_Y(poi.position) AS lat,
-        poi.creator_id, poi.category_id,
-        cat.name AS category,
         (SELECT COUNT(*)
          FROM image
          WHERE image.poi_id = poi.id
@@ -64,36 +78,58 @@ def pois(**args):
         FROM poi
         LEFT JOIN category cat ON cat.id = poi.category_id
         WHERE poi.is_published = true
+        ORDER BY poi.created DESC
         LIMIT :limit OFFSET :offset;
     """
-    return {"rows": db.session.execute(statement, args).mappings().all()}
+    count = """
+        SELECT COUNT(*)
+        FROM poi
+        WHERE is_published = true
+    """
+    return {"rows": db.session.execute(query, args).mappings().all()} | dict(
+        db.session.execute(count).mappings().fetchone()
+    )
 
 
 def images(**args):
-    statement = """
+    query = """
         SELECT
         id, created, image_url, creator_id, poi_id
         FROM image
         WHERE is_published = true
+        ORDER BY created DESC
         LIMIT :limit OFFSET :offset;
+    """
+    count = """
+        SELECT COUNT(*)
+        FROM image
+        WHERE is_published = true
     """
     return {
         "rows": (
             dict(i) | {"file_name": os.path.basename(i.get("image_url", ""))}
-            for i in db.session.execute(statement, args).mappings().all()
+            for i in db.session.execute(query, args).mappings().all()
         )
-    }
+    } | dict(db.session.execute(count).mappings().fetchone())
 
 
 def comments(**args):
-    statement = """
+    query = """
         SELECT
         id, created, "text", creator_id, poi_id
         FROM comment
         WHERE is_published = true
+        ORDER BY created DESC
         LIMIT :limit OFFSET :offset;
     """
-    return {"rows": db.session.execute(statement, args).mappings().all()}
+    count = """
+        SELECT COUNT(*)
+        FROM comment
+        WHERE is_published = true
+    """
+    return {"rows": db.session.execute(query, args).mappings().all()} | dict(
+        db.session.execute(count).mappings().fetchone()
+    )
 
 
 DEFAULT_LIMIT = 40
