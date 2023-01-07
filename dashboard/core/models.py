@@ -48,8 +48,8 @@ class POI(db.Model):
     position = db.Column(Geometry("POINT", srid=4326))
     is_published = db.Column(db.Boolean)
 
-    creator_id = db.Column(db.Integer)
-    category_id = db.Column(db.Integer)
+    creator_id = db.Column(db.Integer, index=True)
+    category_id = db.Column(db.Integer, index=True)
 
     def __repr__(self):
         return f'<Image "{self.id}">'
@@ -66,8 +66,8 @@ class Image(db.Model):
     image_url = db.Column(db.String(1024 * 2))
     is_published = db.Column(db.Boolean)
 
-    creator_id = db.Column(db.Integer)
-    poi_id = db.Column(db.Integer)
+    creator_id = db.Column(db.Integer, index=True)
+    poi_id = db.Column(db.Integer, index=True)
 
     def __repr__(self):
         return f'<Image "{self.id}">'
@@ -84,8 +84,8 @@ class Comment(db.Model):
     text = db.Column(db.String(1024 * 5))
     is_published = db.Column(db.Boolean)
 
-    creator_id = db.Column(db.Integer)
-    poi_id = db.Column(db.Integer)
+    creator_id = db.Column(db.Integer, index=True)
+    poi_id = db.Column(db.Integer, index=True)
 
     def __repr__(self):
         return f'<Comment "{self.id}">'

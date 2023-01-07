@@ -3,88 +3,76 @@ import re
 
 from flask import render_template, request, session
 from flask_login import current_user
-from sqlalchemy import select
 
 from ..extensions import db, htmx
 from . import core
-from .models import POI, Category, Comment, Creator, Image
 
 
-def creators(limit, offset, **args):
-    statement = (
-        select(
-            Creator.id,
-            Creator.first_name,
-            Creator.last_name,
-            Creator.email,
-            Creator.created,
-            Creator.last_visit,
-        )
-        .limit(limit)
-        .offset(offset)
-    )
-    return {"rows": db.session.execute(statement).mappings().all()}
+def creators(**args):
+    statement = """
+        SELECT
+        c.id, c.created, c.first_name, c.last_name, c.email, c.last_visit,
+        (SELECT COUNT(*) FROM poi WHERE poi.creator_id = c.id) AS n_pois,
+        (SELECT COUNT(*) FROM image WHERE image.creator_id = c.id) AS n_images,
+        (SELECT COUNT(*) FROM comment WHERE comment.creator_id = c.id) AS n_comments
+        FROM creator c
+        LIMIT :limit OFFSET :offset;
+    """
+    return {"rows": db.session.execute(statement, args).mappings().all()}
 
 
-def categories(limit, offset, **args):
-    statement = (
-        select(
-            Category.id,
-            Category.created,
-            Category.name,
-        )
-        .limit(limit)
-        .offset(offset)
-    )
-    return {"rows": db.session.execute(statement).mappings().all()}
+def categories(**args):
+    statement = """
+        SELECT
+        cat.id, cat.created, cat.name,
+        (SELECT COUNT(*) FROM poi WHERE poi.category_id = cat.id) AS n_pois
+        FROM category cat
+        LIMIT :limit OFFSET :offset;
+    """
+    return {"rows": db.session.execute(statement, args).mappings().all()}
 
 
-def pois(limit, offset, **args):
-    statement = (
-        select(
-            POI.id,
-            POI.created,
-            POI.display_count,
-            POI.position,
-        )
-        .limit(limit)
-        .offset(offset)
-    )
-    return {"rows": db.session.execute(statement).mappings().all()}
+def pois(**args):
+    statement = """
+        SELECT
+        poi.id, poi.created, poi.display_count,
+        ST_X(poi.position) AS lng,
+        ST_Y(poi.position) AS lat,
+        poi.creator_id, poi.category_id,
+        cat.name AS category,
+        (SELECT COUNT(*) FROM image WHERE image.poi_id = poi.id) AS n_images,
+        (SELECT COUNT(*) FROM comment WHERE comment.poi_id = poi.id) AS n_comments
+        FROM poi
+        LEFT JOIN category cat ON cat.id = poi.category_id
+        LIMIT :limit OFFSET :offset;
+    """
+    return {"rows": db.session.execute(statement, args).mappings().all()}
 
 
-def images(limit, offset, **args):
-    statement = (
-        select(
-            Image.id,
-            Image.created,
-            Image.image_url,
-        )
-        .limit(limit)
-        .offset(offset)
-    )
+def images(**args):
+    statement = """
+        SELECT
+        id, created, image_url, creator_id, poi_id
+        FROM image LIMIT :limit OFFSET :offset;
+    """
     return {
         "rows": (
             dict(i) | {"file_name": os.path.basename(i.get("image_url", ""))}
-            for i in db.session.execute(statement).mappings().all()
+            for i in db.session.execute(statement, args).mappings().all()
         )
     }
 
 
-def comments(limit, offset, **args):
-    statement = (
-        select(
-            Comment.id,
-            Comment.created,
-            Comment.text,
-        )
-        .limit(limit)
-        .offset(offset)
-    )
-    return {"rows": db.session.execute(statement).mappings().all()}
+def comments(**args):
+    statement = """
+        SELECT
+        id, created, "text", creator_id, poi_id
+        FROM comment;
+    """
+    return {"rows": db.session.execute(statement, args).mappings().all()}
 
 
-DEFAULT_LIMIT = 100
+DEFAULT_LIMIT = 40
 DEFAULT_SECTION = "creators"
 SECTIONS = ("creators", "categories", "pois", "images", "comments")
 FETCHERS = (creators, categories, pois, images, comments)
