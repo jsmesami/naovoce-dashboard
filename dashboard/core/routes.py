@@ -12,9 +12,18 @@ def creators(**args):
     statement = """
         SELECT
         c.id, c.created, c.first_name, c.last_name, c.email, c.last_visit,
-        (SELECT COUNT(*) FROM poi WHERE poi.creator_id = c.id) AS n_pois,
-        (SELECT COUNT(*) FROM image WHERE image.creator_id = c.id) AS n_images,
-        (SELECT COUNT(*) FROM comment WHERE comment.creator_id = c.id) AS n_comments
+        (SELECT COUNT(*)
+         FROM poi
+         WHERE poi.creator_id = c.id
+         AND poi.is_published = true) AS n_pois,
+        (SELECT COUNT(*)
+         FROM image
+         WHERE image.creator_id = c.id
+         AND image.is_published = true) AS n_images,
+        (SELECT COUNT(*)
+         FROM comment
+         WHERE comment.creator_id = c.id
+         AND comment.is_published = true) AS n_comments
         FROM creator c
         LIMIT :limit OFFSET :offset;
     """
@@ -25,8 +34,12 @@ def categories(**args):
     statement = """
         SELECT
         cat.id, cat.created, cat.name,
-        (SELECT COUNT(*) FROM poi WHERE poi.category_id = cat.id) AS n_pois
+        (SELECT COUNT(*)
+         FROM poi
+         WHERE poi.category_id = cat.id
+         AND poi.is_published = true) AS n_pois
         FROM category cat
+        WHERE cat.is_published = true
         LIMIT :limit OFFSET :offset;
     """
     return {"rows": db.session.execute(statement, args).mappings().all()}
@@ -40,10 +53,17 @@ def pois(**args):
         ST_Y(poi.position) AS lat,
         poi.creator_id, poi.category_id,
         cat.name AS category,
-        (SELECT COUNT(*) FROM image WHERE image.poi_id = poi.id) AS n_images,
-        (SELECT COUNT(*) FROM comment WHERE comment.poi_id = poi.id) AS n_comments
+        (SELECT COUNT(*)
+         FROM image
+         WHERE image.poi_id = poi.id
+         AND image.is_published = true) AS n_images,
+        (SELECT COUNT(*)
+         FROM comment
+         WHERE comment.poi_id = poi.id
+         AND comment.is_published = true) AS n_comments
         FROM poi
         LEFT JOIN category cat ON cat.id = poi.category_id
+        WHERE poi.is_published = true
         LIMIT :limit OFFSET :offset;
     """
     return {"rows": db.session.execute(statement, args).mappings().all()}
@@ -53,7 +73,9 @@ def images(**args):
     statement = """
         SELECT
         id, created, image_url, creator_id, poi_id
-        FROM image LIMIT :limit OFFSET :offset;
+        FROM image
+        WHERE is_published = true
+        LIMIT :limit OFFSET :offset;
     """
     return {
         "rows": (
@@ -67,7 +89,9 @@ def comments(**args):
     statement = """
         SELECT
         id, created, "text", creator_id, poi_id
-        FROM comment;
+        FROM comment
+        WHERE is_published = true
+        LIMIT :limit OFFSET :offset;
     """
     return {"rows": db.session.execute(statement, args).mappings().all()}
 

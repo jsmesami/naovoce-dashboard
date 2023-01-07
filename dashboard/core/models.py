@@ -3,6 +3,10 @@ from sqlalchemy.sql import func
 
 from ..extensions import db
 
+#
+# Foreign keys are not explicitly defined because import data breaks FK constraints.
+#
+
 
 class Creator(db.Model):
     id = db.Column(db.Integer, primary_key=True)
