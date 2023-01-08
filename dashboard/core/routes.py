@@ -139,35 +139,43 @@ FETCHERS = (creators, categories, pois, images, comments)
 SECTION_FETCHERS = dict(zip(SECTIONS, FETCHERS))
 
 
-def getset_param(key, default, adapt=None):
+def getset_param(key, default, adapter):
     if (ret := request.args.get(key)) is None:
         ret = session.get(key, default)
-    if adapt is not None:
-        try:
-            ret = adapt(ret)
-        except (ValueError, TypeError):
-            ret = default
+
+    try:
+        ret = adapter(ret, default)
+    except (ValueError, TypeError):
+        ret = default
 
     session[key] = ret
     return ret
 
 
-def guard_section(section):
+def guard_section(section, default):
     if match := re.match(rf"({'|'.join(SECTIONS)})", section):
         return match.group(0)
 
-    return DEFAULT_SECTION
+    return default
+
+
+def guard_zero_positive(n, default):
+    try:
+        ret = int(n)
+        return ret if ret >= 0 else default
+    except (ValueError, TypeError):
+        return default
 
 
 @core.route("/")
 def index():
-    section = getset_param("section", "creators", guard_section)
+    section = getset_param("section", DEFAULT_SECTION, guard_section)
     params = {
         "section": section,
     }
     if current_user.is_authenticated:
-        offset = getset_param(f"{section}_offset", 0, int)
-        limit = getset_param(f"{section}_limit", DEFAULT_LIMIT, int)
+        offset = getset_param(f"{section}_offset", 0, guard_zero_positive)
+        limit = getset_param(f"{section}_limit", DEFAULT_LIMIT, guard_zero_positive)
 
         params |= {
             "offset": offset,

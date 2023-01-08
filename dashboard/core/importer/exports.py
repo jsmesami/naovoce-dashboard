@@ -47,3 +47,8 @@ def read_export_data(export, adapter):
     with export.open() as input_file:
         reader = csv.DictReader(input_file, delimiter=";")
         return {row["id"]: row for row in map(adapter, reader)}
+
+
+def delete_export(export):
+    current_app.logger.info(f"Deleting export {export.name}")
+    export.unlink()

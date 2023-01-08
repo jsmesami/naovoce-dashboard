@@ -1,9 +1,14 @@
 <div class="card block">
     <header class="card-header">
         <p class="card-header-title">
-            Zobrazeno {{ offset }} – {{ [offset+limit, count] | min }}
+            Zobrazeno
+            <span class="has-text-warning-dark ml-2 mr-2">
+                {{ offset }} – {{ [offset+limit, count] | min }}
+            </span>
             z celkových
-            &nbsp<b class="has-text-warning-dark">{{ count }}</b>&nbsp
+            <span class="has-text-warning-dark ml-2 mr-2">
+                {{ count }}
+            </span>
             komentářů
         </p>
         <a class="button is-small is-align-self-center mr-2"

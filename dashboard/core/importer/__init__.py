@@ -5,7 +5,13 @@ from flask import current_app
 from .adapters.database import ADAPTERS as DB_ADAPTERS
 from .adapters.exports import ADAPTERS as EXPORT_ADAPTERS
 from .database import db_delete, db_insert, db_update, read_db_data
-from .exports import download_export, get_bucket, get_todays_exports, read_export_data
+from .exports import (
+    delete_export,
+    download_export,
+    get_bucket,
+    get_todays_exports,
+    read_export_data,
+)
 from .mappings import EXPORT_GROUP_MODELS, EXPORT_GROUP_QUERIES, EXPORT_GROUPS
 
 
@@ -33,3 +39,5 @@ def update_db(db):
         db_delete(db, model, export_rows, db_rows)
         db_update(db, model, export_rows, db_rows)
         db_insert(db, model, export_rows, db_rows)
+
+        delete_export(export)
