@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<table class="table">
+<table class="table stats-table">
     <thead>
         <tr>
             {% import "stats/_table-head.html" as head %}
@@ -56,10 +56,10 @@
     <tbody>
     {% for row in rows %}
         <tr>
-            <th>{{ row.id }}</th>
-            <td>{{ row.created }}</td>
-            <td>{{ row.creator_id }}</td>
-            <td>{{ row.poi_id }}</td>
+            <th class="cell-number">{{ row.id }}</th>
+            <td class="cell-w-datetime cell-number">{{ row.created }}</td>
+            <td class="cell-number">{{ row.creator_id|default('–', true) }}</td>
+            <td class="cell-number">{{ row.poi_id|default('–', true) }}</td>
             <td>{{ row.text }}</td>
         </tr>
     {% endfor %}
