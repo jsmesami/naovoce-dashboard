@@ -4,6 +4,7 @@ from flask import Flask
 from .auth.models import User
 from .config import Config
 from .core.models import *
+from .core.request_params import next_order
 from .extensions import db, htmx, login_manager
 
 __version__ = "0.1.0"
@@ -29,5 +30,9 @@ def create_app(config_class=Config):
     from .core import core
 
     app.register_blueprint(core)
+
+    @app.context_processor
+    def context():
+        return dict(next_order=next_order)
 
     return app

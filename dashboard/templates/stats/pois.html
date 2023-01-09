@@ -29,27 +29,31 @@
                 <i class="fa fa-chevron-right"></i>
             </span>
         </a>
-        <button class="card-header-icon" aria-label="more options">
+        <button class="card-header-icon"
+                _="on click toggle .is-hidden on #filters">
             <span class="icon">
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </span>
         </button>
     </header>
+    <div class="card-content is-hidden" id="filters">
+    </div>
 </div>
 
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
-            <th style="min-width: 12rem">
-                Vytvořeno
-            </th>
-            <th>Druh</th>
-            <th>Zobrazení</th>
-            <th>Šířka; Délka</th>
-            <th>Uživatel</th>
-            <th># Fotek</th>
-            <th># Komentářů</th>
+            {% import "stats/_table-head.html" as head %}
+            {% for field, name in (('id', 'ID'),
+                                   ('created', 'Vytvořeno'),
+                                   ('category_name', 'Druh'),
+                                   ('display_count', '# Zobrazení'),
+                                   (None, 'Šířka; Délka'),
+                                   ('creator_id', 'Uživatel'),
+                                   ('n_images', '# Fotek'),
+                                   ('n_comments', '# Komentářů')) %}
+                {{ head.th('pois', field, name, order, next_order(field, order)) }}
+            {% endfor %}
         </tr>
     </thead>
     <tbody>
@@ -57,7 +61,7 @@
         <tr>
             <th>{{ row.id }}</th>
             <td>{{ row.created }}</td>
-            <td>{{ row.category }}</td>
+            <td>{{ row.category_name }}</td>
             <td>{{ row.display_count }}</td>
             <td>{{ row.lat }}; {{ row.lng }}</td>
             <td>{{ row.creator_id }}</td>
