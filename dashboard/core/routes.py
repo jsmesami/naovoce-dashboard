@@ -9,9 +9,10 @@ from .request_params import (
     DEFAULT_SECTION,
     SECTION_FETCHERS,
     getset_param,
+    guard_limit,
+    guard_offset,
     guard_order,
     guard_section,
-    guard_zero_positive,
 )
 
 
@@ -22,8 +23,8 @@ def index():
         "section": section,
     }
     if current_user.is_authenticated:
-        offset = getset_param(f"{section}_offset", 0, guard_zero_positive)
-        limit = getset_param(f"{section}_limit", DEFAULT_LIMIT, guard_zero_positive)
+        offset = getset_param(f"{section}_offset", 0, guard_offset)
+        limit = getset_param(f"{section}_limit", DEFAULT_LIMIT, guard_limit)
         order = getset_param(f"{section}_order", DEFAULT_ORDER, guard_order(section))
 
         params |= {

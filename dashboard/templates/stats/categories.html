@@ -11,24 +11,10 @@
             </span>
             kategorií
         </p>
-        <a class="button is-small is-align-self-center mr-2"
-           hx-get="{{ url_for('core.index') }}?categories_offset={{ offset-limit }}"
-           hx-target="#stats"
-           hx-swap="outerHTML"
-           {% if offset <= 0 %}disabled hx-disable{% endif %}>
-            <span class="icon">
-                <i class="fa fa-chevron-left"></i>
-            </span>
-        </a>
-        <a class="button is-small is-align-self-center"
-           hx-get="{{ url_for('core.index') }}?categories_offset={{ offset+limit }}"
-           hx-target="#stats"
-           hx-swap="outerHTML"
-           {% if offset + limit >= count %}disabled hx-disable{% endif %}>
-            <span class="icon">
-                <i class="fa fa-chevron-right"></i>
-            </span>
-        </a>
+
+        {% import "stats/_table-paging.html" as tpaging %}
+        {{ tpaging.tpaging(section, offset, limit, count) }}
+
         <button class="card-header-icon"
                 _="on click toggle .is-hidden on #filters">
             <span class="icon">
@@ -37,29 +23,37 @@
         </button>
     </header>
     <div class="card-content is-hidden" id="filters">
+        <form class="field is-horizontal">
+            <div class="field-body">
+                {% import "stats/_table-limit.html" as tlimit %}
+                {{ tlimit.tlimit(section, limit) }}
+            </div>
+        </form>
     </div>
 </div>
 
-<table class="table stats-table">
-    <thead>
-        <tr>
-            {% import "stats/_table-head.html" as head %}
-            {% for field, name in (('id', 'ID'),
-                                   ('created', 'Vytvořeno'),
-                                   ('name', 'Jméno'),
-                                   ('n_pois', '# Značek')) %}
-                {{ head.th('categories', field, name, order, next_order(field, order)) }}
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-    {% for row in rows %}
-        <tr>
-            <th class="cell-number">{{ row.id }}</th>
-            <td class="cell-w-datetime cell-number">{{ row.created }}</td>
-            <td class="cell-w-name">{{ row.name }}</td>
-            <td class="cell-number">{{ row.n_pois }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+<div class="table-container">
+    <table class="table stats-table">
+        <thead>
+            <tr>
+                {% import "stats/_table-head.html" as thead %}
+                {% for field, name in (('id', 'ID'),
+                                       ('created', 'Vytvořeno'),
+                                       ('name', 'Jméno'),
+                                       ('n_pois', '# Značek')) %}
+                    {{ thead.th(section, field, name, order, next_order(field, order)) }}
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in rows %}
+            <tr>
+                <th class="cell-number">{{ row.id }}</th>
+                <td class="cell-w-datetime cell-number">{{ row.created }}</td>
+                <td class="cell-w-name">{{ row.name }}</td>
+                <td class="cell-number">{{ row.n_pois }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

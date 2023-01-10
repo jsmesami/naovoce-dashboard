@@ -75,10 +75,18 @@ def guard_section(section, default):
     return default
 
 
-def guard_zero_positive(n, default):
+def guard_offset(n, default):
     try:
         ret = int(n)
         return ret if ret >= 0 else default
+    except (ValueError, TypeError):
+        return default
+
+
+def guard_limit(n, default):
+    try:
+        ret = int(n)
+        return ret if 0 <= ret <= 500 else default
     except (ValueError, TypeError):
         return default
 
