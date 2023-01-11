@@ -1,8 +1,0 @@
-<section id="content" class="section">
-    {% include 'inc/index-header.html' %}
-    {% if current_user.is_authenticated %}
-        {% include 'inc/stats.html' %}
-    {% else %}
-        {% include 'inc/login.html' %}
-    {% endif %}
-</section>

@@ -1,42 +1,20 @@
+{% with stats_url = url_for('core.index') %}
 <div id="stats">
-    {% with stats_url = url_for('core.index') %}
     <div class="tabs is-boxed">
         <ul>
-            <li class="{% if section == 'creators' %}is-active{% endif %}">
-                <a hx-get="{{ stats_url }}?section=creators"
-                   hx-target="#stats"
-                   hx-swap="outerHTML">
-                    Uživatelé
-                </a>
-            </li>
-            <li class="{% if section == 'categories' %}is-active{% endif %}">
-                <a hx-get="{{ stats_url }}?section=categories"
-                   hx-target="#stats"
-                   hx-swap="outerHTML">
-                    Kategorie
-                </a>
-            </li>
-            <li class="{% if section == 'pois' %}is-active{% endif %}">
-                <a hx-get="{{ stats_url }}?section=pois"
-                   hx-target="#stats"
-                   hx-swap="outerHTML">
-                    Značky
-                </a>
-            </li>
-            <li class="{% if section == 'images' %}is-active{% endif %}">
-                <a hx-get="{{ stats_url }}?section=images"
-                   hx-target="#stats"
-                   hx-swap="outerHTML">
-                    Fotky
-                </a>
-            </li>
-            <li class="{% if section == 'comments' %}is-active{% endif %}">
-                <a hx-get="{{ stats_url }}?section=comments"
-                   hx-target="#stats"
-                   hx-swap="outerHTML">
-                    Komentáře
-                </a>
-            </li>
+            {% for sec_id, sec_name in (('creators', 'Uživatelé'),
+                                        ('categories', 'Kategorie'),
+                                        ('pois', 'Značky'),
+                                        ('images', 'Fotky'),
+                                        ('comments', 'Komentáře')) %}
+                <li class="{% if section == sec_id %}is-active{% endif %}">
+                    <a hx-get="{{ stats_url }}?section={{ sec_id }}"
+                       hx-target="#stats"
+                       hx-swap="outerHTML">
+                        {{ sec_name }}
+                    </a>
+                </li>
+            {% endfor %}
         </ul>
     </div>
     {% if section == 'creators' %}
@@ -50,6 +28,5 @@
     {% elif section == 'comments' %}
         {% include "stats/comments.html" %}
     {% endif %}
-
-    {% endwith %}
 </div>
+{% endwith %}

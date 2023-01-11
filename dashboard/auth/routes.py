@@ -1,5 +1,6 @@
-from flask import abort, make_response, render_template, request, url_for
+from flask import abort, make_response, request, url_for
 from flask_login import login_user, logout_user
+from jinja2_fragments.flask import render_block
 from werkzeug.security import check_password_hash
 
 from ..extensions import htmx
@@ -24,8 +25,9 @@ def login():
         response.headers["HX-Redirect"] = url_for("core.index")
         return response
 
-    return render_template(
-        "inc/index-content.html",
+    return render_block(
+        "index.html",
+        "content",
         errors={"login_modal": "Nesprávné přihlašovací údaje."},
     )
 
@@ -36,4 +38,4 @@ def logout():
         abort(403)
 
     logout_user()
-    return render_template("inc/index-content.html")
+    return render_block("index.html", "content")

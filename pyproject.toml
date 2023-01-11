@@ -23,6 +23,7 @@ dependencies = [
     "geoalchemy2",
     "gunicorn",
     "gunicorn[gevent]",
+    "jinja2-fragments",
     "psycopg2-binary",
     "python-dotenv"
 ]

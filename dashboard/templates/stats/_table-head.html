@@ -1,18 +1,18 @@
-{% macro th(section, field, name, order, next_order) %}
+{% for field_id, field_name in fields %}
     <th>
-    {% if not field %}
-        {{ name }}
-    {% else %}
-        <a hx-get="{{ url_for('core.index') }}?{{ section }}_order={{ next_order }}"
-           hx-target="#stats"
-           hx-swap="outerHTML">
-            {{ name }}
-        </a>
-        {% if order == field + "_asc" %}
-            <i class="fa fa-arrow-up"></i>
-        {% elif order == field + "_desc" %}
-            <i class="fa fa-arrow-down"></i>
+        {% if not field_id %}
+            {{ field_name }}
+        {% else %}
+            <a hx-get="{{ stats_url }}?{{ section }}_order={{ next_order(field_id, order) }}"
+               hx-target="#stats"
+               hx-swap="outerHTML">
+                {{ field_name }}
+            </a>
+            {% if order == field_id + "_asc" %}
+                <i class="fa fa-arrow-up"></i>
+            {% elif order == field_id + "_desc" %}
+                <i class="fa fa-arrow-down"></i>
+            {% endif %}
         {% endif %}
-    {% endif %}
     </th>
-{% endmacro %}
+{% endfor %}

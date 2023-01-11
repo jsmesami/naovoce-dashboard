@@ -1,59 +1,26 @@
-<div class="card block">
-    <header class="card-header">
-        <p class="card-header-title">
-            Zobrazeno
-            <span class="has-text-warning-dark ml-2 mr-2">
-                {{ offset }} – {{ [offset+limit, count] | min }}
-            </span>
-            z celkových
-            <span class="has-text-warning-dark ml-2 mr-2">
-                {{ count }}
-            </span>
-            kategorií
-        </p>
+{% extends "stats/base.html" %}
 
-        {% import "stats/_table-paging.html" as tpaging %}
-        {{ tpaging.tpaging(section, offset, limit, count) }}
+{% block table_counts %}
+    {{ super() }}
+    kategorií
+{% endblock %}
 
-        <button class="card-header-icon"
-                _="on click toggle .is-hidden on #filters">
-            <span class="icon">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-            </span>
-        </button>
-    </header>
-    <div class="card-content is-hidden" id="filters">
-        <form class="field is-horizontal">
-            <div class="field-body">
-                {% import "stats/_table-limit.html" as tlimit %}
-                {{ tlimit.tlimit(section, limit) }}
-            </div>
-        </form>
-    </div>
-</div>
+{% block table_head %}
+    {% with fields=(('id', 'ID'),
+                    ('created', 'Vytvořeno'),
+                    ('name', 'Jméno'),
+                    ('n_pois', '# Značek')) %}
+        {% include "stats/_table-head.html" %}
+    {% endwith %}
+{% endblock %}
 
-<div class="table-container">
-    <table class="table stats-table">
-        <thead>
-            <tr>
-                {% import "stats/_table-head.html" as thead %}
-                {% for field, name in (('id', 'ID'),
-                                       ('created', 'Vytvořeno'),
-                                       ('name', 'Jméno'),
-                                       ('n_pois', '# Značek')) %}
-                    {{ thead.th(section, field, name, order, next_order(field, order)) }}
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-        {% for row in rows %}
-            <tr>
-                <th class="cell-number">{{ row.id }}</th>
-                <td class="cell-w-datetime cell-number">{{ row.created }}</td>
-                <td class="cell-w-name">{{ row.name }}</td>
-                <td class="cell-number">{{ row.n_pois }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+{% block table_body %}
+    {% for row in rows %}
+        <tr>
+            <th class="cell-number">{{ row.id }}</th>
+            <td class="cell-w-datetime cell-number">{{ row.created }}</td>
+            <td class="cell-w-name">{{ row.name }}</td>
+            <td class="cell-number">{{ row.n_pois }}</td>
+        </tr>
+    {% endfor %}
+{% endblock %}
