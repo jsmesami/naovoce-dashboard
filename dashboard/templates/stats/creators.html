@@ -18,11 +18,11 @@
     {% for row in rows %}
         <tr>
             <th class="cell-number">{{ row.id }}</th>
-            <td class="cell-w-datetime cell-number">{{ row.created }}</td>
+            <td class="cell-w-datetime cell-number">{{ row.created_fmt }}</td>
             <td class="cell-w-name">{{ row.first_name|default('-', true) }}</td>
             <td class="cell-w-name">{{ row.last_name|default('-', true) }}</td>
             <td class="cell-w-email"><a href="mailto:{{ row.email }}">{{ row.email }}</a></td>
-            <td class="cell-w-datetime cell-number">{{ row.last_visit|default('-', true) }}</td>
+            <td class="cell-w-datetime cell-number">{{ row.last_visit_fmt|default('-', true) }}</td>
             <td class="cell-number">{{ row.n_pois }}</td>
             <td class="cell-number">{{ row.n_images }}</td>
             <td class="cell-number">{{ row.n_comments }}</td>

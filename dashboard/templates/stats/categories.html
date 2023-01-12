@@ -13,7 +13,7 @@
     {% for row in rows %}
         <tr>
             <th class="cell-number">{{ row.id }}</th>
-            <td class="cell-w-datetime cell-number">{{ row.created }}</td>
+            <td class="cell-w-datetime cell-number">{{ row.created_fmt }}</td>
             <td class="cell-w-name">{{ row.name }}</td>
             <td class="cell-number">{{ row.n_pois }}</td>
         </tr>

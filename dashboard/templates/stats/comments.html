@@ -14,7 +14,7 @@
     {% for row in rows %}
         <tr>
             <th class="cell-number">{{ row.id }}</th>
-            <td class="cell-w-datetime cell-number">{{ row.created }}</td>
+            <td class="cell-w-datetime cell-number">{{ row.created_fmt }}</td>
             <td class="cell-number">{{ row.creator_id|default('–', true) }}</td>
             <td class="cell-number">{{ row.poi_id|default('–', true) }}</td>
             <td>{{ row.text }}</td>

@@ -15,6 +15,8 @@ def creators(created_since, created_until, order, limit, offset, **kwargs):
     query = f"""
         SELECT
         c.id, c.created, c.first_name, c.last_name, c.email, c.last_visit,
+        to_char(c.created, 'DD.MM.YYYY') AS created_fmt,
+        to_char(c.last_visit, 'DD.MM.YYYY') AS last_visit_fmt,
         (SELECT COUNT(*)
          FROM poi
          WHERE poi.creator_id = c.id
@@ -46,6 +48,7 @@ def categories(created_since, created_until, order, limit, offset, **kwargs):
     query = f"""
         SELECT
         cat.id, cat.created, cat.name,
+        to_char(cat.created, 'DD.MM.YYYY') AS created_fmt,
         (SELECT COUNT(*)
          FROM poi
          WHERE poi.category_id = cat.id
@@ -72,6 +75,7 @@ def pois(created_since, created_until, order, limit, offset, cat_filter, **kwarg
         SELECT
         poi.id, poi.created, poi.display_count, poi.creator_id, poi.category_id,
         cat.name AS category_name,
+        to_char(poi.created, 'DD.MM.YYYY') AS created_fmt,
         ST_X(poi.position) AS lng,
         ST_Y(poi.position) AS lat,
         (SELECT COUNT(*)
@@ -105,7 +109,8 @@ def pois(created_since, created_until, order, limit, offset, cat_filter, **kwarg
 def images(created_since, created_until, order, limit, offset, **kwargs):
     query = f"""
         SELECT
-        id, created, image_url, creator_id, poi_id
+        id, created, image_url, creator_id, poi_id,
+        to_char(created, 'DD.MM.YYYY') AS created_fmt
         FROM image
         WHERE is_published = true
         AND created BETWEEN '{created_since}' AND '{created_until}'
@@ -129,7 +134,8 @@ def images(created_since, created_until, order, limit, offset, **kwargs):
 def comments(created_since, created_until, order, limit, offset, **kwargs):
     query = f"""
         SELECT
-        id, created, "text", creator_id, poi_id
+        id, created, "text", creator_id, poi_id,
+        to_char(created, 'DD.MM.YYYY') AS created_fmt
         FROM comment
         WHERE is_published = true
         AND created BETWEEN '{created_since}' AND '{created_until}'
