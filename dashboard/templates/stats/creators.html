@@ -1,13 +1,8 @@
 {% extends "stats/base.html" %}
 
-{% block table_counts %}
-    {{ super() }}
-    uživatelů
-{% endblock %}
-
 {% block table_head %}
     {% with fields=(('id', 'ID'),
-                    ('created', 'Registrace'),
+                    ('created', 'Vytvořeno'),
                     ('first_name', 'Jméno'),
                     ('last_name', 'Příjmení'),
                     ('email', 'E-mail'),

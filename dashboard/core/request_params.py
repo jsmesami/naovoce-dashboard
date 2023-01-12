@@ -1,4 +1,6 @@
 import re
+from contextlib import suppress
+from datetime import datetime
 
 from flask import request, session
 
@@ -7,6 +9,8 @@ from .data_fetchers import categories, comments, creators, images, pois
 DEFAULT_SECTION = "creators"
 DEFAULT_LIMIT = 40
 DEFAULT_ORDER = "created_desc"
+MIN_CREATED = str(datetime(year=2013, month=1, day=1).date())
+MAX_CREATED = str(datetime.today().date())
 
 SECTIONS = ("creators", "categories", "pois", "images", "comments")
 FETCHERS = (creators, categories, pois, images, comments)
@@ -71,6 +75,22 @@ def getset_param(key, default, adapter):
 def guard_section(section, default):
     if match := re.match(rf"({'|'.join(SECTIONS)})", section):
         return match.group(0)
+
+    return default
+
+
+def guard_bool(boolean, default):
+    if type(boolean) == str:
+        return boolean.lower() in ("true", "t")
+    elif type(boolean) == bool:
+        return boolean
+
+    return default
+
+
+def guard_date(date, default):
+    with suppress(ValueError):
+        return str(datetime.strptime(date, "%Y-%m-%d").date())
 
     return default
 

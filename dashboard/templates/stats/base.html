@@ -6,7 +6,7 @@
             <span class="has-text-warning-dark ml-2 mr-2">
                 {{ offset }} – {{ [offset+limit, count] | min }}
             </span>
-            z celkových
+            výsledků z celkových
             <span class="has-text-warning-dark ml-2 mr-2">
                 {{ count }}
             </span>
@@ -35,19 +35,26 @@
         {% endblock %}
 
         <button class="card-header-icon"
-                _="on click toggle .is-hidden on #table-controls">
+                hx-get="{{ stats_url }}?show_controls={% if show_controls %}f{% else %}t{% endif %}"
+                hx-target="#stats"
+                hx-swap="outerHTML">
             <span class="icon">
-                <i class="fa fa-plus" aria-hidden="true"></i>
+                {% if show_controls %}
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                {% else %}
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                {% endif %}
             </span>
         </button>
     </header>
 
-    <div class="card-content is-hidden" id="table-controls">
+    {% if show_controls %}
+    <div class="card-content" id="table-controls">
         <form class="field is-horizontal">
             <div class="field-body">
 
                 {% block table_controls %}
-                    <div class="field">
+                    <div class="field is-flex-grow-0">
                         <div class="control">
                             <div class="select">
                                 <select name="{{ section }}_limit"
@@ -62,11 +69,40 @@
                         </div>
                         <p class="help">Délka stránky</p>
                     </div>
+                    <div class="field is-flex-grow-0">
+                        <div class="control">
+                            <input name="{{ section }}_created_since"
+                                   type="date"
+                                   class="input"
+                                   value="{{ created_since }}"
+                                   min="{{ created_min }}"
+                                   max="{{ created_until }}"
+                                   hx-get="{{ stats_url }}"
+                                   hx-target="#stats"
+                                   hx-swap="outerHTML">
+                        </div>
+                        <p class="help">Vytvořeno od</p>
+                    </div>
+                    <div class="field is-flex-grow-0">
+                        <div class="control">
+                            <input name="{{ section }}_created_until"
+                                   type="date"
+                                   class="input"
+                                   value="{{ created_until }}"
+                                   min="{{ created_since }}"
+                                   max="{{ created_max }}"
+                                   hx-get="{{ stats_url }}"
+                                   hx-target="#stats"
+                                   hx-swap="outerHTML">
+                        </div>
+                        <p class="help">Vytvořeno do</p>
+                    </div>
                 {% endblock %}
 
             </div>
         </form>
     </div>
+    {% endif %}
 </div>
 
 <div class="table-container">

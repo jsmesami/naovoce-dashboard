@@ -1,10 +1,5 @@
 {% extends "stats/base.html" %}
 
-{% block table_counts %}
-    {{ super() }}
-    komentářů
-{% endblock %}
-
 {% block table_head %}
     {% with fields=(('id', 'ID'),
                     ('created', 'Vytvořeno'),
