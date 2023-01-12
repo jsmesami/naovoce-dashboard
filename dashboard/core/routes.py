@@ -4,6 +4,7 @@ from flask_login import current_user
 from ..extensions import htmx
 from . import core
 from . import request_params as rp
+from .data_fetchers import cat_choices
 
 
 @core.route("/")
@@ -38,6 +39,17 @@ def index():
             "created_min": rp.MIN_CREATED,
             "created_max": rp.MAX_CREATED,
         }
+
+        if section == "pois":
+            choices = cat_choices()
+            cat_ids = (ch["id"] for ch in choices)
+            cat_filter = rp.getset_param(
+                f"{section}_cat_filter", 0, rp.guard_category(cat_ids)
+            )
+            params |= {
+                "cat_choices": choices,
+                "cat_filter": cat_filter,
+            }
 
         params |= rp.SECTION_FETCHERS[section](**params)
 

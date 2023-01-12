@@ -4,7 +4,11 @@ from ..extensions import db
 
 
 def order_clause(order):
-    return " ".join(order.rsplit("_", maxsplit=1))
+    return "ORDER BY " + " ".join(order.rsplit("_", maxsplit=1))
+
+
+def cat_filter_clause(cat_filter):
+    return f"AND category_id = {cat_filter}" if cat_filter else ""
 
 
 def creators(created_since, created_until, order, limit, offset, **kwargs):
@@ -25,7 +29,7 @@ def creators(created_since, created_until, order, limit, offset, **kwargs):
          AND comment.is_published = true) AS n_comments
         FROM creator c
         WHERE c.created BETWEEN '{created_since}' AND '{created_until}'
-        ORDER BY {order_clause(order)}
+        {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
     count = f"""
@@ -49,7 +53,7 @@ def categories(created_since, created_until, order, limit, offset, **kwargs):
         FROM category cat
         WHERE cat.is_published = true
         AND cat.created BETWEEN '{created_since}' AND '{created_until}'
-        ORDER BY {order_clause(order)}
+        {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
     count = f"""
@@ -63,7 +67,7 @@ def categories(created_since, created_until, order, limit, offset, **kwargs):
     )
 
 
-def pois(created_since, created_until, order, limit, offset, **kwargs):
+def pois(created_since, created_until, order, limit, offset, cat_filter, **kwargs):
     query = f"""
         SELECT
         poi.id, poi.created, poi.display_count, poi.creator_id, poi.category_id,
@@ -82,7 +86,8 @@ def pois(created_since, created_until, order, limit, offset, **kwargs):
         LEFT JOIN category cat ON cat.id = poi.category_id
         WHERE poi.is_published = true
         AND poi.created BETWEEN '{created_since}' AND '{created_until}'
-        ORDER BY {order_clause(order)}
+        {cat_filter_clause(cat_filter)}
+        {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
     count = f"""
@@ -90,6 +95,7 @@ def pois(created_since, created_until, order, limit, offset, **kwargs):
         FROM poi
         WHERE is_published = true
         AND created BETWEEN '{created_since}' AND '{created_until}'
+        {cat_filter_clause(cat_filter)}
     """
     return {"rows": db.session.execute(query).mappings().all()} | dict(
         db.session.execute(count).mappings().fetchone()
@@ -103,7 +109,7 @@ def images(created_since, created_until, order, limit, offset, **kwargs):
         FROM image
         WHERE is_published = true
         AND created BETWEEN '{created_since}' AND '{created_until}'
-        ORDER BY {order_clause(order)}
+        {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
     count = f"""
@@ -127,7 +133,7 @@ def comments(created_since, created_until, order, limit, offset, **kwargs):
         FROM comment
         WHERE is_published = true
         AND created BETWEEN '{created_since}' AND '{created_until}'
-        ORDER BY {order_clause(order)}
+        {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
     count = f"""
@@ -139,3 +145,13 @@ def comments(created_since, created_until, order, limit, offset, **kwargs):
     return {"rows": db.session.execute(query).mappings().all()} | dict(
         db.session.execute(count).mappings().fetchone()
     )
+
+
+def cat_choices():
+    query = f"""
+        SELECT id, "name"
+        FROM category
+        WHERE is_published = true
+        ORDER BY "name"
+    """
+    return db.session.execute(query).mappings().all()

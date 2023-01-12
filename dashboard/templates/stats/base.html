@@ -61,9 +61,9 @@
                                         hx-get="{{ stats_url }}"
                                         hx-target="#stats"
                                         hx-swap="outerHTML">
-                                    <option {% if limit == 40 %}selected{% endif %}>40</option>
-                                    <option {% if limit == 100 %}selected{% endif %}>100</option>
-                                    <option {% if limit == 500 %}selected{% endif %}>500</option>
+                                    <option {% if limit == 40 %}selected{% endif %} value="40">40</option>
+                                    <option {% if limit == 100 %}selected{% endif %} value="100">100</option>
+                                    <option {% if limit == 500 %}selected{% endif %} value="500">500</option>
                                 </select>
                             </div>
                         </div>

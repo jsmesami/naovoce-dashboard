@@ -1,5 +1,4 @@
 import re
-from contextlib import suppress
 from datetime import datetime
 
 from flask import request, session
@@ -88,27 +87,28 @@ def guard_bool(boolean, default):
     return default
 
 
-def guard_date(date, default):
-    with suppress(ValueError):
-        return str(datetime.strptime(date, "%Y-%m-%d").date())
+def guard_category(cat_ids):
+    def closure(n, default):
+        if (n := int(n)) in cat_ids:
+            return n
+        else:
+            return default
 
-    return default
+    return closure
+
+
+def guard_date(date, _default):
+    return str(datetime.strptime(date, "%Y-%m-%d").date())
 
 
 def guard_offset(n, default):
-    try:
-        ret = int(n)
-        return ret if ret >= 0 else default
-    except (ValueError, TypeError):
-        return default
+    ret = int(n)
+    return ret if ret >= 0 else default
 
 
 def guard_limit(n, default):
-    try:
-        ret = int(n)
-        return ret if 0 <= ret <= 500 else default
-    except (ValueError, TypeError):
-        return default
+    ret = int(n)
+    return ret if 0 <= ret <= 500 else default
 
 
 def guard_order(section):

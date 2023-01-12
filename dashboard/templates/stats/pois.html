@@ -13,6 +13,29 @@
     {% endwith %}
 {% endblock %}
 
+{% block table_controls %}
+    {{ super() }}
+    <div class="field is-flex-grow-0">
+        <div class="control">
+            <div class="select">
+                <select name="{{ section }}_cat_filter"
+                        hx-get="{{ stats_url }}"
+                        hx-target="#stats"
+                        hx-swap="outerHTML">
+                    <option value="0">-- Všechny --</option>
+                    {% for choice in cat_choices %}
+                        <option {% if choice.id == cat_filter %}selected{% endif %}
+                            value="{{ choice.id }}">
+                            {{ choice.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <p class="help">Filtr druhů</p>
+    </div>
+{% endblock %}
+
 {% block table_body %}
     {% for row in rows %}
         <tr>
