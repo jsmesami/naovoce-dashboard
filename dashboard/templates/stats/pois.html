@@ -44,7 +44,7 @@
             <td class="cell-w-name">{{ row.category_name }}</td>
             <td class="cell-number">{{ row.display_count|default('0', true) }}</td>
             <td class="cell-w-latlng cell-number">
-                {{ row.lat|default('-', true) }}; {{ row.lng|default('-', true) }}
+                {{ row.lat|format_coord() }}; {{ row.lng|format_coord() }}
             </td>
             <td class="cell-number">{{ row.creator_id|default('-', true) }}</td>
             <td class="cell-number">{{ row.n_images }}</td>
