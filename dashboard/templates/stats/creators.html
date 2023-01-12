@@ -17,7 +17,13 @@
 {% block table_body %}
     {% for row in rows %}
         <tr>
-            <th class="cell-number">{{ row.id }}</th>
+            <th class="cell-number">
+                <a href="https://map.na-ovoce.cz/user/{{ row.id }}"
+                   target="_blank"
+                   rel="noopener noreferr">
+                    {{ row.id }}
+                </a>
+            </th>
             <td class="cell-w-datetime cell-number">{{ row.created_fmt }}</td>
             <td class="cell-w-name">{{ row.first_name|default('-', true) }}</td>
             <td class="cell-w-name">{{ row.last_name|default('-', true) }}</td>

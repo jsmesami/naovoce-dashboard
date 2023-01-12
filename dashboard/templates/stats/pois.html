@@ -40,7 +40,13 @@
 {% block table_body %}
     {% for row in rows %}
         <tr>
-            <th class="cell-number">{{ row.id }}</th>
+            <th class="cell-number">
+                <a href="https://map.na-ovoce.cz/{{ row.id }}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    {{ row.id }}
+                </a>
+            </th>
             <td class="cell-w-datetime cell-number">{{ row.created_fmt }}</td>
             <td class="cell-w-name">{{ row.category_name }}</td>
             <td class="cell-number">{{ row.display_count|default('0', true) }}</td>
