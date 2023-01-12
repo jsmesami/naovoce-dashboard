@@ -7,11 +7,16 @@ def order_clause(order):
     return "ORDER BY " + " ".join(order.rsplit("_", maxsplit=1))
 
 
-def cat_filter_clause(cat_filter):
-    return f"AND category_id = {cat_filter}" if cat_filter else ""
+def cat_id_filter_clause(cat_id_filter):
+    return f"AND category_id = {cat_id_filter}" if cat_id_filter else ""
 
 
-def creators(created_since, created_until, order, limit, offset, **kwargs):
+def id_filter_clause(id_filter, prefix=None):
+    prefix = f"{prefix}." if prefix else ""
+    return f"AND {prefix}id = {id_filter}" if id_filter else ""
+
+
+def creators(created_since, created_until, order, limit, offset, id_filter, **kwargs):
     query = f"""
         SELECT
         c.id, c.created, c.first_name, c.last_name, c.email, c.last_visit,
@@ -31,6 +36,7 @@ def creators(created_since, created_until, order, limit, offset, **kwargs):
          AND comment.is_published = true) AS n_comments
         FROM creator c
         WHERE c.created BETWEEN '{created_since}' AND '{created_until}'
+        {id_filter_clause(id_filter)}
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
@@ -38,6 +44,7 @@ def creators(created_since, created_until, order, limit, offset, **kwargs):
         SELECT COUNT(*)
         FROM creator
         WHERE created BETWEEN '{created_since}' AND '{created_until}'
+        {id_filter_clause(id_filter)}
     """
     return {"rows": db.session.execute(query).mappings().all()} | dict(
         db.session.execute(count).mappings().fetchone()
@@ -70,7 +77,16 @@ def categories(created_since, created_until, order, limit, offset, **kwargs):
     )
 
 
-def pois(created_since, created_until, order, limit, offset, cat_filter, **kwargs):
+def pois(
+    created_since,
+    created_until,
+    order,
+    limit,
+    offset,
+    cat_id_filter,
+    id_filter,
+    **kwargs,
+):
     query = f"""
         SELECT
         poi.id, poi.created, poi.display_count, poi.creator_id, poi.category_id,
@@ -90,7 +106,8 @@ def pois(created_since, created_until, order, limit, offset, cat_filter, **kwarg
         LEFT JOIN category cat ON cat.id = poi.category_id
         WHERE poi.is_published = true
         AND poi.created BETWEEN '{created_since}' AND '{created_until}'
-        {cat_filter_clause(cat_filter)}
+        {cat_id_filter_clause(cat_id_filter)}
+        {id_filter_clause(id_filter, 'poi')}
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
@@ -99,7 +116,8 @@ def pois(created_since, created_until, order, limit, offset, cat_filter, **kwarg
         FROM poi
         WHERE is_published = true
         AND created BETWEEN '{created_since}' AND '{created_until}'
-        {cat_filter_clause(cat_filter)}
+        {cat_id_filter_clause(cat_id_filter)}
+        {id_filter_clause(id_filter, 'poi')}
     """
     return {"rows": db.session.execute(query).mappings().all()} | dict(
         db.session.execute(count).mappings().fetchone()

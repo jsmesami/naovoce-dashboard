@@ -99,6 +99,17 @@
                     </div>
                 {% endblock %}
 
+                <div class="field">
+                    <p class="control">
+                        <button class="button is-warning"
+                                hx-get="{{ stats_url }}?{{ section }}_reset_filters=t"
+                                hx-target="#stats"
+                                hx-swap="outerHTML">
+                            Reset
+                        </button>
+                    </p>
+                </div>
+
             </div>
         </form>
     </div>

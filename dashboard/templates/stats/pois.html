@@ -1,4 +1,5 @@
 {% extends "stats/base.html" %}
+{% from "stats/_macros.html" import format_position, link_creator, link_poi_cat %}
 
 {% block table_head %}
     {% with fields=(('id', 'ID'),
@@ -18,13 +19,13 @@
     <div class="field is-flex-grow-0">
         <div class="control">
             <div class="select">
-                <select name="{{ section }}_cat_filter"
+                <select name="{{ section }}_cat_id_filter"
                         hx-get="{{ stats_url }}"
                         hx-target="#stats"
                         hx-swap="outerHTML">
                     <option value="0">-- Všechny --</option>
                     {% for choice in cat_choices %}
-                        <option {% if choice.id == cat_filter %}selected{% endif %}
+                        <option {% if choice.id == cat_id_filter %}selected{% endif %}
                             value="{{ choice.id }}">
                             {{ choice.name }}
                         </option>
@@ -44,9 +45,9 @@
             <td class="cell-w-name">{{ row.category_name }}</td>
             <td class="cell-number">{{ row.display_count|default('0', true) }}</td>
             <td class="cell-w-latlng cell-number">
-                {{ row.lat|format_coord() }}; {{ row.lng|format_coord() }}
+                {{ format_position(row.lat, row.lng) }}
             </td>
-            <td class="cell-number">{{ row.creator_id|default('-', true) }}</td>
+            <td class="cell-number">{{ link_creator(stats_url, row.creator_id) }}</td>
             <td class="cell-number">{{ row.n_images }}</td>
             <td class="cell-number">{{ row.n_comments }}</td>
         </tr>

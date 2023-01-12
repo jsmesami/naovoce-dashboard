@@ -58,6 +58,18 @@ SECTION_FIELDS = {
 }
 
 
+def get_param(key, default, adapter):
+    if (ret := request.args.get(key)) is None:
+        return default
+
+    try:
+        ret = adapter(ret, default)
+    except (ValueError, TypeError):
+        ret = default
+
+    return ret
+
+
 def getset_param(key, default, adapter):
     if (ret := request.args.get(key)) is None:
         ret = session.get(key, default)
@@ -83,6 +95,13 @@ def guard_bool(boolean, default):
         return boolean.lower() in ("true", "t")
     elif type(boolean) == bool:
         return boolean
+
+    return default
+
+
+def guard_posint(n, default):
+    if (n := int(n)) > 0:
+        return n
 
     return default
 
@@ -130,3 +149,9 @@ def next_order(field, current_order):
         return f"{field}_{next_dir}"
 
     return f"{field}_desc"
+
+
+def reset_filters(section):
+    for k in list(session.keys()):
+        if k.startswith(section):
+            session.pop(k)

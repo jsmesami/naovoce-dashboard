@@ -1,4 +1,5 @@
 {% extends "stats/base.html" %}
+{% from "stats/_macros.html" import link_creator, link_poi %}
 
 {% block table_head %}
     {% with fields=(('id', 'ID'),
@@ -15,8 +16,8 @@
         <tr>
             <th class="cell-number">{{ row.id }}</th>
             <td class="cell-w-datetime cell-number">{{ row.created_fmt }}</td>
-            <td class="cell-number">{{ row.creator_id|default('–', true) }}</td>
-            <td class="cell-number">{{ row.poi_id|default('–', true) }}</td>
+            <td class="cell-number">{{ link_creator(stats_url, row.creator_id) }}</td>
+            <td class="cell-number">{{ link_poi(stats_url, row.poi_id) }}</td>
             <td>{{ row.text }}</td>
         </tr>
     {% endfor %}

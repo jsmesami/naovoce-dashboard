@@ -1,0 +1,33 @@
+{% macro link_creator(url, id) -%}
+    {% if id %}
+    <a hx-get="{{ url }}?section=creators&creators_reset_filters=t&show_controls=t&creators_id_filter={{ id }}"
+       hx-target="#stats"
+       hx-swap="outerHTML">{{ id }}</a>
+    {% else %}
+        –
+    {% endif %}
+{%- endmacro %}
+
+{% macro link_poi(url, id) -%}
+    {% if id %}
+        <a hx-get="{{ url }}?section=pois&pois_reset_filters=t&show_controls=t&pois_id_filter={{ id }}"
+           hx-target="#stats"
+           hx-swap="outerHTML">{{ id }}</a>
+    {% else %}
+        –
+    {% endif %}
+{%- endmacro %}
+
+{% macro link_poi_cat(url, category) -%}
+    <a hx-get="{{ url }}?section=pois&pois_reset_filters=t&show_controls=t&pois_cat_id_filter={{ category.id }}"
+       hx-target="#stats"
+       hx-swap="outerHTML">{{ category.name }}</a>
+{%- endmacro %}
+
+{% macro format_position(lat, lng) -%}
+    {% if lat and lng %}
+        {{ lat|format_coord() }}; {{ lng|format_coord() }}
+    {% else %}
+        –
+    {% endif %}
+{%- endmacro %}

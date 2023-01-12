@@ -16,6 +16,9 @@ def index():
     }
 
     if current_user.is_authenticated:
+        if rp.get_param(f"{section}_reset_filters", False, rp.guard_bool):
+            rp.reset_filters(section)
+
         offset = rp.getset_param(f"{section}_offset", 0, rp.guard_offset)
         limit = rp.getset_param(f"{section}_limit", rp.DEFAULT_LIMIT, rp.guard_limit)
         order = rp.getset_param(
@@ -43,12 +46,17 @@ def index():
         if section == "pois":
             choices = cat_choices()
             cat_ids = (ch["id"] for ch in choices)
-            cat_filter = rp.getset_param(
-                f"{section}_cat_filter", 0, rp.guard_category(cat_ids)
+            cat_id_filter = rp.getset_param(
+                f"{section}_cat_id_filter", 0, rp.guard_category(cat_ids)
             )
             params |= {
                 "cat_choices": choices,
-                "cat_filter": cat_filter,
+                "cat_id_filter": cat_id_filter,
+            }
+
+        if section in ("creators", "pois"):
+            params |= {
+                "id_filter": rp.get_param(f"{section}_id_filter", 0, rp.guard_posint)
             }
 
         params |= rp.SECTION_FETCHERS[section](**params)
