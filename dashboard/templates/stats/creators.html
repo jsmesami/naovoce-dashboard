@@ -14,6 +14,24 @@
     {% endwith %}
 {% endblock %}
 
+{% block table_controls %}
+    {{ super() }}
+    <div class="field is-flex-grow-0">
+        <div class="control">
+            <input name="{{ section }}_search"
+                   type="text"
+                   class="input"
+                   value="{{ search }}"
+                   placeholder="Jméno, příjmení, e-mail"
+                   hx-get="{{ stats_url }}"
+                   hx-trigger="keyup changed delay:2s"
+                   hx-target="#stats"
+                   hx-swap="outerHTML">
+        </div>
+        <p class="help">Vyhledat</p>
+    </div>
+{% endblock %}
+
 {% block table_body %}
     {% for row in rows %}
         <tr>

@@ -54,6 +54,9 @@ def index():
                 "cat_id_filter": cat_id_filter,
             }
 
+        if section == "creators":
+            params |= {"search": rp.getset_param(f"{section}_search", "", rp.identity)}
+
         if section in ("creators", "pois"):
             params |= {
                 "id_filter": rp.get_param(f"{section}_id_filter", 0, rp.guard_posint)

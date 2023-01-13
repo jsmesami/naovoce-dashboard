@@ -83,11 +83,8 @@ def getset_param(key, default, adapter):
     return ret
 
 
-def guard_section(section, default):
-    if match := re.match(rf"({'|'.join(SECTIONS)})", section):
-        return match.group(0)
-
-    return default
+def identity(text, _default):
+    return text
 
 
 def guard_bool(boolean, default):
@@ -102,6 +99,13 @@ def guard_bool(boolean, default):
 def guard_posint(n, default):
     if (n := int(n)) > 0:
         return n
+
+    return default
+
+
+def guard_section(section, default):
+    if match := re.match(rf"({'|'.join(SECTIONS)})", section):
+        return match.group(0)
 
     return default
 

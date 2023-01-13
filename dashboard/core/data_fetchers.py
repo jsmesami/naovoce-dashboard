@@ -16,7 +16,21 @@ def id_filter_clause(id_filter, prefix=None):
     return f"AND {prefix}id = {id_filter}" if id_filter else ""
 
 
-def creators(created_since, created_until, order, limit, offset, id_filter, **kwargs):
+def creator_search_clause(search):
+    if not search:
+        return ""
+
+    return """
+        AND (
+        email LIKE :search
+        OR first_name LIKE :search
+        OR last_name LIKE :search)
+    """
+
+
+def creators(
+    created_since, created_until, order, limit, offset, id_filter, search, **kwargs
+):
     query = f"""
         SELECT
         c.id, c.created, c.first_name, c.last_name, c.email, c.last_visit,
@@ -37,6 +51,7 @@ def creators(created_since, created_until, order, limit, offset, id_filter, **kw
         FROM creator c
         WHERE c.created BETWEEN '{created_since}' AND '{created_until}'
         {id_filter_clause(id_filter)}
+        {creator_search_clause(search)}
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
@@ -45,9 +60,12 @@ def creators(created_since, created_until, order, limit, offset, id_filter, **kw
         FROM creator
         WHERE created BETWEEN '{created_since}' AND '{created_until}'
         {id_filter_clause(id_filter)}
+        {creator_search_clause(search)}
     """
-    return {"rows": db.session.execute(query).mappings().all()} | dict(
-        db.session.execute(count).mappings().fetchone()
+    return {
+        "rows": db.session.execute(query, dict(search=f"%{search}%")).mappings().all()
+    } | dict(
+        db.session.execute(count, dict(search=f"%{search}%")).mappings().fetchone()
     )
 
 
