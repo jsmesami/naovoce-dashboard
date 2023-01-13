@@ -48,17 +48,21 @@ def creators(
         (SELECT COUNT(*)
          FROM poi
          WHERE poi.creator_id = c.id
-         AND poi.is_published = true) AS n_pois,
+         AND poi.is_published = true
+         AND poi.is_deleted = false) AS n_pois,
         (SELECT COUNT(*)
          FROM image
          WHERE image.creator_id = c.id
-         AND image.is_published = true) AS n_images,
+         AND image.is_published = true
+         AND image.is_deleted = false) AS n_images,
         (SELECT COUNT(*)
          FROM comment
          WHERE comment.creator_id = c.id
-         AND comment.is_published = true) AS n_comments
+         AND comment.is_published = true
+         AND comment.is_deleted = false) AS n_comments
         FROM creator c
-        WHERE c.created BETWEEN '{created_since}' AND '{created_until}'
+        WHERE c.is_deleted = false
+        AND c.created BETWEEN '{created_since}' AND '{created_until}'
         AND c.last_visit BETWEEN '{visited_since}' AND '{visited_until}'
         {id_filter_clause(id_filter)}
         {creator_search_clause(search)}
@@ -68,7 +72,8 @@ def creators(
     count = f"""
         SELECT COUNT(*)
         FROM creator
-        WHERE created BETWEEN '{created_since}' AND '{created_until}'
+        WHERE is_deleted = false
+        AND created BETWEEN '{created_since}' AND '{created_until}'
         {id_filter_clause(id_filter)}
         {creator_search_clause(search)}
     """
@@ -87,9 +92,11 @@ def categories(created_since, created_until, order, limit, offset, **kwargs):
         (SELECT COUNT(*)
          FROM poi
          WHERE poi.category_id = cat.id
-         AND poi.is_published = true) AS n_pois
+         AND poi.is_published = true
+         AND poi.is_deleted = false) AS n_pois
         FROM category cat
         WHERE cat.is_published = true
+        AND cat.is_deleted = false
         AND cat.created BETWEEN '{created_since}' AND '{created_until}'
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
@@ -98,6 +105,7 @@ def categories(created_since, created_until, order, limit, offset, **kwargs):
         SELECT COUNT(*)
         FROM category
         WHERE is_published = true
+        AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
     """
     return {"rows": db.session.execute(query).mappings().all()} | dict(
@@ -125,14 +133,17 @@ def pois(
         (SELECT COUNT(*)
          FROM image
          WHERE image.poi_id = poi.id
-         AND image.is_published = true) AS n_images,
+         AND image.is_published = true
+         AND image.is_deleted = false) AS n_images,
         (SELECT COUNT(*)
          FROM comment
          WHERE comment.poi_id = poi.id
-         AND comment.is_published = true) AS n_comments
+         AND comment.is_published = true
+         AND comment.is_deleted = false) AS n_comments
         FROM poi
         LEFT JOIN category cat ON cat.id = poi.category_id
         WHERE poi.is_published = true
+        AND poi.is_deleted = false
         AND poi.created BETWEEN '{created_since}' AND '{created_until}'
         {cat_id_filter_clause(cat_id_filter)}
         {id_filter_clause(id_filter, 'poi')}
@@ -143,6 +154,7 @@ def pois(
         SELECT COUNT(*)
         FROM poi
         WHERE is_published = true
+        AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
         {cat_id_filter_clause(cat_id_filter)}
         {id_filter_clause(id_filter, 'poi')}
@@ -159,6 +171,7 @@ def images(created_since, created_until, order, limit, offset, **kwargs):
         to_char(created, 'DD.MM.YYYY') AS created_fmt
         FROM image
         WHERE is_published = true
+        AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
@@ -167,6 +180,7 @@ def images(created_since, created_until, order, limit, offset, **kwargs):
         SELECT COUNT(*)
         FROM image
         WHERE is_published = true
+        AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
     """
     return {
@@ -184,6 +198,7 @@ def comments(created_since, created_until, order, limit, offset, **kwargs):
         to_char(created, 'DD.MM.YYYY') AS created_fmt
         FROM comment
         WHERE is_published = true
+        AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
@@ -192,6 +207,7 @@ def comments(created_since, created_until, order, limit, offset, **kwargs):
         SELECT COUNT(*)
         FROM comment
         WHERE is_published = true
+        AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
     """
     return {"rows": db.session.execute(query).mappings().all()} | dict(
@@ -204,6 +220,7 @@ def cat_choices():
         SELECT id, "name"
         FROM category
         WHERE is_published = true
+        AND is_deleted = false
         ORDER BY "name"
     """
     return db.session.execute(query).mappings().all()

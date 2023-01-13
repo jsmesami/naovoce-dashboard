@@ -9,19 +9,27 @@ def mark_modified(row):
     return row
 
 
+def mark_deleted(row, val):
+    row["is_deleted"] = val
+    return row
+
+
 def db_delete(db, model, export_rows, db_rows):
     ids_to_delete = set(db_rows.keys()) - set(export_rows.keys())
 
+    mappings_to_update = [
+        mark_deleted(mark_modified(export_rows[id_]), True) for id_ in ids_to_delete
+    ]
+
     if ids_to_delete:
         current_app.logger.info(
-            "Deleting {count} rows from table {table}".format(
+            "Removing {count} rows from table {table}".format(
                 count=len(ids_to_delete), table=model.__table__
             )
         )
         session = Session(db)
-        statement = model.__table__.delete().where(model.id.in_(ids_to_delete))
         with session.begin():
-            session.execute(statement)
+            session.bulk_update_mappings(model, mappings_to_update)
 
 
 def db_update(db, model, export_rows, db_rows):
@@ -47,7 +55,9 @@ def db_update(db, model, export_rows, db_rows):
 def db_insert(db, model, export_rows, db_rows):
     ids_to_insert = set(export_rows.keys()) - set(db_rows.keys())
 
-    mappings_to_insert = [export_rows[id_] for id_ in ids_to_insert]
+    mappings_to_insert = [
+        mark_deleted(export_rows[id_], False) for id_ in ids_to_insert
+    ]
 
     if mappings_to_insert:
         current_app.logger.info(
