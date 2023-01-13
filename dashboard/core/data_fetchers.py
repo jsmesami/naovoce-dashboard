@@ -29,7 +29,16 @@ def creator_search_clause(search):
 
 
 def creators(
-    created_since, created_until, order, limit, offset, id_filter, search, **kwargs
+    created_since,
+    created_until,
+    visited_since,
+    visited_until,
+    order,
+    limit,
+    offset,
+    id_filter,
+    search,
+    **kwargs,
 ):
     query = f"""
         SELECT
@@ -50,6 +59,7 @@ def creators(
          AND comment.is_published = true) AS n_comments
         FROM creator c
         WHERE c.created BETWEEN '{created_since}' AND '{created_until}'
+        AND c.last_visit BETWEEN '{visited_since}' AND '{visited_until}'
         {id_filter_clause(id_filter)}
         {creator_search_clause(search)}
         {order_clause(order)}

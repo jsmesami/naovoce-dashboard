@@ -18,6 +18,34 @@
     {{ super() }}
     <div class="field is-flex-grow-0">
         <div class="control">
+            <input name="{{ section }}_visited_since"
+                   type="date"
+                   class="input"
+                   value="{{ visited_since }}"
+                   min="{{ visited_min }}"
+                   max="{{ visited_until }}"
+                   hx-get="{{ stats_url }}"
+                   hx-target="#stats"
+                   hx-swap="outerHTML">
+        </div>
+        <p class="help">Návštěva od</p>
+    </div>
+    <div class="field is-flex-grow-0">
+        <div class="control">
+            <input name="{{ section }}_visited_until"
+                   type="date"
+                   class="input"
+                   value="{{ visited_until }}"
+                   min="{{ visited_since }}"
+                   max="{{ visited_max }}"
+                   hx-get="{{ stats_url }}"
+                   hx-target="#stats"
+                   hx-swap="outerHTML">
+        </div>
+        <p class="help">Návštěva do</p>
+    </div>
+    <div class="field is-flex-grow-0">
+        <div class="control">
             <input name="{{ section }}_search"
                    type="text"
                    class="input"

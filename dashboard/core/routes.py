@@ -44,22 +44,34 @@ def index():
         }
 
         if section == "pois":
+            id_filter = rp.get_param(f"pois_id_filter", 0, rp.guard_posint)
             choices = cat_choices()
             cat_ids = (ch["id"] for ch in choices)
             cat_id_filter = rp.getset_param(
-                f"{section}_cat_id_filter", 0, rp.guard_category(cat_ids)
+                f"pois_cat_id_filter", 0, rp.guard_category(cat_ids)
             )
             params |= {
+                "id_filter": id_filter,
                 "cat_choices": choices,
                 "cat_id_filter": cat_id_filter,
             }
 
         if section == "creators":
-            params |= {"search": rp.getset_param(f"{section}_search", "", rp.identity)}
-
-        if section in ("creators", "pois"):
+            search = rp.getset_param(f"creators_search", "", rp.identity)
+            id_filter = rp.get_param(f"creators_id_filter", 0, rp.guard_posint)
+            visited_since = rp.getset_param(
+                f"creators_visited_since", rp.MIN_VISITED, rp.guard_date
+            )
+            visited_until = rp.getset_param(
+                f"creators_visited_until", rp.MAX_VISITED, rp.guard_date
+            )
             params |= {
-                "id_filter": rp.get_param(f"{section}_id_filter", 0, rp.guard_posint)
+                "search": search,
+                "id_filter": id_filter,
+                "visited_since": visited_since,
+                "visited_until": visited_until,
+                "visited_min": rp.MIN_VISITED,
+                "visited_max": rp.MAX_VISITED,
             }
 
         params |= rp.SECTION_FETCHERS[section](**params)
