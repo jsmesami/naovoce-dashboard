@@ -6,13 +6,13 @@
 #
 black==22.12.0
     # via dashboard (pyproject.toml)
-boto3==1.26.47
+boto3==1.26.49
     # via dashboard (pyproject.toml)
-botocore==1.29.47
+botocore==1.29.49
     # via
     #   boto3
     #   s3transfer
-build==0.9.0
+build==0.10.0
     # via pip-tools
 click==8.1.3
     # via
@@ -67,14 +67,14 @@ packaging==23.0
     #   geoalchemy2
 pathspec==0.10.3
     # via black
-pep517==0.13.0
-    # via build
 pip-tools==6.12.1
     # via dashboard (pyproject.toml)
 platformdirs==2.6.2
     # via black
 psycopg2-binary==2.9.5
     # via dashboard (pyproject.toml)
+pyproject-hooks==1.0.0
+    # via build
 python-dateutil==2.8.2
     # via botocore
 python-dotenv==0.21.0
@@ -87,7 +87,7 @@ sqlalchemy==1.4.46
     # via
     #   flask-sqlalchemy
     #   geoalchemy2
-urllib3==1.26.13
+urllib3==1.26.14
     # via botocore
 watchdog==2.2.1
     # via dashboard (pyproject.toml)

@@ -1,5 +1,12 @@
 # Na-ovoce.cz stats dashboard
 
+## Prerequisites
+
+* Python 3.11
+* Postgres
+* Node.js
+* Yarn
+
 ## Development
 
     # prepare database
