@@ -5,12 +5,10 @@
         {% block index_header %}
             <div id="header"
                  class="columns mb-5">
-                <div class="column is-1">
+                <div class="column is-10 is-flex is-align-items-center">
                     <img src="{{ url_for('static', filename='img/na-ovoce.png') }}"
                          class="logo">
-                </div>
-                <div class="column is-9 is-flex is-align-items-center">
-                    <h1 class="title is-3">Statistiky</h1>
+                    <h1 class="title is-3 ml-4 pt-2">Statistiky</h1>
                 </div>
                 <div class="column is-2 is-justify-content-flex-end">
                     {% if current_user.is_authenticated %}
