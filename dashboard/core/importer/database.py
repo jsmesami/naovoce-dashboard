@@ -18,7 +18,7 @@ def db_delete(db, model, export_rows, db_rows):
     ids_to_delete = set(db_rows.keys()) - set(export_rows.keys())
 
     mappings_to_update = [
-        mark_deleted(mark_modified(export_rows[id_]), True) for id_ in ids_to_delete
+        mark_deleted(mark_modified(db_rows[id_]), True) for id_ in ids_to_delete
     ]
 
     if ids_to_delete:
