@@ -8,8 +8,8 @@ from .data_fetchers import categories, comments, creators, images, pois
 DEFAULT_SECTION = "creators"
 DEFAULT_LIMIT = 40
 DEFAULT_ORDER = "created_desc"
-MIN_CREATED = str(datetime(year=2013, month=1, day=1).date())
-MAX_CREATED = str(datetime.today().date())
+MIN_CREATED = lambda: str(datetime(year=2013, month=1, day=1).date())
+MAX_CREATED = lambda: str(datetime.today().date())
 MIN_VISITED = MIN_CREATED
 MAX_VISITED = MAX_CREATED
 

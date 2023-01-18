@@ -41,7 +41,7 @@
     {% for row in rows %}
         <tr>
             <th class="cell-number">
-                <a href="https://map.na-ovoce.cz/{{ row.id }}"
+                <a href="https://map.na-ovoce.cz/{{ row.id }}?fcat={{ row.category_id }}"
                    target="_blank"
                    rel="noopener noreferrer">
                     {{ row.id }}

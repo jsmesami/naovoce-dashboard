@@ -26,10 +26,10 @@ def index():
         )
         show_controls = rp.getset_param("show_controls", False, rp.guard_bool)
         created_since = rp.getset_param(
-            f"{section}_created_since", rp.MIN_CREATED, rp.guard_date
+            f"{section}_created_since", rp.MIN_CREATED(), rp.guard_date
         )
         created_until = rp.getset_param(
-            f"{section}_created_until", rp.MAX_CREATED, rp.guard_date
+            f"{section}_created_until", rp.MAX_CREATED(), rp.guard_date
         )
 
         params |= {
@@ -39,8 +39,8 @@ def index():
             "show_controls": show_controls,
             "created_since": created_since,
             "created_until": created_until,
-            "created_min": rp.MIN_CREATED,
-            "created_max": rp.MAX_CREATED,
+            "created_min": rp.MIN_CREATED(),
+            "created_max": rp.MAX_CREATED(),
         }
 
         if section == "pois":
@@ -60,18 +60,18 @@ def index():
             search = rp.getset_param(f"creators_search", "", rp.identity)
             id_filter = rp.get_param(f"creators_id_filter", 0, rp.guard_posint)
             visited_since = rp.getset_param(
-                f"creators_visited_since", rp.MIN_VISITED, rp.guard_date
+                f"creators_visited_since", rp.MIN_VISITED(), rp.guard_date
             )
             visited_until = rp.getset_param(
-                f"creators_visited_until", rp.MAX_VISITED, rp.guard_date
+                f"creators_visited_until", rp.MAX_VISITED(), rp.guard_date
             )
             params |= {
                 "search": search,
                 "id_filter": id_filter,
                 "visited_since": visited_since,
                 "visited_until": visited_until,
-                "visited_min": rp.MIN_VISITED,
-                "visited_max": rp.MAX_VISITED,
+                "visited_min": rp.MIN_VISITED(),
+                "visited_max": rp.MAX_VISITED(),
             }
 
         params |= rp.SECTION_FETCHERS[section](**params)
