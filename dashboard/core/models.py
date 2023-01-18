@@ -4,7 +4,7 @@ from sqlalchemy.sql import func
 from ..extensions import db
 
 #
-# Foreign keys are not explicitly defined because import data breaks FK constraints.
+# Foreign keys are not explicitly defined because import data break FK constraints.
 #
 
 

@@ -7,13 +7,13 @@ def order_clause(order):
     return "ORDER BY " + " ".join(order.rsplit("_", maxsplit=1))
 
 
-def cat_id_filter_clause(cat_id_filter):
-    return f"AND category_id = {cat_id_filter}" if cat_id_filter else ""
-
-
 def id_filter_clause(id_filter, prefix=None):
     prefix = f"{prefix}." if prefix else ""
     return f"AND {prefix}id = {id_filter}" if id_filter else ""
+
+
+def cat_id_filter_clause(cat_id_filter):
+    return f"AND category_id = {cat_id_filter}" if cat_id_filter else ""
 
 
 def creator_search_clause(search):

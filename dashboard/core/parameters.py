@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import request, session
 
-from .data_fetchers import categories, comments, creators, images, pois
+from . import data
 
 DEFAULT_SECTION = "creators"
 DEFAULT_LIMIT = 40
@@ -14,7 +14,7 @@ MIN_VISITED = MIN_CREATED
 MAX_VISITED = MAX_CREATED
 
 SECTIONS = ("creators", "categories", "pois", "images", "comments")
-FETCHERS = (creators, categories, pois, images, comments)
+FETCHERS = (data.creators, data.categories, data.pois, data.images, data.comments)
 SECTION_FETCHERS = dict(zip(SECTIONS, FETCHERS))
 SECTION_FIELDS = {
     "creators": (

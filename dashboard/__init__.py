@@ -4,7 +4,7 @@ from flask import Flask
 from .auth.models import User
 from .config import Config
 from .core.models import *
-from .core.request_params import next_order
+from .core.parameters import next_order
 from .extensions import db, htmx, login_manager
 
 __version__ = "0.1.0"

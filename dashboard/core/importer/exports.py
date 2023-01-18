@@ -24,13 +24,19 @@ def get_todays_exports(bucket, export_groups):
         if match := re.match(rf"9288_{re_group}-{re_today}.csv", name):
             return match.group(1), match.group(0)
 
+    # List bucket and return only last report groups it their name checks
     return dict(
-        check_name(obj.key)
-        for obj in sorted(
-            bucket.objects.all(),
-            key=attrgetter("last_modified"),
-            reverse=True,
-        )[: len(export_groups)]
+        filter(
+            None,
+            (
+                check_name(obj.key)
+                for obj in sorted(
+                    bucket.objects.all(),
+                    key=attrgetter("last_modified"),
+                    reverse=True,
+                )[: len(export_groups)]
+            ),
+        )
     )
 
 
