@@ -25,7 +25,8 @@ dependencies = [
     "gunicorn[gevent]",
     "jinja2-fragments",
     "psycopg2-binary",
-    "python-dotenv"
+    "python-dotenv",
+    "requests"
 ]
 
 [project.optional-dependencies]
