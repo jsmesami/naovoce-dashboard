@@ -2,7 +2,6 @@ import csv
 import re
 from datetime import datetime
 from operator import attrgetter
-from zoneinfo import ZoneInfo
 
 import boto3
 from flask import current_app
@@ -19,7 +18,7 @@ def get_bucket():
 
 def get_todays_exports(bucket, export_groups):
     def check_name(name):
-        today = datetime.now(ZoneInfo("Europe/Prague")).strftime("%Y-%m-%d")
+        today = datetime.now().strftime("%Y-%m-%d")
         re_group = rf"({'|'.join(export_groups)})"
         re_today = rf"{today}_\d{{2}}-\d{{2}}-\d{{2}}"
         if match := re.match(rf"9288_{re_group}-{re_today}.csv", name):
