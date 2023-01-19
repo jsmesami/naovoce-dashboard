@@ -14,12 +14,14 @@ EXPORT_GROUP_QUERIES = {
     "categories": """
         SELECT
         id, created, "name", is_published
-        FROM category;
+        FROM category
+        WHERE is_deleted = false
     """,
     "users": """
         SELECT
         id, created, first_name, last_name, email, last_visit
-        FROM creator;
+        FROM creator
+        WHERE is_deleted = false
     """,
     "pois": """
         SELECT
@@ -27,16 +29,19 @@ EXPORT_GROUP_QUERIES = {
         ST_X(position) AS lng,
         ST_Y(position) AS lat,
         is_published, creator_id, category_id
-        FROM poi;
+        FROM poi
+        WHERE is_deleted = false
     """,
     "images": """
         SELECT
         id, created, image_url, is_published, creator_id, poi_id
-        FROM image;
+        FROM image
+        WHERE is_deleted = false
     """,
     "comments": """
         SELECT
         id, created, "text", is_published, creator_id, poi_id
-        FROM comment;
+        FROM comment
+        WHERE is_deleted = false
     """,
 }
