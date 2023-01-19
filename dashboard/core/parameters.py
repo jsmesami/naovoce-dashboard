@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from flask import request, session
 
@@ -8,8 +9,10 @@ from . import data
 DEFAULT_SECTION = "creators"
 DEFAULT_LIMIT = 40
 DEFAULT_ORDER = "created_desc"
-MIN_CREATED = lambda: str(datetime(year=2013, month=1, day=1).date())
-MAX_CREATED = lambda: str(datetime.today().date())
+MIN_CREATED = lambda: str(
+    datetime(year=2013, month=1, day=1, tzinfo=ZoneInfo("Europe/Prague")).date()
+)
+MAX_CREATED = lambda: str(datetime.now(ZoneInfo("Europe/Prague")).date())
 MIN_VISITED = MIN_CREATED
 MAX_VISITED = MAX_CREATED
 
