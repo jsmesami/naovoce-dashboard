@@ -1,0 +1,53 @@
+<div id="charts">
+    {% if show_charts %}
+    <div id="monthly-chart"></div>
+    <script type="text/javascript">
+        option = {
+            title: {
+                text: 'Měsíční nárůst'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['Uživatelé', 'Značky']
+            },
+            grid: {
+                left: '0',
+                right: '0',
+                bottom: '0',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: [{{ monthly_chart.x_axis|safe }}]
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: 'Uživatelé',
+                    type: 'line',
+                    stack: 'Total',
+                    areaStyle: {},
+                    data: [{{ monthly_chart.creators|safe }}]
+                },
+                {
+                    name: 'Značky',
+                    type: 'line',
+                    stack: 'Total',
+                    areaStyle: {},
+                    data: [{{ monthly_chart.pois|safe }}]
+                }
+            ]
+        };
+        echarts.init(document.getElementById('monthly-chart')).setOption(option);
+    </script>
+    {% endif %}
+</div>

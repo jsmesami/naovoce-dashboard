@@ -1,9 +1,45 @@
-from flask import render_template
+from flask import abort, render_template, session
 from flask_login import current_user
 
-from ..extensions import htmx
+from ..extensions import db, htmx
 from . import core, data
 from . import parameters as par
+
+
+def monthly_chart():
+    query = """
+        SELECT
+        DATE_TRUNC('month', created) AS created_in_month,
+        COUNT(id) AS count
+        FROM {table}
+        WHERE created >= '2015-01-01'
+        GROUP BY DATE_TRUNC('month', created)
+        ORDER BY created_in_month
+    """
+    creators = db.session.execute(query.format(table="creator")).all()
+    pois = db.session.execute(query.format(table="poi")).all()
+
+    return {
+        "x_axis": ", ".join(dat.strftime("'%-m/%-y'") for dat, _cnt in creators),
+        "creators": ", ".join(str(cnt) for _dat, cnt in creators),
+        "pois": ", ".join(str(cnt) for _dat, cnt in pois),
+    }
+
+
+@core.route("/toggle-charts")
+def toggle_charts():
+    if not htmx:
+        abort(403)
+
+    show_charts = not session.get("show_charts")
+    session["show_charts"] = show_charts
+    params = {
+        "show_charts": show_charts,
+    }
+    if show_charts:
+        params |= {"monthly_chart": monthly_chart()}
+
+    return render_template("inc/charts.html", **params)
 
 
 @core.route("/")
@@ -30,8 +66,10 @@ def index():
         created_until = par.getset_param(
             f"{section}_created_until", par.MAX_CREATED(), par.guard_date
         )
+        session["show_charts"] = False
 
         params |= {
+            "show_charts": session["show_charts"],
             "offset": offset,
             "limit": limit,
             "order": order,

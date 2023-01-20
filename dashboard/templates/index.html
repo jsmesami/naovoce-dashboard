@@ -12,7 +12,16 @@
                 </div>
                 <div class="column is-2 is-justify-content-flex-end">
                     {% if current_user.is_authenticated %}
+                        <a href="#" class="button is-small is-rounded is-link mr-2"
+                           title="Grafy"
+                           hx-get="{{ url_for('core.toggle_charts') }}"
+                           hx-target="#charts"
+                           hx-swap="outerHTML">
+                            <i class="fa fa-bar-chart"></i>
+                        </a>
+
                         <a href="#" class="button is-small is-rounded"
+                           title="Odhlásit"
                            hx-post="{{ url_for('auth.logout') }}"
                            hx-confirm="Opravdu odhlásit?"
                            hx-target="#content"
@@ -21,8 +30,8 @@
                 </div>
             </div>
         {% endblock %}
-
         {% if current_user.is_authenticated %}
+            {% include 'inc/charts.html' %}
             {% include 'inc/stats.html' %}
         {% else %}
             {% include 'inc/login.html' %}

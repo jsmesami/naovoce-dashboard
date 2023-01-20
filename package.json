@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "bulma": "^0.9.4",
+        "echarts": "^5.4.1",
         "font-awesome": "^4.7.0",
         "htmx.org": "^1.8.4"
     },
@@ -35,6 +36,11 @@
                 "src": "sass/*",
                 "target": "dashboard/resources/vendor",
                 "namespaced": true
+            },
+            "echarts": {
+                "version": "^5.4.1",
+                "src": "dist/echarts.min.js",
+                "target": "dashboard/static/js"
             },
             "font-awesome": {
                 "version": "^4.7.0",
