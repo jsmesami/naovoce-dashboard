@@ -1,3 +1,5 @@
+from itertools import accumulate
+
 from flask import abort, render_template, session
 from flask_login import current_user
 
@@ -19,10 +21,15 @@ def monthly_chart():
     creators = db.session.execute(query.format(table="creator")).all()
     pois = db.session.execute(query.format(table="poi")).all()
 
+    creators_counts = [cnt for _dat, cnt in creators]
+    pois_counts = [cnt for _dat, cnt in pois]
+
     return {
         "x_axis": ", ".join(dat.strftime("'%-m/%-y'") for dat, _cnt in creators),
-        "creators": ", ".join(str(cnt) for _dat, cnt in creators),
-        "pois": ", ".join(str(cnt) for _dat, cnt in pois),
+        "creators": ", ".join(str(i) for i in creators_counts),
+        "creators_cum": ", ".join(str(i) for i in accumulate(creators_counts)),
+        "pois": ", ".join(str(i) for i in pois_counts),
+        "pois_cum": ", ".join(str(i) for i in accumulate(pois_counts)),
     }
 
 
