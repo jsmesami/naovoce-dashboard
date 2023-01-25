@@ -23,9 +23,10 @@ def creator_search_clause(search):
 
     return """
         AND (
-        email LIKE :search
-        OR first_name LIKE :search
-        OR last_name LIKE :search)
+            email ILIKE '%' || :search || '%'
+            OR first_name ILIKE '%' || :search || '%'
+            OR last_name ILIKE '%' || :search || '%'
+        )
     """
 
 
@@ -229,6 +230,9 @@ def cat_choices():
 
 def monthly_gains_chart():
     poi_query = """
+        WITH excluded_categories AS (
+            SELECT id FROM category cat WHERE cat.name IN ('Sady', 'Ovocné trasy')
+        )
         SELECT
         DATE_TRUNC('month', created) AS created_in_month,
         COUNT(id) AS count
@@ -236,9 +240,8 @@ def monthly_gains_chart():
         WHERE is_published = true
         AND is_deleted = false
         AND created >= '2015-01-01'
-        AND poi.category_id != 25068
-        AND poi.category_id != 26612
-        GROUP BY DATE_TRUNC('month', created)
+        AND poi.category_id NOT IN (SELECT id FROM excluded_categories)
+        GROUP BY created_in_month
         ORDER BY created_in_month
     """
     pois = db.session.execute(poi_query).all()
@@ -268,6 +271,9 @@ def monthly_gains_chart():
 
 def monthly_pois_chart():
     query = """
+        WITH excluded_categories AS (
+            SELECT id FROM category cat WHERE cat.name IN ('Sady', 'Ovocné trasy')
+        )
         SELECT
         DATE_TRUNC('month', poi.created) AS created_in_month,
         cat.name AS category_name,
@@ -277,14 +283,14 @@ def monthly_pois_chart():
         WHERE poi.is_published = true
         AND poi.is_deleted = false
         AND poi.created >= '2015-01-01'
-        AND poi.category_id != 25068
-        AND poi.category_id != 26612
-        GROUP BY DATE_TRUNC('month', poi.created), cat.name
-        ORDER BY created_in_month
+        AND poi.category_id NOT IN (SELECT id FROM excluded_categories)
+        GROUP BY created_in_month, category_name
     """
     pois = db.session.execute(query).all()
+
     months = sorted({dat for dat, _cat, _cnt in pois})
     months_index = {mon: idx for idx, mon in enumerate(months)}
+
     categories = sorted({cat for _dat, cat, _cnt in pois}, reverse=True)
     categories_index = {cat: idx for idx, cat in enumerate(categories)}
 

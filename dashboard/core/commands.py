@@ -8,8 +8,20 @@ from . import core, importer, newsletter
 
 @core.cli.command("init-db")
 def init_db():
-    """Initializes database with schema"""
+    """Initializes database with schema.
+    Remember to `GRANT rds_superuser TO naovoce;` on AWS RDS
+    """
     db.create_all()
+    db.session.execute("CREATE EXTENSION IF NOT EXISTS postgis")
+    db.session.execute("CREATE EXTENSION IF NOT EXISTS pg_trgm")
+    db.session.execute(
+        """
+        CREATE INDEX IF NOT EXISTS users_fti
+        ON creator
+        USING gin(email gin_trgm_ops, first_name gin_trgm_ops, last_name gin_trgm_ops);
+        """
+    )
+    db.session.commit()
 
 
 @core.cli.command("update-db")
