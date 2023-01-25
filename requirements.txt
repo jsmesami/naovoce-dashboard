@@ -4,9 +4,9 @@
 #
 #    pip-compile --output-file=requirements.txt --resolver=backtracking pyproject.toml
 #
-boto3==1.26.53
+boto3==1.26.56
     # via dashboard (pyproject.toml)
-botocore==1.29.53
+botocore==1.29.56
     # via
     #   boto3
     #   s3transfer
@@ -28,7 +28,7 @@ flask-login==0.6.2
     # via dashboard (pyproject.toml)
 flask-sqlalchemy==3.0.2
     # via dashboard (pyproject.toml)
-geoalchemy2==0.13.0
+geoalchemy2==0.13.1
     # via dashboard (pyproject.toml)
 gevent==22.10.2
     # via gunicorn
@@ -60,7 +60,7 @@ psycopg2-binary==2.9.5
     # via dashboard (pyproject.toml)
 python-dateutil==2.8.2
     # via botocore
-python-dotenv==0.21.0
+python-dotenv==0.21.1
     # via dashboard (pyproject.toml)
 requests==2.28.2
     # via dashboard (pyproject.toml)
