@@ -1,10 +1,11 @@
 <div id="charts">
     {% if show_charts %}
-    <div id="monthly-chart"></div>
+    <div id="monthly-gains-chart"></div>
+    <div id="monthly-pois-chart"></div>
     <script type="text/javascript">
-        option = {
+        monthly_gains_chart_option = {
             title: {
-                text: 'Měsíční nárůst'
+                text: 'Nárůst měsíčně'
             },
             tooltip: {
                 trigger: 'axis'
@@ -25,7 +26,7 @@
             },
             xAxis: {
                 type: 'category',
-                data: [{{ monthly_chart.x_axis|safe }}],
+                data: [{{ monthly_gains_chart.months|safe }}],
                 axisPointer: {
                     type: 'shadow'
                 }
@@ -49,31 +50,82 @@
                     name: 'Značky',
                     type: 'line',
                     color: '#84B441',
-                    data: [{{ monthly_chart.pois_cum|safe }}]
+                    data: [{{ monthly_gains_chart.pois_cum|safe }}]
                 },
                 {
                     name: 'Uživatelé',
                     type: 'line',
                     color: '#674822',
-                    data: [{{ monthly_chart.creators_cum|safe }}]
+                    data: [{{ monthly_gains_chart.creators_cum|safe }}]
                 },
                 {
                     name: 'Značky / m',
                     type: 'bar',
                     color: '#ffd259',
                     yAxisIndex: 1,
-                    data: [{{ monthly_chart.pois|safe }}]
+                    data: [{{ monthly_gains_chart.pois|safe }}]
                 },
                 {
                     name: 'Uživatelé / m',
                     type: 'bar',
                     color: '#ff8383',
                     yAxisIndex: 1,
-                    data: [{{ monthly_chart.creators|safe }}]
+                    data: [{{ monthly_gains_chart.creators|safe }}]
                 }
             ]
         };
-        echarts.init(document.getElementById('monthly-chart')).setOption(option);
+        echarts.init(document.getElementById('monthly-gains-chart')).setOption(monthly_gains_chart_option);
+
+        monthly_pois_chart_option = {
+            title: {
+                text: 'Počet značek na druh měsíčně'
+            },
+            tooltip: {
+                position: 'top'
+            },
+            grid: {
+                left: '0',
+                right: '15',
+                bottom: '0',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: [{{ monthly_pois_chart.months|safe }}],
+            },
+            yAxis: {
+                type: 'category',
+                data: [{{ monthly_pois_chart.categories|safe }}],
+            },
+            visualMap: {
+                min: 0,
+                max: 100,
+                calculable: true,
+                inRange : {
+                    color: ['#fffbe2', '#940000']
+                },
+                orient: 'horizontal',
+                left: 'center',
+                top: '0'
+            },
+            series: [
+                {
+                    type: 'heatmap',
+                    data: [{{ monthly_pois_chart.matrix|safe }}],
+                    emphasis: {
+                        itemStyle: {
+                            borderColor: '#84B441'
+                        }
+                    }
+                }
+            ]
+        };
+        echarts.init(document.getElementById('monthly-pois-chart')).setOption(monthly_pois_chart_option);
     </script>
     {% endif %}
 </div>

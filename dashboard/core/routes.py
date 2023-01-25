@@ -1,36 +1,9 @@
-from itertools import accumulate
-
 from flask import abort, render_template, session
 from flask_login import current_user
 
-from ..extensions import db, htmx
+from ..extensions import htmx
 from . import core, data
 from . import parameters as par
-
-
-def monthly_chart():
-    query = """
-        SELECT
-        DATE_TRUNC('month', created) AS created_in_month,
-        COUNT(id) AS count
-        FROM {table}
-        WHERE created >= '2015-01-01'
-        GROUP BY DATE_TRUNC('month', created)
-        ORDER BY created_in_month
-    """
-    creators = db.session.execute(query.format(table="creator")).all()
-    pois = db.session.execute(query.format(table="poi")).all()
-
-    creators_counts = [cnt for _dat, cnt in creators]
-    pois_counts = [cnt for _dat, cnt in pois]
-
-    return {
-        "x_axis": ", ".join(dat.strftime("'%-m/%-y'") for dat, _cnt in creators),
-        "creators": ", ".join(str(i) for i in creators_counts),
-        "creators_cum": ", ".join(str(i) for i in accumulate(creators_counts)),
-        "pois": ", ".join(str(i) for i in pois_counts),
-        "pois_cum": ", ".join(str(i) for i in accumulate(pois_counts)),
-    }
 
 
 @core.route("/toggle-charts")
@@ -44,7 +17,10 @@ def toggle_charts():
         "show_charts": show_charts,
     }
     if show_charts:
-        params |= {"monthly_chart": monthly_chart()}
+        params |= {
+            "monthly_gains_chart": data.monthly_gains_chart(),
+            "monthly_pois_chart": data.monthly_pois_chart(),
+        }
 
     return render_template("inc/charts.html", **params)
 
