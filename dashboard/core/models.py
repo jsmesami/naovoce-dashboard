@@ -20,7 +20,7 @@ class Creator(db.Model):
     last_name = db.Column(db.String(127))
     email = db.Column(db.String(255))
     last_visit = db.Column(db.TIMESTAMP)
-    is_deleted = db.Column(db.Boolean, nullable=False)
+    is_deleted = db.Column(db.Boolean, nullable=False, index=True)
 
     def __repr__(self):
         return f'<Creator "{self.id}">'
@@ -35,8 +35,8 @@ class Category(db.Model):
     )
 
     name = db.Column(db.String(255))
-    is_published = db.Column(db.Boolean, nullable=False)
-    is_deleted = db.Column(db.Boolean, nullable=False)
+    is_published = db.Column(db.Boolean, nullable=False, index=True)
+    is_deleted = db.Column(db.Boolean, nullable=False, index=True)
 
     def __repr__(self):
         return f'<Category "{self.id}">'
@@ -52,8 +52,8 @@ class POI(db.Model):
 
     display_count = db.Column(db.Integer)
     position = db.Column(Geometry("POINT", srid=4326))
-    is_published = db.Column(db.Boolean, nullable=False)
-    is_deleted = db.Column(db.Boolean, nullable=False)
+    is_published = db.Column(db.Boolean, nullable=False, index=True)
+    is_deleted = db.Column(db.Boolean, nullable=False, index=True)
 
     creator_id = db.Column(db.Integer, index=True)
     category_id = db.Column(db.Integer, index=True)
@@ -90,8 +90,8 @@ class Comment(db.Model):
     )
 
     text = db.Column(db.String(1024 * 5))
-    is_published = db.Column(db.Boolean, nullable=False)
-    is_deleted = db.Column(db.Boolean, nullable=False)
+    is_published = db.Column(db.Boolean, nullable=False, index=True)
+    is_deleted = db.Column(db.Boolean, nullable=False, index=True)
 
     creator_id = db.Column(db.Integer, index=True)
     poi_id = db.Column(db.Integer, index=True)
