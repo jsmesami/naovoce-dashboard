@@ -1,6 +1,7 @@
 import logging
 
 from flask import current_app
+from sqlalchemy import text
 
 from ..extensions import db
 from . import core, importer, newsletter
@@ -12,14 +13,16 @@ def init_db():
     Remember to `GRANT rds_superuser TO naovoce;` on AWS RDS
     """
     db.create_all()
-    db.session.execute("CREATE EXTENSION IF NOT EXISTS postgis")
-    db.session.execute("CREATE EXTENSION IF NOT EXISTS pg_trgm")
+    db.session.execute(text("CREATE EXTENSION IF NOT EXISTS postgis"))
+    db.session.execute(text("CREATE EXTENSION IF NOT EXISTS pg_trgm"))
     db.session.execute(
-        """
+        text(
+            """
         CREATE INDEX IF NOT EXISTS users_fti
         ON creator
         USING gin(email gin_trgm_ops, first_name gin_trgm_ops, last_name gin_trgm_ops);
         """
+        )
     )
     db.session.commit()
 

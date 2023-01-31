@@ -1,6 +1,8 @@
 import os
 from itertools import accumulate
 
+from sqlalchemy import text
+
 from ..extensions import db
 
 
@@ -80,9 +82,13 @@ def creators(
         {creator_search_clause(search)}
     """
     return {
-        "rows": db.session.execute(query, dict(search=f"%{search}%")).mappings().all()
+        "rows": db.session.execute(text(query), dict(search=f"%{search}%"))
+        .mappings()
+        .all()
     } | dict(
-        db.session.execute(count, dict(search=f"%{search}%")).mappings().fetchone()
+        db.session.execute(text(count), dict(search=f"%{search}%"))
+        .mappings()
+        .fetchone()
     )
 
 
@@ -110,8 +116,8 @@ def categories(created_since, created_until, order, limit, offset, **kwargs):
         AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
     """
-    return {"rows": db.session.execute(query).mappings().all()} | dict(
-        db.session.execute(count).mappings().fetchone()
+    return {"rows": db.session.execute(text(query)).mappings().all()} | dict(
+        db.session.execute(text(count)).mappings().fetchone()
     )
 
 
@@ -161,8 +167,8 @@ def pois(
         {cat_id_filter_clause(cat_id_filter)}
         {id_filter_clause(id_filter, 'poi')}
     """
-    return {"rows": db.session.execute(query).mappings().all()} | dict(
-        db.session.execute(count).mappings().fetchone()
+    return {"rows": db.session.execute(text(query)).mappings().all()} | dict(
+        db.session.execute(text(count)).mappings().fetchone()
     )
 
 
@@ -188,9 +194,9 @@ def images(created_since, created_until, order, limit, offset, **kwargs):
     return {
         "rows": (
             dict(i) | {"file_name": os.path.basename(i.get("image_url", ""))}
-            for i in db.session.execute(query).mappings().all()
+            for i in db.session.execute(text(query)).mappings().all()
         )
-    } | dict(db.session.execute(count).mappings().fetchone())
+    } | dict(db.session.execute(text(count)).mappings().fetchone())
 
 
 def comments(created_since, created_until, order, limit, offset, **kwargs):
@@ -212,8 +218,8 @@ def comments(created_since, created_until, order, limit, offset, **kwargs):
         AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
     """
-    return {"rows": db.session.execute(query).mappings().all()} | dict(
-        db.session.execute(count).mappings().fetchone()
+    return {"rows": db.session.execute(text(query)).mappings().all()} | dict(
+        db.session.execute(text(count)).mappings().fetchone()
     )
 
 
@@ -225,7 +231,7 @@ def cat_choices():
         AND is_deleted = false
         ORDER BY "name"
     """
-    return db.session.execute(query).mappings().all()
+    return db.session.execute(text(query)).mappings().all()
 
 
 def monthly_gains_chart():
@@ -244,7 +250,7 @@ def monthly_gains_chart():
         GROUP BY created_in_month
         ORDER BY created_in_month
     """
-    pois = db.session.execute(poi_query).all()
+    pois = db.session.execute(text(poi_query)).all()
     pois_counts = [cnt for _dat, cnt in pois]
 
     creator_query = """
@@ -257,7 +263,7 @@ def monthly_gains_chart():
         GROUP BY DATE_TRUNC('month', created)
         ORDER BY created_in_month
     """
-    creators = db.session.execute(creator_query).all()
+    creators = db.session.execute(text(creator_query)).all()
     creators_counts = [cnt for _dat, cnt in creators]
 
     return {
@@ -286,7 +292,7 @@ def monthly_pois_chart():
         AND poi.category_id NOT IN (SELECT id FROM excluded_categories)
         GROUP BY created_in_month, category_name
     """
-    pois = db.session.execute(query).all()
+    pois = db.session.execute(text(query)).all()
 
     months = sorted({dat for dat, _cat, _cnt in pois})
     months_index = {mon: idx for idx, mon in enumerate(months)}

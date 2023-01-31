@@ -1,5 +1,6 @@
 import requests
 from flask import current_app
+from sqlalchemy import text
 
 from ..extensions import db
 
@@ -13,7 +14,7 @@ def subscribe(nl_url, nl_list_id, nl_api_key):
         WHERE is_deleted = false
         AND created > current_date - 1
     """
-    creators = db.session.execute(query).mappings().all()
+    creators = db.session.execute(text(query)).mappings().all()
 
     current_app.logger.info("Running newsletter update")
 
@@ -42,7 +43,7 @@ def unsubscribe(nl_url, nl_list_id, nl_api_key):
         WHERE is_deleted = true
         AND modified > current_date - 1
     """
-    creators = db.session.execute(query).mappings().all()
+    creators = db.session.execute(text(query)).mappings().all()
 
     if not creators:
         current_app.logger.info("No deleted creators")
@@ -80,5 +81,5 @@ def dump_emails():
         WHERE is_deleted = false
         ORDER BY created DESC
     """
-    for c in db.session.execute(query).all():
+    for c in db.session.execute(text(query)).all():
         print(",".join(c))

@@ -13,7 +13,6 @@
     psql -U postgres postgres -c "CREATE ROLE naovoce SUPERUSER"
     psql -U postgres postgres -c "ALTER ROLE naovoce LOGIN"
     psql -U postgres postgres -c "CREATE DATABASE naovoce_dashboard OWNER=naovoce"
-    psql -U naovoce naovoce_dashboard -c "CREATE EXTENSION postgis"
 
     # prepare and activate virtual environment
     python3 -m venv venv

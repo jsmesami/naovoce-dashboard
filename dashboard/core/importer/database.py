@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask import current_app
 from flask_sqlalchemy.session import Session
+from sqlalchemy import text
 
 
 def mark_modified(row):
@@ -73,5 +74,5 @@ def db_insert(db, model, export_rows, db_rows):
 def read_db_data(db, query, adapter):
     return {
         row["id"]: row
-        for row in map(adapter, map(dict, db.session.execute(query).mappings().all()))
+        for row in map(adapter, map(dict, db.session.execute(text(query)).mappings().all()))
     }
