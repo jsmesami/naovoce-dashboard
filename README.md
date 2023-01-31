@@ -14,11 +14,6 @@
     psql -U postgres postgres -c "ALTER ROLE naovoce LOGIN"
     psql -U postgres postgres -c "CREATE DATABASE naovoce_dashboard OWNER=naovoce"
 
-    # load geo boundaries
-    shp2pgsql -s 4326 dashboard/resources/gis/cz_0.shp public.cz_0 | psql -U naovoce naovoce_dashboard
-    shp2pgsql -s 4326 dashboard/resources/gis/cz_1.shp public.cz_1 | psql -U naovoce naovoce_dashboard
-    shp2pgsql -s 4326 dashboard/resources/gis/cz_2.shp public.cz_2 | psql -U naovoce naovoce_dashboard
-
     # prepare and activate virtual environment
     python3 -m venv venv
     source venv/bin/activate
@@ -32,6 +27,11 @@
     # populate database
     flask core init-db
     flask auth create-user someuser@example.com somepassword
+
+    # load geo boundaries
+    shp2pgsql -s 4326 dashboard/resources/gis/cz_0.shp public.cz_0 | psql -U naovoce naovoce_dashboard
+    shp2pgsql -s 4326 dashboard/resources/gis/cz_1.shp public.cz_1 | psql -U naovoce naovoce_dashboard
+    shp2pgsql -s 4326 dashboard/resources/gis/cz_2.shp public.cz_2 | psql -U naovoce naovoce_dashboard
 
     # install frontend dependencies
     yarn
