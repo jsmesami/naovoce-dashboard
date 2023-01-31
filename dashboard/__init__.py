@@ -31,6 +31,10 @@ def create_app(config_class=Config):
 
     app.register_blueprint(core)
 
+    from .api import api
+
+    app.register_blueprint(api)
+
     @app.context_processor
     def context():
         return dict(next_order=next_order)

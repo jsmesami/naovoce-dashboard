@@ -19,6 +19,7 @@ dependencies = [
     "flask",
     "flask-htmx",
     "flask-login",
+    "flask-restful",
     "flask-sqlalchemy",
     "geoalchemy2",
     "gunicorn",
