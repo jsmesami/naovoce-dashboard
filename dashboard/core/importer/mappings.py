@@ -26,8 +26,8 @@ EXPORT_GROUP_QUERIES = {
     "pois": """
         SELECT
         id, created, display_count,
-        ST_X(position) AS lng,
-        ST_Y(position) AS lat,
+        ST_X(position) AS lat,
+        ST_Y(position) AS lng,
         is_published, creator_id, category_id
         FROM poi
         WHERE is_deleted = false

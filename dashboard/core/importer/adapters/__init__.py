@@ -17,7 +17,7 @@ def str_to_datetime(s):
 
 def latlng_to_point(lat, lng):
     with contextlib.suppress(ValueError, TypeError):
-        return f"POINT({float(lng)} {float(lat)})"
+        return f"POINT({float(lat)} {float(lng)})"
 
 
 def str_to_bool(s):

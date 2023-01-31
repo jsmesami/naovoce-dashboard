@@ -136,8 +136,8 @@ def pois(
         poi.id, poi.created, poi.display_count, poi.creator_id, poi.category_id,
         cat.name AS category_name,
         to_char(poi.created, 'DD.MM.YYYY') AS created_fmt,
-        ST_X(poi.position) AS lng,
-        ST_Y(poi.position) AS lat,
+        ST_X(poi.position) AS lat,
+        ST_Y(poi.position) AS lng,
         (SELECT COUNT(*)
          FROM image
          WHERE image.poi_id = poi.id
