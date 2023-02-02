@@ -1,4 +1,5 @@
-<div class="card block">
+{% block table_controls %}
+<div class="card block" id="table-controls">
     <header class="card-header">
         <p class="card-header-title">
         {% block table_counts %}
@@ -35,8 +36,8 @@
         {% endblock %}
 
         <button class="card-header-icon"
-                hx-get="{{ tables_url }}?show_controls={% if show_controls %}f{% else %}t{% endif %}"
-                hx-target="#tables"
+                hx-get="{{ url_for('core.toggle_controls') }}"
+                hx-target="#table-controls"
                 hx-swap="outerHTML">
             <span class="icon">
                 {% if show_controls %}
@@ -49,11 +50,11 @@
     </header>
 
     {% if show_controls %}
-    <div class="card-content" id="table-controls">
+    <div class="card-content">
         <form class="field is-horizontal">
             <div class="field-body">
 
-                {% block table_controls %}
+                {% block table_controls_fields %}
                     <div class="field is-flex-grow-0">
                         <div class="control">
                             <div class="select">
@@ -97,7 +98,7 @@
                         </div>
                         <p class="help">Vytvořeno do</p>
                     </div>
-                {% endblock %}
+                {% endblock table_controls_fields %}
 
                 <div class="field">
                     <p class="control">
@@ -115,6 +116,7 @@
     </div>
     {% endif %}
 </div>
+{% endblock table_controls %}
 
 <div class="table-container">
     <table class="table stats-table">

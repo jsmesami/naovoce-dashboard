@@ -32,7 +32,7 @@ def creator_search_clause(search):
     """
 
 
-def creators(
+def creators_rows(
     created_since,
     created_until,
     visited_since,
@@ -73,7 +73,15 @@ def creators(
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
-    count = f"""
+    return dict(
+        rows=db.session.execute(text(query), dict(search=f"%{search}%"))
+        .mappings()
+        .all()
+    )
+
+
+def creators_count(created_since, created_until, id_filter, search, **kwargs):
+    query = f"""
         SELECT COUNT(*)
         FROM creator
         WHERE is_deleted = false
@@ -81,18 +89,14 @@ def creators(
         {id_filter_clause(id_filter)}
         {creator_search_clause(search)}
     """
-    return {
-        "rows": db.session.execute(text(query), dict(search=f"%{search}%"))
-        .mappings()
-        .all()
-    } | dict(
-        db.session.execute(text(count), dict(search=f"%{search}%"))
+    return dict(
+        db.session.execute(text(query), dict(search=f"%{search}%"))
         .mappings()
         .fetchone()
     )
 
 
-def categories(created_since, created_until, order, limit, offset, **kwargs):
+def categories_rows(created_since, created_until, order, limit, offset, **kwargs):
     query = f"""
         SELECT
         cat.id, cat.created, cat.name,
@@ -109,19 +113,21 @@ def categories(created_since, created_until, order, limit, offset, **kwargs):
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
-    count = f"""
+    return dict(rows=db.session.execute(text(query)).mappings().all())
+
+
+def categories_count(created_since, created_until, **kwargs):
+    query = f"""
         SELECT COUNT(*)
         FROM category
         WHERE is_published = true
         AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
     """
-    return {"rows": db.session.execute(text(query)).mappings().all()} | dict(
-        db.session.execute(text(count)).mappings().fetchone()
-    )
+    return dict(db.session.execute(text(query)).mappings().fetchone())
 
 
-def pois(
+def pois_rows(
     created_since,
     created_until,
     order,
@@ -158,7 +164,11 @@ def pois(
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
-    count = f"""
+    return dict(rows=db.session.execute(text(query)).mappings().all())
+
+
+def pois_count(created_since, created_until, cat_id_filter, id_filter, **kwargs):
+    query = f"""
         SELECT COUNT(*)
         FROM poi
         WHERE is_published = true
@@ -167,12 +177,10 @@ def pois(
         {cat_id_filter_clause(cat_id_filter)}
         {id_filter_clause(id_filter, 'poi')}
     """
-    return {"rows": db.session.execute(text(query)).mappings().all()} | dict(
-        db.session.execute(text(count)).mappings().fetchone()
-    )
+    return dict(db.session.execute(text(query)).mappings().fetchone())
 
 
-def images(created_since, created_until, order, limit, offset, **kwargs):
+def images_rows(created_since, created_until, order, limit, offset, **kwargs):
     query = f"""
         SELECT
         id, created, image_url, creator_id, poi_id,
@@ -184,22 +192,26 @@ def images(created_since, created_until, order, limit, offset, **kwargs):
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
-    count = f"""
+    return dict(
+        rows=(
+            dict(i) | {"file_name": os.path.basename(i.get("image_url", ""))}
+            for i in db.session.execute(text(query)).mappings().all()
+        )
+    )
+
+
+def images_count(created_since, created_until, **kwargs):
+    query = f"""
         SELECT COUNT(*)
         FROM image
         WHERE is_published = true
         AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
     """
-    return {
-        "rows": (
-            dict(i) | {"file_name": os.path.basename(i.get("image_url", ""))}
-            for i in db.session.execute(text(query)).mappings().all()
-        )
-    } | dict(db.session.execute(text(count)).mappings().fetchone())
+    return dict(db.session.execute(text(query)).mappings().fetchone())
 
 
-def comments(created_since, created_until, order, limit, offset, **kwargs):
+def comments_rows(created_since, created_until, order, limit, offset, **kwargs):
     query = f"""
         SELECT
         id, created, "text", creator_id, poi_id,
@@ -211,16 +223,18 @@ def comments(created_since, created_until, order, limit, offset, **kwargs):
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
-    count = f"""
+    return dict(rows=db.session.execute(text(query)).mappings().all())
+
+
+def comments_count(created_since, created_until, **kwargs):
+    query = f"""
         SELECT COUNT(*)
         FROM comment
         WHERE is_published = true
         AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
     """
-    return {"rows": db.session.execute(text(query)).mappings().all()} | dict(
-        db.session.execute(text(count)).mappings().fetchone()
-    )
+    return dict(db.session.execute(text(query)).mappings().fetchone())
 
 
 def cat_choices():

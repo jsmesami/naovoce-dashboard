@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import abort, render_template, session
 from flask_login import login_required
 from jinja2_fragments.flask import render_block
 
@@ -18,11 +18,7 @@ def charts():
     return render_template("charts.html", **params)
 
 
-@core.route("/")
-@login_required
-def index():
-    section = par.getset_param("section", par.DEFAULT_SECTION, par.guard_section)
-
+def section_params(section, show_controls):
     params = {
         "section": section,
     }
@@ -35,7 +31,7 @@ def index():
     order = par.getset_param(
         f"{section}_order", par.DEFAULT_ORDER, par.guard_order(section)
     )
-    show_controls = par.getset_param("show_controls", False, par.guard_bool)
+
     created_since = par.getset_param(
         f"{section}_created_since", par.MIN_CREATED(), par.guard_date
     )
@@ -85,7 +81,33 @@ def index():
             "visited_max": par.MAX_VISITED(),
         }
 
-    params |= par.SECTION_FETCHERS[section](**params)
+    return params
+
+
+@core.route("/toggle_controls")
+def toggle_controls():
+    if not htmx:
+        abort(403)
+
+    section = par.getset_param("section", par.DEFAULT_SECTION, par.guard_section)
+    show_controls = not session.get("show_controls", False)
+    session["show_controls"] = show_controls
+
+    params = section_params(section, show_controls)
+    params |= par.SECTION_COUNT_FETCHERS[section](**params)
+
+    return render_block("tables/base.html", "table_controls", **params)
+
+
+@core.route("/")
+@login_required
+def index():
+    section = par.getset_param("section", par.DEFAULT_SECTION, par.guard_section)
+    show_controls = par.getset_param("show_controls", False, par.guard_bool)
+
+    params = section_params(section, show_controls)
+    params |= par.SECTION_ROWS_FETCHERS[section](**params)
+    params |= par.SECTION_COUNT_FETCHERS[section](**params)
 
     if htmx:
         return render_block("index.html", "content", **params)

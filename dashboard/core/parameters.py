@@ -17,8 +17,23 @@ MIN_VISITED = MIN_CREATED
 MAX_VISITED = MAX_CREATED
 
 SECTIONS = ("creators", "categories", "pois", "images", "comments")
-FETCHERS = (data.creators, data.categories, data.pois, data.images, data.comments)
-SECTION_FETCHERS = dict(zip(SECTIONS, FETCHERS))
+ROWS_FETCHERS = (
+    data.creators_rows,
+    data.categories_rows,
+    data.pois_rows,
+    data.images_rows,
+    data.comments_rows,
+)
+COUNT_FETCHERS = (
+    data.creators_count,
+    data.categories_count,
+    data.pois_count,
+    data.images_count,
+    data.comments_count,
+)
+SECTION_ROWS_FETCHERS = dict(zip(SECTIONS, ROWS_FETCHERS))
+SECTION_COUNT_FETCHERS = dict(zip(SECTIONS, COUNT_FETCHERS))
+
 SECTION_FIELDS = {
     "creators": (
         "id",
