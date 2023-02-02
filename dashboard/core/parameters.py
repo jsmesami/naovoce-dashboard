@@ -179,3 +179,61 @@ def reset_filters(section):
     for k in list(session.keys()):
         if k.startswith(section):
             session.pop(k)
+
+
+def section_params(section, show_controls):
+    params = {
+        "section": section,
+    }
+
+    if get_param(f"{section}_reset_filters", False, guard_bool):
+        reset_filters(section)
+
+    offset = getset_param(f"{section}_offset", 0, guard_offset)
+    limit = getset_param(f"{section}_limit", DEFAULT_LIMIT, guard_limit)
+    order = getset_param(f"{section}_order", DEFAULT_ORDER, guard_order(section))
+
+    created_since = getset_param(f"{section}_created_since", MIN_CREATED(), guard_date)
+    created_until = getset_param(f"{section}_created_until", MAX_CREATED(), guard_date)
+
+    params |= {
+        "offset": offset,
+        "limit": limit,
+        "order": order,
+        "show_controls": show_controls,
+        "created_since": created_since,
+        "created_until": created_until,
+        "created_min": MIN_CREATED(),
+        "created_max": MAX_CREATED(),
+    }
+
+    if section == "pois":
+        id_filter = get_param(f"pois_id_filter", 0, guard_posint)
+        choices = data.cat_choices()
+        cat_ids = (ch["id"] for ch in choices)
+        cat_id_filter = getset_param(f"pois_cat_id_filter", 0, guard_category(cat_ids))
+        params |= {
+            "id_filter": id_filter,
+            "cat_choices": choices,
+            "cat_id_filter": cat_id_filter,
+        }
+
+    if section == "creators":
+        search = getset_param(f"creators_search", "", identity)
+        id_filter = get_param(f"creators_id_filter", 0, guard_posint)
+        visited_since = getset_param(
+            f"creators_visited_since", MIN_VISITED(), guard_date
+        )
+        visited_until = getset_param(
+            f"creators_visited_until", MAX_VISITED(), guard_date
+        )
+        params |= {
+            "search": search,
+            "id_filter": id_filter,
+            "visited_since": visited_since,
+            "visited_until": visited_until,
+            "visited_min": MIN_VISITED(),
+            "visited_max": MAX_VISITED(),
+        }
+
+    return params

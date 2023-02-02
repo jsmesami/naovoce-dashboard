@@ -18,10 +18,10 @@ def init_db():
     db.session.execute(
         text(
             """
-        CREATE INDEX IF NOT EXISTS users_fti
-        ON creator
-        USING gin(email gin_trgm_ops, first_name gin_trgm_ops, last_name gin_trgm_ops);
-        """
+                CREATE INDEX IF NOT EXISTS users_fti
+                ON creator
+                USING gin(email gin_trgm_ops, first_name gin_trgm_ops, last_name gin_trgm_ops);
+            """
         )
     )
     db.session.commit()
