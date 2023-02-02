@@ -1,5 +1,5 @@
-{% extends "stats/base.html" %}
-{% from "stats/_macros.html" import link_creator, link_poi %}
+{% extends "tables/base.html" %}
+{% from "tables/_macros.html" import link_creator, link_poi %}
 
 {% block table_head %}
     {% with fields=(('id', 'ID'),
@@ -7,7 +7,7 @@
                     (None, 'Odkaz'),
                     ('creator_id', 'Uživatel'),
                     ('poi_id', 'Značka')) %}
-        {% include "stats/_table-head.html" %}
+        {% include "tables/_table-head.html" %}
     {% endwith %}
 {% endblock %}
 
@@ -19,8 +19,8 @@
             <td class="cell-w-url">
                 <a href="{{ row.image_url }}" target="_blank">{{ row.file_name }}</a>
             </td>
-            <td class="cell-number">{{ link_creator(stats_url, row.creator_id) }}</td>
-            <td class="cell-number">{{ link_poi(stats_url, row.poi_id) }}</td>
+            <td class="cell-number">{{ link_creator(tables_url, row.creator_id) }}</td>
+            <td class="cell-number">{{ link_poi(tables_url, row.poi_id) }}</td>
         </tr>
     {% endfor %}
 {% endblock %}

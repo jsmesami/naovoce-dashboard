@@ -1,4 +1,4 @@
-{% extends "stats/base.html" %}
+{% extends "tables/base.html" %}
 
 {% block table_head %}
     {% with fields=(('id', 'ID'),
@@ -10,7 +10,7 @@
                     ('n_pois', '# Značek'),
                     ('n_images', '# Fotek'),
                     ('n_comments', '# Komentářů')) %}
-        {% include "stats/_table-head.html" %}
+        {% include "tables/_table-head.html" %}
     {% endwith %}
 {% endblock %}
 
@@ -24,8 +24,8 @@
                    value="{{ visited_since }}"
                    min="{{ visited_min }}"
                    max="{{ visited_until }}"
-                   hx-get="{{ stats_url }}"
-                   hx-target="#stats"
+                   hx-get="{{ tables_url }}"
+                   hx-target="#tables"
                    hx-swap="outerHTML">
         </div>
         <p class="help">Návštěva od</p>
@@ -38,8 +38,8 @@
                    value="{{ visited_until }}"
                    min="{{ visited_since }}"
                    max="{{ visited_max }}"
-                   hx-get="{{ stats_url }}"
-                   hx-target="#stats"
+                   hx-get="{{ tables_url }}"
+                   hx-target="#tables"
                    hx-swap="outerHTML">
         </div>
         <p class="help">Návštěva do</p>
@@ -51,9 +51,9 @@
                    class="input"
                    value="{{ search }}"
                    placeholder="Jméno, příjmení, e-mail"
-                   hx-get="{{ stats_url }}"
+                   hx-get="{{ tables_url }}"
                    hx-trigger="keyup changed delay:1s"
-                   hx-target="#stats"
+                   hx-target="#tables"
                    hx-swap="outerHTML">
         </div>
         <p class="help">Vyhledat</p>

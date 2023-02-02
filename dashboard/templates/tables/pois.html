@@ -1,5 +1,5 @@
-{% extends "stats/base.html" %}
-{% from "stats/_macros.html" import format_position, link_creator, link_poi_cat %}
+{% extends "tables/base.html" %}
+{% from "tables/_macros.html" import format_position, link_creator, link_poi_cat %}
 
 {% block table_head %}
     {% with fields=(('id', 'ID'),
@@ -10,7 +10,7 @@
                     ('creator_id', 'Uživatel'),
                     ('n_images', '# Fotek'),
                     ('n_comments', '# Komentářů')) %}
-        {% include "stats/_table-head.html" %}
+        {% include "tables/_table-head.html" %}
     {% endwith %}
 {% endblock %}
 
@@ -20,8 +20,8 @@
         <div class="control">
             <div class="select">
                 <select name="{{ section }}_cat_id_filter"
-                        hx-get="{{ stats_url }}"
-                        hx-target="#stats"
+                        hx-get="{{ tables_url }}"
+                        hx-target="#tables"
                         hx-swap="outerHTML">
                     <option value="0">-- Všechny --</option>
                     {% for choice in cat_choices %}
@@ -53,7 +53,7 @@
             <td class="cell-w-latlng cell-number">
                 {{ format_position(row.lat, row.lng) }}
             </td>
-            <td class="cell-number">{{ link_creator(stats_url, row.creator_id) }}</td>
+            <td class="cell-number">{{ link_creator(tables_url, row.creator_id) }}</td>
             <td class="cell-number">{{ row.n_images }}</td>
             <td class="cell-number">{{ row.n_comments }}</td>
         </tr>

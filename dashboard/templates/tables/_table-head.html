@@ -3,8 +3,8 @@
         {% if not field_id %}
             {{ field_name }}
         {% else %}
-            <a hx-get="{{ stats_url }}?{{ section }}_order={{ next_order(field_id, order) }}"
-               hx-target="#stats"
+            <a hx-get="{{ tables_url }}?{{ section }}_order={{ next_order(field_id, order) }}"
+               hx-target="#tables"
                hx-swap="outerHTML">
                 {{ field_name }}
             </a>

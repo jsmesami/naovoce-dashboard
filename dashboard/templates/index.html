@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% with stats_url = url_for('core.index') %}
-<div id="stats">
+{% with tables_url = url_for('core.index') %}
+<div id="tables">
     <div class="tabs is-boxed">
         <ul>
             {% for sec_id, sec_name in (('creators', 'Uživatelé'),
@@ -11,8 +11,8 @@
                                         ('images', 'Fotky'),
                                         ('comments', 'Komentáře')) %}
                 <li class="{% if section == sec_id %}is-active{% endif %}">
-                    <a hx-get="{{ stats_url }}?section={{ sec_id }}"
-                       hx-target="#stats"
+                    <a hx-get="{{ tables_url }}?section={{ sec_id }}"
+                       hx-target="#tables"
                        hx-swap="outerHTML">
                         {{ sec_name }}
                     </a>
@@ -21,15 +21,15 @@
         </ul>
     </div>
     {% if section == 'creators' %}
-        {% include "stats/creators.html" %}
+        {% include "tables/creators.html" %}
     {% elif section == 'categories' %}
-        {% include "stats/categories.html" %}
+        {% include "tables/categories.html" %}
     {% elif section == 'pois' %}
-        {% include "stats/pois.html" %}
+        {% include "tables/pois.html" %}
     {% elif section == 'images' %}
-        {% include "stats/images.html" %}
+        {% include "tables/images.html" %}
     {% elif section == 'comments' %}
-        {% include "stats/comments.html" %}
+        {% include "tables/comments.html" %}
     {% endif %}
 </div>
 {% endwith %}

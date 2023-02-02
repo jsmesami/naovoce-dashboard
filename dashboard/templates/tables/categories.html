@@ -1,12 +1,12 @@
-{% extends "stats/base.html" %}
-{% from "stats/_macros.html" import link_poi_cat %}
+{% extends "tables/base.html" %}
+{% from "tables/_macros.html" import link_poi_cat %}
 
 {% block table_head %}
     {% with fields=(('id', 'ID'),
                     ('created', 'Vytvořeno'),
                     ('name', 'Jméno'),
                     ('n_pois', '# Značek')) %}
-        {% include "stats/_table-head.html" %}
+        {% include "tables/_table-head.html" %}
     {% endwith %}
 {% endblock %}
 
@@ -21,7 +21,7 @@
                 </a>
             </th>
             <td class="cell-w-datetime cell-number">{{ row.created_fmt }}</td>
-            <td class="cell-w-name">{{ link_poi_cat(stats_url, row) }}</td>
+            <td class="cell-w-name">{{ link_poi_cat(tables_url, row) }}</td>
             <td class="cell-number">{{ row.n_pois }}</td>
         </tr>
     {% endfor %}

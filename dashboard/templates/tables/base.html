@@ -15,8 +15,8 @@
 
         {% block table_paging %}
             <a class="button is-small is-align-self-center mr-2"
-               hx-get="{{ stats_url }}?{{ section }}_offset={{ offset-limit }}"
-               hx-target="#stats"
+               hx-get="{{ tables_url }}?{{ section }}_offset={{ offset-limit }}"
+               hx-target="#tables"
                hx-swap="outerHTML"
                {% if offset <= 0 %}disabled hx-disable{% endif %}>
                 <span class="icon">
@@ -24,8 +24,8 @@
                 </span>
             </a>
             <a class="button is-small is-align-self-center"
-               hx-get="{{ stats_url }}?{{ section }}_offset={{ offset+limit }}"
-               hx-target="#stats"
+               hx-get="{{ tables_url }}?{{ section }}_offset={{ offset+limit }}"
+               hx-target="#tables"
                hx-swap="outerHTML"
                {% if offset + limit >= count %}disabled hx-disable{% endif %}>
                 <span class="icon">
@@ -35,8 +35,8 @@
         {% endblock %}
 
         <button class="card-header-icon"
-                hx-get="{{ stats_url }}?show_controls={% if show_controls %}f{% else %}t{% endif %}"
-                hx-target="#stats"
+                hx-get="{{ tables_url }}?show_controls={% if show_controls %}f{% else %}t{% endif %}"
+                hx-target="#tables"
                 hx-swap="outerHTML">
             <span class="icon">
                 {% if show_controls %}
@@ -58,8 +58,8 @@
                         <div class="control">
                             <div class="select">
                                 <select name="{{ section }}_limit"
-                                        hx-get="{{ stats_url }}"
-                                        hx-target="#stats"
+                                        hx-get="{{ tables_url }}"
+                                        hx-target="#tables"
                                         hx-swap="outerHTML">
                                     <option {% if limit == 40 %}selected{% endif %} value="40">40</option>
                                     <option {% if limit == 100 %}selected{% endif %} value="100">100</option>
@@ -77,8 +77,8 @@
                                    value="{{ created_since }}"
                                    min="{{ created_min }}"
                                    max="{{ created_until }}"
-                                   hx-get="{{ stats_url }}"
-                                   hx-target="#stats"
+                                   hx-get="{{ tables_url }}"
+                                   hx-target="#tables"
                                    hx-swap="outerHTML">
                         </div>
                         <p class="help">Vytvořeno od</p>
@@ -91,8 +91,8 @@
                                    value="{{ created_until }}"
                                    min="{{ created_since }}"
                                    max="{{ created_max }}"
-                                   hx-get="{{ stats_url }}"
-                                   hx-target="#stats"
+                                   hx-get="{{ tables_url }}"
+                                   hx-target="#tables"
                                    hx-swap="outerHTML">
                         </div>
                         <p class="help">Vytvořeno do</p>
@@ -102,8 +102,8 @@
                 <div class="field">
                     <p class="control">
                         <button class="button is-warning"
-                                hx-get="{{ stats_url }}?{{ section }}_reset_filters=t"
-                                hx-target="#stats"
+                                hx-get="{{ tables_url }}?{{ section }}_reset_filters=t"
+                                hx-target="#tables"
                                 hx-swap="outerHTML">
                             Reset
                         </button>

@@ -1,7 +1,7 @@
 {% macro link_creator(url, id) -%}
     {% if id %}
     <a hx-get="{{ url }}?section=creators&creators_reset_filters=t&show_controls=t&creators_id_filter={{ id }}"
-       hx-target="#stats"
+       hx-target="#tables"
        hx-swap="outerHTML">{{ id }}</a>
     {% else %}
         –
@@ -11,7 +11,7 @@
 {% macro link_poi(url, id) -%}
     {% if id %}
         <a hx-get="{{ url }}?section=pois&pois_reset_filters=t&show_controls=t&pois_id_filter={{ id }}"
-           hx-target="#stats"
+           hx-target="#tables"
            hx-swap="outerHTML">{{ id }}</a>
     {% else %}
         –
@@ -20,7 +20,7 @@
 
 {% macro link_poi_cat(url, category) -%}
     <a hx-get="{{ url }}?section=pois&pois_reset_filters=t&show_controls=t&pois_cat_id_filter={{ category.id }}"
-       hx-target="#stats"
+       hx-target="#tables"
        hx-swap="outerHTML">{{ category.name }}</a>
 {%- endmacro %}
 
