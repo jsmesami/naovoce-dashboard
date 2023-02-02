@@ -14,52 +14,6 @@
     {% endwith %}
 {% endblock %}
 
-{% block table_controls_fields %}
-    {{ super() }}
-    <div class="field is-flex-grow-0">
-        <div class="control">
-            <input name="{{ section }}_visited_since"
-                   type="date"
-                   class="input"
-                   value="{{ visited_since }}"
-                   min="{{ visited_min }}"
-                   max="{{ visited_until }}"
-                   hx-get="{{ tables_url }}"
-                   hx-target="#tables"
-                   hx-swap="outerHTML">
-        </div>
-        <p class="help">Návštěva od</p>
-    </div>
-    <div class="field is-flex-grow-0">
-        <div class="control">
-            <input name="{{ section }}_visited_until"
-                   type="date"
-                   class="input"
-                   value="{{ visited_until }}"
-                   min="{{ visited_since }}"
-                   max="{{ visited_max }}"
-                   hx-get="{{ tables_url }}"
-                   hx-target="#tables"
-                   hx-swap="outerHTML">
-        </div>
-        <p class="help">Návštěva do</p>
-    </div>
-    <div class="field is-flex-grow-0">
-        <div class="control">
-            <input name="{{ section }}_search"
-                   type="text"
-                   class="input"
-                   value="{{ search }}"
-                   placeholder="Jméno, příjmení, e-mail"
-                   hx-get="{{ tables_url }}"
-                   hx-trigger="keyup changed delay:1s"
-                   hx-target="#tables"
-                   hx-swap="outerHTML">
-        </div>
-        <p class="help">Vyhledat</p>
-    </div>
-{% endblock %}
-
 {% block table_body %}
     {% for row in rows %}
         <tr>
