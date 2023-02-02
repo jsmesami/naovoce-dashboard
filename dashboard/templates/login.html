@@ -1,9 +1,12 @@
+{% extends 'base.html' %}
 
-<div class="columns is-centered">
+{% block content %}
+<div class="columns is-centered"
+     id="login-modal">
     <div class="column is-5-tablet is-4-desktop is-3-widescreen">
         <form class="box"
               hx-post="{{ url_for('auth.login') }}"
-              hx-target="#content"
+              hx-target="#login-modal"
               hx-swap="outerHTML">
             {% if errors and errors.login_modal %}
                 <div class="notification is-danger is-light">
@@ -18,6 +21,7 @@
                            name="email"
                            id="email"
                            placeholder="me@na-ovoce.cz"
+                           value="{{ email }}"
                            required
                            autofocus>
                     <span class="icon is-small is-left">
@@ -51,3 +55,4 @@
         </form>
     </div>
 </div>
+{% endblock %}

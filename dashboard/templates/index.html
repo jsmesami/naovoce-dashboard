@@ -1,40 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <section id="content" class="section">
-        {% block index_header %}
-            <div id="header"
-                 class="columns mb-5">
-                <div class="column is-10 is-flex is-align-items-center">
-                    <img src="{{ url_for('static', filename='img/na-ovoce.png') }}"
-                         class="logo">
-                    <h1 class="title is-3 ml-4 pt-2">Statistiky</h1>
-                </div>
-                <div class="column is-2 is-justify-content-flex-end">
-                    {% if current_user.is_authenticated %}
-                        <a href="#" class="button is-small is-rounded is-link mr-2"
-                           title="Grafy"
-                           hx-get="{{ url_for('core.toggle_charts') }}"
-                           hx-target="#charts"
-                           hx-swap="outerHTML">
-                            <i class="fa fa-bar-chart"></i>
-                        </a>
-
-                        <a href="#" class="button is-small is-rounded"
-                           title="Odhlásit"
-                           hx-post="{{ url_for('auth.logout') }}"
-                           hx-confirm="Opravdu odhlásit?"
-                           hx-target="#content"
-                           hx-swap="outerHTML">odhlásit</a>
-                    {% endif %}
-                </div>
-            </div>
-        {% endblock %}
-        {% if current_user.is_authenticated %}
-            {% include 'inc/charts.html' %}
-            {% include 'inc/stats.html' %}
-        {% else %}
-            {% include 'inc/login.html' %}
-        {% endif %}
-    </section>
+{% with stats_url = url_for('core.index') %}
+<div id="stats">
+    <div class="tabs is-boxed">
+        <ul>
+            {% for sec_id, sec_name in (('creators', 'Uživatelé'),
+                                        ('categories', 'Druhy'),
+                                        ('pois', 'Značky'),
+                                        ('images', 'Fotky'),
+                                        ('comments', 'Komentáře')) %}
+                <li class="{% if section == sec_id %}is-active{% endif %}">
+                    <a hx-get="{{ stats_url }}?section={{ sec_id }}"
+                       hx-target="#stats"
+                       hx-swap="outerHTML">
+                        {{ sec_name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if section == 'creators' %}
+        {% include "stats/creators.html" %}
+    {% elif section == 'categories' %}
+        {% include "stats/categories.html" %}
+    {% elif section == 'pois' %}
+        {% include "stats/pois.html" %}
+    {% elif section == 'images' %}
+        {% include "stats/images.html" %}
+    {% elif section == 'comments' %}
+        {% include "stats/comments.html" %}
+    {% endif %}
+</div>
+{% endwith %}
 {% endblock content %}

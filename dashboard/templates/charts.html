@@ -1,5 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <div id="charts">
-    {% if show_charts %}
     <div id="monthly-gains-chart"></div>
     <div id="monthly-pois-chart"></div>
     <script type="text/javascript">
@@ -127,5 +129,5 @@
         };
         echarts.init(document.getElementById('monthly-pois-chart')).setOption(monthly_pois_chart_option);
     </script>
-    {% endif %}
 </div>
+{% endblock content %}

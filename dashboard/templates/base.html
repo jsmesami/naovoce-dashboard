@@ -1,25 +1,46 @@
-<!doctype html>
-<html lang="cs" translate="no">
-<head>
-    <meta charset="UTF-8">
-    <meta name="author" content="Ondřej Nejedlý">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <meta name="description" content="Statistiky Na ovoce">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}" crossorigin>
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}" crossorigin>
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}" crossorigin>
-    <link rel="mask-icon" href="{{ url_for('static', filename='img/safari-pinned-tab.svg') }}" color="#5bbad5">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" crossorigin>
-    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="canonical" href="https://dashboard.na-ovoce.cz/" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='fa/css/font-awesome.min.css') }}">
-    <script src="{{ url_for('static', filename='js/htmx.min.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/echarts.min.js') }}" defer></script>
-    <title>Statistiky Na ovoce</title>
-</head>
-<body>
-    {% block content %}
-    {% endblock %}
-</body>
+{% extends "_base.html" %}
+
+{% block body %}
+    <nav class="navbar is-fixed-top is-spaced has-shadow" role="navigation" aria-label="main navigation">
+        {% block header %}
+            <div class="navbar-brand">
+                <a class="navbar-item" href="{{ url_for('core.index') }}">
+                    <img src="{{ url_for('static', filename='img/na-ovoce.png') }}" alt="logo">
+                    <h1 class="title is-3 ml-3 pt-1">Statistiky</h1>
+                </a>
+            </div>
+
+            {% if current_user.is_authenticated %}
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <a href="{{ url_for('core.index') }}"
+                       class="navbar-item {% if request.path == url_for('core.index') %}navbar-item-active{% endif %}">
+                        Tabulky
+                    </a>
+                    <a href="{{ url_for('core.charts') }}"
+                       class="navbar-item {% if request.path == url_for('core.charts') %}navbar-item-active{% endif %}">
+                        Grafy
+                    </a>
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <a href="#" class="button is-small is-rounded"
+                           title="Odhlásit"
+                           hx-post="{{ url_for('auth.logout') }}"
+                           hx-confirm="Opravdu odhlásit?">
+                            odhlásit
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        {% endblock %}
+    </nav>
+
+    <section id="content" class="section">
+        {% block content %}
+        {% endblock %}
+    </section>
+{% endblock %}

@@ -1,6 +1,14 @@
 @import "bulma"
 
 
+#content
+    margin-top: 5rem
+
+.navbar-item
+    font-weight: bold
+    &-active
+        color: $link
+
 .stats-table
     td, th
         min-width: 8rem
@@ -24,13 +32,6 @@
         max-width: 25rem
     .cell-number
         font-family: $family-monospace
-
-#header
-    .column
-        display: flex
-        align-items: center
-    .logo
-        max-height: 2rem
 
 #monthly-gains-chart
     width: 100%
