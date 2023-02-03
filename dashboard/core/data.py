@@ -1,5 +1,7 @@
 import os
+from collections import defaultdict
 from itertools import accumulate
+from operator import itemgetter
 
 from sqlalchemy import text
 
@@ -292,7 +294,11 @@ def monthly_gains_chart():
 def monthly_pois_chart():
     query = """
         WITH excluded_categories AS (
-            SELECT id FROM category cat WHERE cat.name IN ('Sady', 'Ovocné trasy')
+            SELECT id
+            FROM category cat
+            WHERE cat.name IN ('Sady', 'Ovocné trasy')
+            OR cat.is_published = false
+            OR cat.is_deleted = true
         )
         SELECT
         DATE_TRUNC('month', poi.created) AS created_in_month,
@@ -311,7 +317,11 @@ def monthly_pois_chart():
     months = sorted({dat for dat, _cat, _cnt in pois})
     months_index = {mon: idx for idx, mon in enumerate(months)}
 
-    categories = sorted({cat for _dat, cat, _cnt in pois}, reverse=True)
+    cat_counts = defaultdict(int)
+    for _dat, cat, cnt in pois:
+        cat_counts[cat] += cnt
+
+    categories = [item[0] for item in sorted(cat_counts.items(), key=itemgetter(1))]
     categories_index = {cat: idx for idx, cat in enumerate(categories)}
 
     matrix = (

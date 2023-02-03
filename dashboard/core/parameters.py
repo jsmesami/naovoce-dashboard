@@ -208,10 +208,10 @@ def section_params(section, show_controls):
     }
 
     if section == "pois":
-        id_filter = get_param(f"pois_id_filter", 0, guard_posint)
+        id_filter = get_param("pois_id_filter", 0, guard_posint)
         choices = data.cat_choices()
         cat_ids = (ch["id"] for ch in choices)
-        cat_id_filter = getset_param(f"pois_cat_id_filter", 0, guard_category(cat_ids))
+        cat_id_filter = getset_param("pois_cat_id_filter", 0, guard_category(cat_ids))
         params |= {
             "id_filter": id_filter,
             "cat_choices": choices,
@@ -219,13 +219,13 @@ def section_params(section, show_controls):
         }
 
     if section == "creators":
-        search = getset_param(f"creators_search", "", identity)
-        id_filter = get_param(f"creators_id_filter", 0, guard_posint)
+        search = getset_param("creators_search", "", identity)
+        id_filter = get_param("creators_id_filter", 0, guard_posint)
         visited_since = getset_param(
-            f"creators_visited_since", MIN_VISITED(), guard_date
+            "creators_visited_since", MIN_VISITED(), guard_date
         )
         visited_until = getset_param(
-            f"creators_visited_until", MAX_VISITED(), guard_date
+            "creators_visited_until", MAX_VISITED(), guard_date
         )
         params |= {
             "search": search,
