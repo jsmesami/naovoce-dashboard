@@ -7,6 +7,17 @@ from . import core, data
 from . import parameters as par
 
 
+@core.route("/maps")
+@login_required
+def maps():
+    params = {
+        "cz_geojson": data.cz_geojson(),
+        "cz_area_counts": data.cz_area_counts(),
+    }
+
+    return render_template("maps.html", **params)
+
+
 @core.route("/charts")
 @login_required
 def charts():

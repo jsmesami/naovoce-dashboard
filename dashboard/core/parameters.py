@@ -130,7 +130,7 @@ def guard_section(section, default):
     return default
 
 
-def guard_category(cat_ids):
+def guard_db_id(cat_ids):
     def closure(n, default):
         if (n := int(n)) in cat_ids:
             return n
@@ -209,12 +209,13 @@ def section_params(section, show_controls):
 
     if section == "pois":
         id_filter = get_param("pois_id_filter", 0, guard_posint)
-        choices = data.cat_choices()
-        cat_ids = (ch["id"] for ch in choices)
-        cat_id_filter = getset_param("pois_cat_id_filter", 0, guard_category(cat_ids))
+        cat_choices = data.cat_choices()
+        cat_ids = (ch["id"] for ch in cat_choices)
+        cat_id_filter = getset_param("pois_cat_id_filter", 0, guard_db_id(cat_ids))
+
         params |= {
             "id_filter": id_filter,
-            "cat_choices": choices,
+            "cat_choices": cat_choices,
             "cat_id_filter": cat_id_filter,
         }
 

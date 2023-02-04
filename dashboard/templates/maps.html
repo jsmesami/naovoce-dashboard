@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="maps">
+    <div id="pie-map"></div>
+    <script type="text/javascript">
+        const CZGeoJson = {{ cz_geojson|safe }};
+
+        echarts.registerMap('CZ', CZGeoJson);
+
+        const pieMapOption = {
+            title: {
+                text: 'Počty značek v krajích',
+            },
+            tooltip: {
+                trigger: 'item',
+            },
+            visualMap: {
+                min: 0,
+                max: 5000,
+                calculable: true,
+                inRange: {
+                    color: ['#fffbe2', '#940000']
+                },
+                orient: 'horizontal',
+                left: 'center',
+                top: '0'
+            },
+            series: [
+                {
+                    name: 'Počet Značek',
+                    type: 'map',
+                    map: 'CZ',
+                    data: {{ cz_area_counts|safe }}
+                },
+            ]
+        };
+
+        echarts.init(document.getElementById('pie-map')).setOption(pieMapOption);
+    </script>
+</div>
+{% endblock content %}

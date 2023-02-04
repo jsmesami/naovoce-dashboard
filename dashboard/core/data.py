@@ -13,12 +13,7 @@ def order_clause(order):
 
 
 def id_filter_clause(id_filter, prefix=None):
-    prefix = f"{prefix}." if prefix else ""
-    return f"AND {prefix}id = {id_filter}" if id_filter else ""
-
-
-def cat_id_filter_clause(cat_id_filter):
-    return f"AND category_id = {cat_id_filter}" if cat_id_filter else ""
+    return f"AND {prefix or ''}id = {id_filter}" if id_filter else ""
 
 
 def creator_search_clause(search):
@@ -161,8 +156,8 @@ def pois_rows(
         WHERE poi.is_published = true
         AND poi.is_deleted = false
         AND poi.created BETWEEN '{created_since}' AND '{created_until}'
-        {cat_id_filter_clause(cat_id_filter)}
-        {id_filter_clause(id_filter, 'poi')}
+        {id_filter_clause(cat_id_filter, 'category_')}
+        {id_filter_clause(id_filter, 'poi.')}
         {order_clause(order)}
         LIMIT {limit} OFFSET {offset}
     """
@@ -176,8 +171,8 @@ def pois_count(created_since, created_until, cat_id_filter, id_filter, **kwargs)
         WHERE is_published = true
         AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
-        {cat_id_filter_clause(cat_id_filter)}
-        {id_filter_clause(id_filter, 'poi')}
+        {id_filter_clause(cat_id_filter, 'category_')}
+        {id_filter_clause(id_filter, 'poi.')}
     """
     return dict(db.session.execute(text(query)).mappings().fetchone())
 
@@ -333,3 +328,29 @@ def monthly_pois_chart():
         "categories": ", ".join(f"'{cat}'" for cat in categories),
         "matrix": ", ".join(f"[{x}, {y}, {c}]" for x, y, c in matrix),
     }
+
+
+def cz_geojson():
+    query = """
+        SELECT json_build_object(
+            'type', 'FeatureCollection',
+            'features', json_agg(ST_AsGeoJSON(t.*)::json)
+        )
+        FROM (
+            SELECT name_1 as name, geom
+            FROM cz_1
+        ) AS t;
+    """
+    ret, *_ = db.session.execute(text(query)).fetchone()
+    return ret
+
+
+def cz_area_counts():
+    query = """
+        SELECT area.name_1 AS name, count(poi.position) AS value
+        FROM poi
+        RIGHT JOIN cz_1 area ON st_within(poi.position, area.geom)
+        GROUP BY area.gid;
+    """
+    ret = db.session.execute(text(query)).mappings().all()
+    return ret
