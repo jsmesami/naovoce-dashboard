@@ -350,6 +350,8 @@ def cz_area_counts():
         SELECT area.name_1 AS name, count(poi.position) AS value
         FROM poi
         RIGHT JOIN cz_1 area ON st_within(poi.position, area.geom)
+        WHERE poi.is_published = true
+        AND poi.is_deleted = false
         GROUP BY area.gid;
     """
     ret = db.session.execute(text(query)).mappings().all()
