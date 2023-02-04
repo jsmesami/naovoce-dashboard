@@ -354,5 +354,4 @@ def cz_area_counts():
         AND poi.is_deleted = false
         GROUP BY area.gid;
     """
-    ret = db.session.execute(text(query)).mappings().all()
-    return ret
+    return db.session.execute(text(query)).mappings().all()
