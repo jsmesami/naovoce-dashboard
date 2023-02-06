@@ -1,0 +1,3 @@
+ID;Vytvořeno;Soubor;Uživatel;Značka
+{% for row in rows %}{{ row.id }};{{ row.created_fmt }};{{ row.file_name }};{{ row.creator_id|default('', true) }};{{ row.poi_id|default('', true) }}
+{% endfor %}

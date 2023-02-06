@@ -181,7 +181,7 @@ def reset_filters(section):
             session.pop(k)
 
 
-def section_params(section, show_controls):
+def section_params(section, paginate=True):
     params = {
         "section": section,
     }
@@ -189,23 +189,27 @@ def section_params(section, show_controls):
     if get_param(f"{section}_reset_filters", False, guard_bool):
         reset_filters(section)
 
-    offset = getset_param(f"{section}_offset", 0, guard_offset)
-    limit = getset_param(f"{section}_limit", DEFAULT_LIMIT, guard_limit)
     order = getset_param(f"{section}_order", DEFAULT_ORDER, guard_order(section))
 
     created_since = getset_param(f"{section}_created_since", MIN_CREATED(), guard_date)
     created_until = getset_param(f"{section}_created_until", MAX_CREATED(), guard_date)
 
     params |= {
-        "offset": offset,
-        "limit": limit,
         "order": order,
-        "show_controls": show_controls,
         "created_since": created_since,
         "created_until": created_until,
         "created_min": MIN_CREATED(),
         "created_max": MAX_CREATED(),
     }
+
+    if paginate:
+        offset = getset_param(f"{section}_offset", 0, guard_offset)
+        limit = getset_param(f"{section}_limit", DEFAULT_LIMIT, guard_limit)
+
+        params |= {
+            "offset": offset,
+            "limit": limit,
+        }
 
     if section == "pois":
         id_filter = get_param("pois_id_filter", 0, guard_posint)

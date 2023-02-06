@@ -1,0 +1,3 @@
+ID;Vytvořeno;Jméno;# Značek
+{% for row in rows %}{{ row.id }};{{ row.created_fmt }};{{ row.name }};{{ row.n_pois }}
+{% endfor %}

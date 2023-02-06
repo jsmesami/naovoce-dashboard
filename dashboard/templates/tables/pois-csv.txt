@@ -1,0 +1,3 @@
+ID;Vytvořeno;Druh;# Zobrazení;Šířka;Délka;Uživatel;# Fotek;# Komentářů
+{% for row in rows %}{{ row.id }};{{ row.created_fmt }};{{ row.category_name }};{{ row.display_count|default('0', true) }};{{ row.lat }};{{ row.lng }};{{ row.creator_id }};{{ row.n_images }};{{ row.n_comments }}
+{% endfor %}

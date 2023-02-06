@@ -1,0 +1,3 @@
+ID;Vytvořeno;Jméno;Příjmení;E-mail;Posl. návštěva;# Značek;# Fotek;# Komentářů
+{% for row in rows %}{{ row.id }};{{ row.created_fmt }};"{{ row.first_name }}";"{{ row.last_name }}";"{{ row.email }}";{{ row.last_visit_fmt }};{{ row.n_pois }};{{ row.n_images }};{{ row.n_comments }}
+{% endfor %}

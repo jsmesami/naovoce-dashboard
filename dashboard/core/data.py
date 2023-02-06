@@ -12,6 +12,13 @@ def order_clause(order):
     return "ORDER BY " + " ".join(order.rsplit("_", maxsplit=1))
 
 
+def pagination_clause(limit, offset):
+    if not limit:
+        return ""
+
+    return f"LIMIT {limit} OFFSET {offset}"
+
+
 def id_filter_clause(id_filter, prefix=None):
     return f"AND {prefix or ''}id = {id_filter}" if id_filter else ""
 
@@ -35,10 +42,10 @@ def creators_rows(
     visited_since,
     visited_until,
     order,
-    limit,
-    offset,
     id_filter,
     search,
+    limit=None,
+    offset=0,
     **kwargs,
 ):
     query = f"""
@@ -68,7 +75,7 @@ def creators_rows(
         {id_filter_clause(id_filter)}
         {creator_search_clause(search)}
         {order_clause(order)}
-        LIMIT {limit} OFFSET {offset}
+        {pagination_clause(limit, offset)}
     """
     return dict(
         rows=db.session.execute(text(query), dict(search=f"%{search}%"))
@@ -93,7 +100,9 @@ def creators_count(created_since, created_until, id_filter, search, **kwargs):
     )
 
 
-def categories_rows(created_since, created_until, order, limit, offset, **kwargs):
+def categories_rows(
+    created_since, created_until, order, limit=None, offset=0, **kwargs
+):
     query = f"""
         SELECT
         cat.id, cat.created, cat.name,
@@ -108,7 +117,7 @@ def categories_rows(created_since, created_until, order, limit, offset, **kwargs
         AND cat.is_deleted = false
         AND cat.created BETWEEN '{created_since}' AND '{created_until}'
         {order_clause(order)}
-        LIMIT {limit} OFFSET {offset}
+        {pagination_clause(limit, offset)}
     """
     return dict(rows=db.session.execute(text(query)).mappings().all())
 
@@ -128,10 +137,10 @@ def pois_rows(
     created_since,
     created_until,
     order,
-    limit,
-    offset,
     cat_id_filter,
     id_filter,
+    limit=None,
+    offset=0,
     **kwargs,
 ):
     query = f"""
@@ -159,7 +168,7 @@ def pois_rows(
         {id_filter_clause(cat_id_filter, 'category_')}
         {id_filter_clause(id_filter, 'poi.')}
         {order_clause(order)}
-        LIMIT {limit} OFFSET {offset}
+        {pagination_clause(limit, offset)}
     """
     return dict(rows=db.session.execute(text(query)).mappings().all())
 
@@ -177,7 +186,7 @@ def pois_count(created_since, created_until, cat_id_filter, id_filter, **kwargs)
     return dict(db.session.execute(text(query)).mappings().fetchone())
 
 
-def images_rows(created_since, created_until, order, limit, offset, **kwargs):
+def images_rows(created_since, created_until, order, limit=None, offset=0, **kwargs):
     query = f"""
         SELECT
         id, created, image_url, creator_id, poi_id,
@@ -187,7 +196,7 @@ def images_rows(created_since, created_until, order, limit, offset, **kwargs):
         AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
         {order_clause(order)}
-        LIMIT {limit} OFFSET {offset}
+        {pagination_clause(limit, offset)}
     """
     return dict(
         rows=(
@@ -208,7 +217,7 @@ def images_count(created_since, created_until, **kwargs):
     return dict(db.session.execute(text(query)).mappings().fetchone())
 
 
-def comments_rows(created_since, created_until, order, limit, offset, **kwargs):
+def comments_rows(created_since, created_until, order, limit=None, offset=0, **kwargs):
     query = f"""
         SELECT
         id, created, "text", creator_id, poi_id,
@@ -218,7 +227,7 @@ def comments_rows(created_since, created_until, order, limit, offset, **kwargs):
         AND is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
         {order_clause(order)}
-        LIMIT {limit} OFFSET {offset}
+        {pagination_clause(limit, offset)}
     """
     return dict(rows=db.session.execute(text(query)).mappings().all())
 
