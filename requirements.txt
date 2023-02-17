@@ -6,9 +6,9 @@
 #
 aniso8601==9.0.1
     # via flask-restful
-boto3==1.26.64
+boto3==1.26.73
     # via dashboard (pyproject.toml)
-botocore==1.29.64
+botocore==1.29.73
     # via
     #   boto3
     #   s3transfer
@@ -18,7 +18,7 @@ charset-normalizer==3.0.1
     # via requests
 click==8.1.3
     # via flask
-flask==2.2.2
+flask==2.2.3
     # via
     #   dashboard (pyproject.toml)
     #   flask-htmx
@@ -77,17 +77,17 @@ six==1.16.0
     # via
     #   flask-restful
     #   python-dateutil
-sqlalchemy==2.0.1
+sqlalchemy==2.0.4
     # via
     #   flask-sqlalchemy
     #   geoalchemy2
-typing-extensions==4.4.0
+typing-extensions==4.5.0
     # via sqlalchemy
 urllib3==1.26.14
     # via
     #   botocore
     #   requests
-werkzeug==2.2.2
+werkzeug==2.2.3
     # via
     #   flask
     #   flask-login

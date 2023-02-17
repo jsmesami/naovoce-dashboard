@@ -9,7 +9,6 @@ class ImproperlyConfigured(Exception):
 
 
 def env(key, default=None):
-
     value = os.environ.get(key, default)
 
     with suppress(SyntaxError, ValueError):

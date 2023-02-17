@@ -43,6 +43,7 @@ def download_csv(section):
 
 
 @core.route("/toggle_controls")
+@login_required
 def toggle_controls():
     if not htmx:
         abort(403)
