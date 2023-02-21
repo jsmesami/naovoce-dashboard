@@ -4,8 +4,10 @@
 <div id="charts">
     <div id="monthly-gains-chart"></div>
     <div id="monthly-pois-chart"></div>
+    <div id="region-map"></div>
+
     <script type="text/javascript">
-        monthlyGainsChartOption = {
+        const monthlyGainsChartOption = {
             title: {
                 text: 'Nárůst měsíčně'
             },
@@ -76,9 +78,8 @@
                 }
             ]
         };
-        echarts.init(document.getElementById('monthly-gains-chart')).setOption(monthlyGainsChartOption);
 
-        monthlyPoisChartOption = {
+        const monthlyPoisChartOption = {
             title: {
                 text: 'Počet značek na druh měsíčně'
             },
@@ -127,7 +128,39 @@
                 }
             ]
         };
+
+        const regionMapOption = {
+            title: {
+                text: 'Počty značek v krajích',
+            },
+            tooltip: {
+                trigger: 'item',
+            },
+            visualMap: {
+                min: 0,
+                max: 5000,
+                calculable: true,
+                inRange: {
+                    color: ['#fffbe2', '#940000']
+                },
+                orient: 'horizontal',
+                left: 'center',
+                top: '0'
+            },
+            series: [
+                {
+                    name: 'Počet značek',
+                    type: 'map',
+                    map: 'CZ',
+                    data: {{ cz_area_counts|safe }}
+                },
+            ]
+        };
+
+        echarts.init(document.getElementById('monthly-gains-chart')).setOption(monthlyGainsChartOption);
         echarts.init(document.getElementById('monthly-pois-chart')).setOption(monthlyPoisChartOption);
+        echarts.registerMap('CZ', {{ cz_geojson|safe }});
+        echarts.init(document.getElementById('region-map')).setOption(regionMapOption);
     </script>
 </div>
 {% endblock content %}
