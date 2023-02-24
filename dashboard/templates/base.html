@@ -17,12 +17,12 @@
                        class="navbar-item {% if request.path == url_for('core.index') %}navbar-item-active{% endif %}">
                         Tabulky
                     </a>
-                    <a href="{{ url_for('core.charts') }}"
-                       class="navbar-item {% if request.path == url_for('core.charts') %}navbar-item-active{% endif %}">
+                    <a href="{{ url_for('charts.index') }}"
+                       class="navbar-item {% if request.path == url_for('charts.index') %}navbar-item-active{% endif %}">
                         Grafy
                     </a>
-                    <a href="{{ url_for('core.zones') }}"
-                       class="navbar-item {% if request.path == url_for('core.zones') %}navbar-item-active{% endif %}">
+                    <a href="{{ url_for('zones.index') }}"
+                       class="navbar-item {% if request.path == url_for('zones.index') %}navbar-item-active{% endif %}">
                         Zóny <i class="fa fa-warning"></i>
                     </a>
                 </div>

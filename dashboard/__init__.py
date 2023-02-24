@@ -24,17 +24,17 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     login_manager.login_view = "auth.login"
 
-    from .auth import auth
-
-    app.register_blueprint(auth)
-
-    from .core import core
-
-    app.register_blueprint(core)
-
     from .api import api
+    from .auth import auth
+    from .charts import charts
+    from .core import core
+    from .zones import zones
 
     app.register_blueprint(api)
+    app.register_blueprint(auth)
+    app.register_blueprint(charts)
+    app.register_blueprint(core)
+    app.register_blueprint(zones)
 
     @app.context_processor
     def context():

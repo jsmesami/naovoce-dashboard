@@ -3,29 +3,8 @@ from flask_login import login_required
 from jinja2_fragments.flask import render_block
 
 from ..extensions import htmx
-from . import core, data
+from . import core
 from . import parameters as par
-
-
-@core.route("/zones")
-@login_required
-def zones():
-    params = {}
-
-    return render_template("zones.html", **params)
-
-
-@core.route("/charts")
-@login_required
-def charts():
-    params = {
-        "monthly_gains_chart": data.monthly_gains_chart(),
-        "monthly_pois_chart": data.monthly_pois_chart(),
-        "cz_geojson": data.cz_geojson(),
-        "cz_area_counts": data.cz_area_counts(),
-    }
-
-    return render_template("charts.html", **params)
 
 
 @core.route("/download_csv/<section>")

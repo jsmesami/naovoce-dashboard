@@ -2,5 +2,44 @@
 
 {% block content %}
 <div id="zones">
+    <div>
+        <a class="button is-link is-small"
+           hx-get="{{ url_for('zones.add') }}"
+           hx-target="#zones-edit-area">
+            <span class="icon is-small">
+                <i class="fa fa-plus"></i>
+            </span>
+            <span>Přidat zónu</span>
+        </a>
+    </div>
+    <div id="zones-edit-area" class="mt-4 mb-4">
+        {% block zone_map %}
+            {% if zone %}
+                Mapa
+            {% endif %}
+        {% endblock %}
+    </div>
+    <table class="table stats-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <td>Vytvořeno</td>
+                <td>Změněno</td>
+                <td>Jméno</td>
+                <td>Oblast</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in rows %}
+            <tr>
+                <th class="cell-number">{{ row.id }}</th>
+                <td class="cell-w-datetime cell-number">{{ row.created_fmt }}</td>
+                <td class="cell-w-datetime cell-number">{{ row.modified_fmt }}</td>
+                <td class="cell-w-name">{{ row.name }}</td>
+                <td class="cell-number">{{ row.areas }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock content %}

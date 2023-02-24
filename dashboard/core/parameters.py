@@ -8,6 +8,7 @@ from . import data
 
 DEFAULT_SECTION = "creators"
 DEFAULT_LIMIT = 40
+MAX_LIMIT = 500
 DEFAULT_ORDER = "created_desc"
 MIN_CREATED = lambda: str(
     datetime(year=2013, month=1, day=1, tzinfo=ZoneInfo("Europe/Prague")).date()
@@ -151,7 +152,7 @@ def guard_offset(n, default):
 
 def guard_limit(n, default):
     ret = int(n)
-    return ret if 0 <= ret <= 500 else default
+    return ret if 0 <= ret <= MAX_LIMIT else default
 
 
 def guard_order(section):
