@@ -14,3 +14,4 @@ dashboard.egg-info
 /dashboard/static/css
 /dashboard/static/js
 /dashboard/static/fa
+/dashboard/static/leaflet

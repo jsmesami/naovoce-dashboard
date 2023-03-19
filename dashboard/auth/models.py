@@ -13,5 +13,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
 
+    zones = db.relationship("Zone", back_populates="author")
+
     def __repr__(self):
         return f'<User "{self.email}">'

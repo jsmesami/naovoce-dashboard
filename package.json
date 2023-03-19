@@ -7,7 +7,7 @@
     "devDependencies": {
         "frontend-dependencies": "^2.0.0",
         "npm-watch": "^0.11.0",
-        "sass": "^1.57.1"
+        "sass": "^1.59.3"
     },
     "watch": {
         "dev": {
@@ -24,10 +24,12 @@
         "build": "sass dashboard/resources/styles/dashboard.sass dashboard/static/css/dashboard.css --style=compressed"
     },
     "dependencies": {
+        "@geoman-io/leaflet-geoman-free": "^2.14.2",
         "bulma": "^0.9.4",
         "echarts": "^5.4.1",
         "font-awesome": "^4.7.0",
-        "htmx.org": "^1.8.4"
+        "htmx.org": "^1.8.6",
+        "leaflet": "^1.9.3"
     },
     "frontendDependencies": {
         "packages": {
@@ -48,9 +50,19 @@
                 "target": "dashboard/static/fa"
             },
             "htmx.org": {
-                "version": "^1.8.4",
+                "version": "^1.8.6",
                 "src": "dist/htmx.min.js",
                 "target": "dashboard/static/js"
+            },
+            "leaflet": {
+                "version": "^1.9.3",
+                "src": "{dist/leaflet.js,dist/leaflet.css}",
+                "target": "dashboard/static/leaflet"
+            },
+            "@geoman-io/leaflet-geoman-free": {
+                "version": "^2.14.2",
+                "src": "{dist/leaflet-geoman.min.js,dist/leaflet-geoman.css}",
+                "target": "dashboard/static/leaflet"
             }
         }
     }

@@ -27,7 +27,8 @@ dependencies = [
     "jinja2-fragments",
     "psycopg2-binary",
     "python-dotenv",
-    "requests"
+    "requests",
+    "shapely"
 ]
 
 [project.optional-dependencies]

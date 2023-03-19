@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 <div id="charts">
     <div id="monthly-gains-chart"></div>
     <div id="monthly-pois-chart"></div>
     <div id="region-map"></div>
 
-    <script type="text/javascript">
+    <script>
         const monthlyGainsChartOption = {
             title: {
                 text: 'Nárůst měsíčně'

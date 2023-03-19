@@ -6,6 +6,7 @@ from .config import Config
 from .core.models import *
 from .core.parameters import next_order
 from .extensions import db, htmx, login_manager
+from .zones.models import Zone
 
 __version__ = "0.1.0"
 

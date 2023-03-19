@@ -1,32 +1,132 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet-geoman.css') }}">
+    <script src="{{ url_for('static', filename='leaflet/leaflet.js') }}"></script>
+    <script src="{{ url_for('static', filename='leaflet/leaflet-geoman.min.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 <div id="zones">
-    <div>
-        <a class="button is-link is-small"
-           hx-get="{{ url_for('zones.add') }}"
-           hx-target="#zones-edit-area">
-            <span class="icon is-small">
-                <i class="fa fa-plus"></i>
-            </span>
-            <span>Přidat zónu</span>
-        </a>
-    </div>
-    <div id="zones-edit-area" class="mt-4 mb-4">
-        {% block zone_map %}
-            {% if zone %}
-                Mapa
+    {% block zone_map %}
+        <div id="zones-edit-area" class="mb-4">
+            {% if not zone %}
+                <div>
+                    <a class="button is-link is-small mb-4"
+                       hx-get="{{ url_for('zones.index') }}"
+                       hx-target="#zones-edit-area"
+                       hx-swap="outerHTML">
+                        <span class="icon is-small">
+                            <i class="fa fa-plus"></i>
+                        </span>
+                        <span>Přidat zónu</span>
+                    </a>
+                </div>
+            {% else %}
+                <form>
+                    <a class="button is-link is-small mb-4"
+                       id="submit_zone"
+                       {% if zone.mode == 'edit' %}
+                       hx-post="{{ url_for('zones.detail', id=zone.id) }}"
+                       {% else %}
+                       hx-post="{{ url_for('zones.index') }}"
+                       {% endif %}
+                       hx-target="#zones"
+                       hx-swap="outerHTML">
+                            <span class="icon is-small">
+                                <i class="fa fa-upload"></i>
+                            </span>
+                        <span>Odeslat</span>
+                    </a>
+                    <a class="button is-small mb-4"
+                       href="{{ url_for('zones.index') }}">
+                            <span class="icon is-small">
+                                <i class="fa fa-times"></i>
+                            </span>
+                        <span>Zrušit</span>
+                    </a>
+                    <div class="field">
+                        <input class="input"
+                               type="text"
+                               name="zone_name"
+                               value="{{ zone.name }}"
+                               placeholder="Jméno zóny"
+                               minlength="3"
+                               maxlength="255">
+                    </div>
+                    <input type="hidden" name="zone_area">
+                </form>
             {% endif %}
-        {% endblock %}
-    </div>
+
+            {% if zone %}
+                <div id="zones-map"></div>
+                <script>
+                    (function () {
+                        const map = L.map('zones-map').setView([49.9, 15.8], 8);
+                        const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                        const nameInput = document.querySelector('input[name="zone_name"]');
+                        const areaInput = document.querySelector('input[name="zone_area"]');
+                        const submitButton = document.getElementById("submit_zone");
+                        let editableLayers;
+
+                        const savePayload = () => {
+                            const payload = editableLayers.toGeoJSON();
+                            const features = payload["features"]
+
+                            if (Array.isArray(features) && features.length && nameInput.value) {
+                                submitButton.removeAttribute("disabled");
+                            } else {
+                                submitButton.setAttribute("disabled", "");
+                            }
+                            areaInput.value = JSON.stringify(payload);
+                        }
+
+                        {% if zone.mode == 'edit' %}
+                        editableLayers = new L.GeoJSON({{ zone.area_geojson|safe }}).addTo(map);
+                        map.fitBounds(editableLayers.getBounds());
+                        {% else %}
+                        editableLayers = new L.FeatureGroup().addTo(map);
+                        {% endif %}
+
+                        map.pm.addControls({
+                            position: 'topleft',
+                            oneBlock: true,
+                            drawMarker: false,
+                            drawPolyline: false,
+                            drawCircle: false,
+                            drawCircleMarker: false,
+                            drawRectangle: false,
+                            dragMode: false,
+                            drawText: false,
+                            cutPolygon: false,
+                            rotateMode: false,
+                        });
+                        map.pm.setGlobalOptions({
+                            allowSelfIntersection: false,
+                            layerGroup: editableLayers,
+                        })
+                        savePayload();
+                        map.on('pm:drawend', savePayload);
+                        map.on('pm:remove', savePayload);
+                        editableLayers.on('pm:edit', savePayload);
+                        nameInput.addEventListener('input', savePayload)
+                    })();
+                </script>
+            {% endif %}
+        </div>
+    {% endblock zone_map %}
+
     <table class="table stats-table">
         <thead>
             <tr>
                 <th>ID</th>
                 <td>Vytvořeno</td>
                 <td>Změněno</td>
+                <td>Autor</td>
                 <td>Jméno</td>
-                <td>Oblast</td>
+                <td>Okres/y</td>
+                <td>Akce</td>
             </tr>
         </thead>
         <tbody>
@@ -35,8 +135,32 @@
                 <th class="cell-number">{{ row.id }}</th>
                 <td class="cell-w-datetime cell-number">{{ row.created_fmt }}</td>
                 <td class="cell-w-datetime cell-number">{{ row.modified_fmt }}</td>
-                <td class="cell-w-name">{{ row.name }}</td>
-                <td class="cell-number">{{ row.areas }}</td>
+                <td>{{ row.author }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.districts }}</td>
+                <td>
+                    {% with detail_url = url_for('zones.detail', id=row.id) %}
+                        <a class="button is-small"
+                           title="Upravit"
+                           hx-get="{{ detail_url }}"
+                           hx-target="#zones-edit-area"
+                           hx-swap="outerHTML">
+                            <span class="icon is-small">
+                                <i class="fa fa-pencil"></i>
+                            </span>
+                        </a>
+                        <a class="button is-small"
+                           title="Smazat"
+                           hx-delete="{{ detail_url }}"
+                           hx-target="#zones"
+                           hx-swap="outerHTML"
+                           hx-confirm="Opravdu smazat zónu?">
+                            <span class="icon is-small">
+                                <i class="fa fa-trash"></i>
+                            </span>
+                        </a>
+                    {% endwith %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
