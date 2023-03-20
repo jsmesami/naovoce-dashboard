@@ -115,7 +115,9 @@
                         editableLayers.on('pm:edit', savePayload);
                         nameInput.addEventListener('input', savePayload);
 
-                        L.esri.Geocoding.geosearch().addTo(map);
+                        L.esri.Geocoding.geosearch({
+                            useMapBounds: false,
+                        }).addTo(map);
                     })();
                 </script>
             {% endif %}
