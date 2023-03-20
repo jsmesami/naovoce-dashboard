@@ -3,8 +3,11 @@
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet-geoman.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='leaflet/esri-leaflet-geocoder.css') }}">
     <script src="{{ url_for('static', filename='leaflet/leaflet.js') }}"></script>
     <script src="{{ url_for('static', filename='leaflet/leaflet-geoman.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='leaflet/esri-leaflet.js') }}"></script>
+    <script src="{{ url_for('static', filename='leaflet/esri-leaflet-geocoder.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -72,7 +75,7 @@
 
                         const savePayload = () => {
                             const payload = editableLayers.toGeoJSON();
-                            const features = payload["features"]
+                            const features = payload["features"];
 
                             if (Array.isArray(features) && features.length && nameInput.value) {
                                 submitButton.removeAttribute("disabled");
@@ -110,7 +113,9 @@
                         map.on('pm:drawend', savePayload);
                         map.on('pm:remove', savePayload);
                         editableLayers.on('pm:edit', savePayload);
-                        nameInput.addEventListener('input', savePayload)
+                        nameInput.addEventListener('input', savePayload);
+
+                        L.esri.Geocoding.geosearch().addTo(map);
                     })();
                 </script>
             {% endif %}

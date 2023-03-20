@@ -20,6 +20,7 @@ def get_zone(id):
 
 
 def to_shapes(geojson):
+    """Make Shapely shapes, converting MultiPolygon to sequence of Polygons"""
     for feat in geojson.get("features", []):
         geom = feat.get("geometry", {})
         match geom.get("type"):
@@ -30,6 +31,8 @@ def to_shapes(geojson):
                 )
             case "Polygon":
                 yield shape(geom)
+            case _:
+                yield shape({"type": "Polygon", "coordinates": []})
 
 
 @zones.route("/zones", methods=["GET", "POST"])

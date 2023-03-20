@@ -27,6 +27,8 @@
         "@geoman-io/leaflet-geoman-free": "^2.14.2",
         "bulma": "^0.9.4",
         "echarts": "^5.4.1",
+        "esri-leaflet": "^2.5.3",
+        "esri-leaflet-geocoder": "^2.3.4",
         "font-awesome": "^4.7.0",
         "htmx.org": "^1.8.6",
         "leaflet": "^1.9.3"
@@ -62,6 +64,16 @@
             "@geoman-io/leaflet-geoman-free": {
                 "version": "^2.14.2",
                 "src": "{dist/leaflet-geoman.min.js,dist/leaflet-geoman.css}",
+                "target": "dashboard/static/leaflet"
+            },
+            "esri-leaflet": {
+                "version": "^2.5.3",
+                "src": "dist/esri-leaflet.js",
+                "target": "dashboard/static/leaflet"
+            },
+            "esri-leaflet-geocoder": {
+                "version": "^2.3.4",
+                "src": "{dist/esri-leaflet-geocoder.css,dist/esri-leaflet-geocoder.js,dist/img}",
                 "target": "dashboard/static/leaflet"
             }
         }
