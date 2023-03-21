@@ -20,4 +20,5 @@ def send_email(app, *, sender="software@na-ovoce.cz", recipient, subject, body):
         if secure:
             server.starttls(context=ssl.create_default_context())
             server.login(user=user, password=password)
+
         server.send_message(msg)

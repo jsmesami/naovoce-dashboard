@@ -1,3 +1,5 @@
+import logging
+
 from flask import current_app, render_template
 from sqlalchemy import text
 
@@ -21,10 +23,18 @@ def dump_pois():
 
 @zones.cli.command("check-zones")
 def check_zones():
+    """Checks if there are POIs within Zones, executed daily with Cron"""
+    current_app.logger.setLevel(logging.INFO)
+    current_app.logger.info("Checking Zones")
+
     if pois := dump_pois():
+        num_pois = len(pois)
+        current_app.logger.info(f"{num_pois} POIs found within Zones, sending email")
         send_email(
             current_app,
             recipient="team@na-ovoce.cz",
-            subject=render_template("zones/email_subject.txt", num=len(pois)),
+            subject=render_template("zones/email_subject.txt", num=num_pois),
             body=render_template("zones/email_body.txt", pois=pois),
         )
+    else:
+        current_app.logger.info("No POIs found within Zones")
