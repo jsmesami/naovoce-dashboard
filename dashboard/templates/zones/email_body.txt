@@ -1,0 +1,3 @@
+{% for p in pois %}
+V zóně "{{ p.zone }}" je značka "{{ p.category }}" uživatele "{{ p.creator }}"" vytvořená {{ p.created }}: https://map.na-ovoce.cz/{{ p.id }}
+{% endfor %}

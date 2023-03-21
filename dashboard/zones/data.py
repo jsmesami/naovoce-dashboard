@@ -40,3 +40,28 @@ ZONE_DELETE = """
     DELETE FROM zone
     WHERE id = :zone_id
 """
+
+POIS_IN_ZONES = """
+    WITH excluded_categories AS (
+        SELECT id
+        FROM category cat
+        WHERE cat.name IN ('Sady', 'Ovocné trasy')
+           OR cat.is_published = false
+           OR cat.is_deleted = true
+    )
+    SELECT
+        poi.id, poi.created,
+        category.name AS category_name,
+        TRIM(CONCAT(first_name, ' ', last_name)) as creator_name,
+        creator.email as creator_email,
+        zone.name as zone_name,
+        to_char(poi.created, 'DD.MM.YYYY') AS created_fmt
+    FROM poi
+    JOIN zone ON ST_Intersects(poi.position, zone.area)
+    LEFT JOIN creator ON creator.id = poi.creator_id
+    LEFT JOIN category ON category.id = poi.category_id
+    WHERE poi.is_published = true
+        AND poi.is_deleted = false
+        AND poi.category_id NOT IN (SELECT id FROM excluded_categories)
+    ORDER BY category_name, poi.created DESC
+"""
