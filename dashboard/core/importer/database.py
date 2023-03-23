@@ -1,18 +1,15 @@
 from datetime import datetime
 
 from flask import current_app
-from flask_sqlalchemy.session import Session
 from sqlalchemy import text
 
 
 def mark_modified(row):
-    row["modified"] = datetime.now()
-    return row
+    return {**row, "modified": datetime.now()}
 
 
 def mark_deleted(row, val):
-    row["is_deleted"] = val
-    return row
+    return {**row, "is_deleted": val}
 
 
 def db_delete(db, model, export_rows, db_rows):
@@ -28,9 +25,8 @@ def db_delete(db, model, export_rows, db_rows):
                 count=len(ids_to_delete), table=model.__table__
             )
         )
-        session = Session(db)
-        with session.begin():
-            session.bulk_update_mappings(model, mappings_to_update)
+        db.session.bulk_update_mappings(model, mappings_to_update)
+        db.session.commit()
 
 
 def db_update(db, model, export_rows, db_rows):
@@ -48,9 +44,8 @@ def db_update(db, model, export_rows, db_rows):
                 count=len(mappings_to_update), table=model.__table__
             )
         )
-        session = Session(db)
-        with session.begin():
-            session.bulk_update_mappings(model, mappings_to_update)
+        db.session.bulk_update_mappings(model, mappings_to_update)
+        db.session.commit()
 
 
 def db_insert(db, model, export_rows, db_rows):
@@ -66,9 +61,8 @@ def db_insert(db, model, export_rows, db_rows):
                 count=len(mappings_to_insert), table=model.__table__
             )
         )
-        session = Session(db)
-        with session.begin():
-            session.bulk_insert_mappings(model, mappings_to_insert)
+        db.session.bulk_insert_mappings(model, mappings_to_insert)
+        db.session.commit()
 
 
 def read_db_data(db, query, adapter):
