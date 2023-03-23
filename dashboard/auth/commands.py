@@ -13,6 +13,7 @@ from .models import User
 @click.argument("password")
 @wrap_command(current_app)
 def create_user(email, password):
-    user = User(email=email, password=generate_password_hash(password, method="sha256"))
-    db.session.add(user)
+    db.session.add(
+        User(email=email, password=generate_password_hash(password, method="sha256"))
+    )
     db.session.commit()

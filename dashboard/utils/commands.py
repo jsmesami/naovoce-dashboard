@@ -13,6 +13,7 @@ def wrap_command(app):
                     subject="Command failed",
                     body=str(inst),
                 )
+                raise
 
         return closure
 

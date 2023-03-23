@@ -1,4 +1,4 @@
-from flask import abort, make_response, render_template, request, url_for
+from flask import make_response, render_template, request, url_for
 from flask_login import login_user, logout_user
 from jinja2_fragments.flask import render_block
 from werkzeug.security import check_password_hash
