@@ -37,7 +37,7 @@ def db_update(db, model, export_rows, db_rows):
     ids_to_update = set(export_rows.keys()) & set(db_rows.keys())
 
     mappings_to_update = [
-        mark_modified(export_rows[id_])
+        mark_deleted(mark_modified(export_rows[id_]), False)
         for id_ in ids_to_update
         if export_rows[id_] != db_rows[id_]
     ]
