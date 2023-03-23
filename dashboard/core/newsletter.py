@@ -16,8 +16,6 @@ def subscribe(nl_url, nl_list_id, nl_api_key):
     """
     creators = db.session.execute(text(query)).mappings().all()
 
-    current_app.logger.info("Running newsletter update")
-
     if not creators:
         current_app.logger.info("No new creators")
         return
