@@ -58,6 +58,7 @@ def creators_rows(
         (SELECT COUNT(*)
          FROM image
          WHERE image.creator_id = c.id
+         AND image.image_url !~ '\\w{{8}}-\\w{{4}}-\\w{{4}}-\\w{{4}}-\\w{{12}}\\.jpg'
          AND image.is_published = true
          AND image.is_deleted = false) AS n_images,
         (SELECT COUNT(*)
@@ -150,6 +151,7 @@ def pois_rows(
         (SELECT COUNT(*)
          FROM image
          WHERE image.poi_id = poi.id
+         AND image.image_url !~ '\\w{{8}}-\\w{{4}}-\\w{{4}}-\\w{{4}}-\\w{{12}}\\.jpg'
          AND image.is_published = true
          AND image.is_deleted = false) AS n_images,
         (SELECT COUNT(*)
@@ -191,6 +193,7 @@ def images_rows(created_since, created_until, order, limit=None, offset=0, **kwa
         FROM image
         WHERE is_published = true
         AND is_deleted = false
+        AND image_url !~ '\\w{{8}}-\\w{{4}}-\\w{{4}}-\\w{{4}}-\\w{{12}}\\.jpg'
         AND created BETWEEN '{created_since}' AND '{created_until}'
         {order_clause(order)}
         {pagination_clause(limit, offset)}
@@ -209,6 +212,7 @@ def images_count(created_since, created_until, **kwargs):
         FROM image
         WHERE is_published = true
         AND is_deleted = false
+        AND image_url !~ '\\w{{8}}-\\w{{4}}-\\w{{4}}-\\w{{4}}-\\w{{12}}\\.jpg'
         AND created BETWEEN '{created_since}' AND '{created_until}'
     """
     return dict(db.session.execute(text(query)).mappings().fetchone())
