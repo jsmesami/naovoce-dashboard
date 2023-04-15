@@ -37,4 +37,4 @@
     yarn
 
     # run development servers
-    honcho start
+    make dev

@@ -69,7 +69,8 @@ def creators_rows(
         FROM creator c
         WHERE c.is_deleted = false
         AND c.created BETWEEN '{created_since}' AND '{created_until}'
-        AND c.last_visit BETWEEN '{visited_since}' AND '{visited_until}'
+        AND last_visit IS NULL OR
+          (last_visit BETWEEN '{visited_since}' AND '{visited_until}')
         {id_filter_clause(id_filter)}
         {creator_search_clause(search)}
         {order_clause(order)}
@@ -82,12 +83,22 @@ def creators_rows(
     )
 
 
-def creators_count(created_since, created_until, id_filter, search, **kwargs):
+def creators_count(
+    created_since,
+    created_until,
+    visited_since,
+    visited_until,
+    id_filter,
+    search,
+    **kwargs,
+):
     query = f"""
         SELECT COUNT(*)
         FROM creator
         WHERE is_deleted = false
         AND created BETWEEN '{created_since}' AND '{created_until}'
+        AND last_visit IS NULL OR
+          (last_visit BETWEEN '{visited_since}' AND '{visited_until}')
         {id_filter_clause(id_filter)}
         {creator_search_clause(search)}
     """

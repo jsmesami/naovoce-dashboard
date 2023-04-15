@@ -6,9 +6,9 @@
 #
 aniso8601==9.0.1
     # via flask-restful
-boto3==1.26.106
+boto3==1.26.114
     # via dashboard (pyproject.toml)
-botocore==1.29.106
+botocore==1.29.114
     # via
     #   boto3
     #   s3transfer
@@ -61,7 +61,7 @@ markupsafe==2.1.2
     #   werkzeug
 numpy==1.24.2
     # via shapely
-packaging==23.0
+packaging==23.1
     # via geoalchemy2
 psycopg2-binary==2.9.6
     # via dashboard (pyproject.toml)
@@ -81,7 +81,7 @@ six==1.16.0
     # via
     #   flask-restful
     #   python-dateutil
-sqlalchemy==2.0.8
+sqlalchemy==2.0.9
     # via
     #   flask-sqlalchemy
     #   geoalchemy2
