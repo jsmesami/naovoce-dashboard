@@ -4,6 +4,10 @@
     "version": "0.0.1",
     "license": "MIT",
     "author": "Ondřej Nejedlý",
+    "engines": {
+        "node": ">=18.18.2"
+    },
+    "packageManager": "yarn@1.22.19",
     "devDependencies": {
         "frontend-dependencies": "^2.0.0",
         "npm-watch": "^0.11.0",
