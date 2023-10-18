@@ -3,9 +3,8 @@
 ## Prerequisites
 
 * Python 3.11
-* Postgres
-* Node.js
-* Yarn
+* Postgres with PostGIS
+* Nodejs
 
 ## Development
 
@@ -34,7 +33,7 @@
     shp2pgsql -s 4326 dashboard/resources/gis/cz_2.shp public.cz_2 | psql -U naovoce naovoce_dashboard
 
     # install frontend dependencies
-    yarn
+    npx yarn install
 
     # run development servers
     make dev
