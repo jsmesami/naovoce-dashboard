@@ -9,7 +9,7 @@ fmt:
 	black .
 
 compile-assets:
-	yarn && yarn build
+	npx yarn && npx yarn build
 
 run:
 	gunicorn -b :8888 'dashboard:create_app()'
