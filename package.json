@@ -7,7 +7,7 @@
     "devDependencies": {
         "frontend-dependencies": "^2.0.0",
         "npm-watch": "^0.11.0",
-        "sass": "^1.59.3"
+        "sass": "^1.69.4"
     },
     "watch": {
         "dev": {
@@ -26,12 +26,12 @@
     "dependencies": {
         "@geoman-io/leaflet-geoman-free": "^2.14.2",
         "bulma": "^0.9.4",
-        "echarts": "^5.4.1",
+        "echarts": "^5.4.3",
         "esri-leaflet": "^2.5.3",
         "esri-leaflet-geocoder": "^2.3.4",
         "font-awesome": "^4.7.0",
-        "htmx.org": "^1.8.6",
-        "leaflet": "^1.9.3"
+        "htmx.org": "^1.9.6",
+        "leaflet": "^1.9.4"
     },
     "frontendDependencies": {
         "packages": {
@@ -42,7 +42,7 @@
                 "namespaced": true
             },
             "echarts": {
-                "version": "^5.4.1",
+                "version": "^5.4.3",
                 "src": "dist/echarts.min.js",
                 "target": "dashboard/static/js"
             },
@@ -52,12 +52,12 @@
                 "target": "dashboard/static/fa"
             },
             "htmx.org": {
-                "version": "^1.8.6",
+                "version": "^1.9.6",
                 "src": "dist/htmx.min.js",
                 "target": "dashboard/static/js"
             },
             "leaflet": {
-                "version": "^1.9.3",
+                "version": "^1.9.4",
                 "src": "{dist/leaflet.js,dist/leaflet.css}",
                 "target": "dashboard/static/leaflet"
             },

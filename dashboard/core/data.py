@@ -82,7 +82,6 @@ def creators_rows(
         .mappings()
         .all()
     )
-    print(query)
     return d
 
 
