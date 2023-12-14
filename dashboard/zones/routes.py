@@ -20,7 +20,24 @@ def get_zone(id):
 
 
 def to_shapes(geojson):
-    """Make Shapely shapes, converting MultiPolygon to sequence of Polygons"""
+    """
+    :param geojson: A GeoJSON object.
+    :return: A generator that yields shapes based on the given GeoJSON object.
+
+    The `to_shapes` method takes a GeoJSON object as input and returns a generator that
+    yields shapes based on the given GeoJSON object. It supports both "MultiPolygon" and
+    "Polygon" geometries.
+
+    If the GeoJSON object has "MultiPolygon" geometry, the method iterates over the
+    "coordinates" of each geometry and yields a shape defined as a "Polygon" with the
+    corresponding coordinates.
+
+    If the GeoJSON object has "Polygon" geometry, the method yields a shape directly
+    based on the given geometry.
+
+    If the GeoJSON object does not have any valid geometries, the method yields an empty
+    shape.
+    """
     for feat in geojson.get("features", []):
         geom = feat.get("geometry", {})
         match geom.get("type"):

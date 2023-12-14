@@ -14,6 +14,6 @@ from .models import User
 @wrap_command(current_app)
 def create_user(email, password):
     db.session.add(
-        User(email=email, password=generate_password_hash(password, method="sha256"))
+        User(email=email, password=generate_password_hash(password, method="scrypt"))
     )
     db.session.commit()

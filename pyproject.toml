@@ -29,7 +29,7 @@ dependencies = [
     "python-dotenv",
     "requests",
     "shapely",
-    "werkzeug<3",
+    "werkzeug",
 ]
 
 [project.optional-dependencies]
