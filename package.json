@@ -34,7 +34,7 @@
         "esri-leaflet": "^2.5.3",
         "esri-leaflet-geocoder": "^2.3.4",
         "font-awesome": "^4.7.0",
-        "htmx.org": "^1.9.6",
+        "htmx.org": "^1.9.10",
         "leaflet": "^1.9.4"
     },
     "frontendDependencies": {
@@ -56,7 +56,7 @@
                 "target": "dashboard/static/fa"
             },
             "htmx.org": {
-                "version": "^1.9.6",
+                "version": "^1.9.10",
                 "src": "dist/htmx.min.js",
                 "target": "dashboard/static/js"
             },
