@@ -9,8 +9,7 @@
 ## Development
 
     # prepare database
-    psql -U postgres postgres -c "CREATE ROLE naovoce SUPERUSER"
-    psql -U postgres postgres -c "ALTER ROLE naovoce LOGIN"
+    psql -U postgres postgres -c "CREATE ROLE naovoce SUPERUSER LOGIN"
     psql -U postgres postgres -c "CREATE DATABASE naovoce_dashboard OWNER=naovoce"
 
     # prepare and activate virtual environment
