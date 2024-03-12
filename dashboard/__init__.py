@@ -1,4 +1,5 @@
 """Statistics Dashboard for Na-ovoce.cz"""
+
 from flask import Flask
 
 from .auth.models import User

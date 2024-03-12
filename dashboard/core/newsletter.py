@@ -14,6 +14,7 @@ def subscribe(nl_url, nl_list_id, nl_api_key):
         WHERE is_deleted = false
         AND created > current_date - 1
         AND email NOT ILIKE '%@privaterelay.appleid.com'
+        AND email NOT ILIKE '%@users.mapotic.com'
     """
     creators = db.session.execute(text(query)).mappings().all()
 
