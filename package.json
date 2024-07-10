@@ -5,13 +5,13 @@
     "license": "MIT",
     "author": "Ondřej Nejedlý",
     "engines": {
-        "node": ">=18.18.2"
+        "node": ">=v20.15.0"
     },
     "packageManager": "yarn@1.22.19",
     "devDependencies": {
         "frontend-dependencies": "^2.0.0",
         "npm-watch": "^0.11.0",
-        "sass": "^1.69.4"
+        "sass": "^1.77.7"
     },
     "watch": {
         "dev": {
@@ -28,13 +28,13 @@
         "build": "sass dashboard/resources/styles/dashboard.sass dashboard/static/css/dashboard.css --style=compressed"
     },
     "dependencies": {
-        "@geoman-io/leaflet-geoman-free": "^2.14.2",
+        "@geoman-io/leaflet-geoman-free": "^2.17.0",
         "bulma": "^0.9.4",
-        "echarts": "^5.4.3",
+        "echarts": "^5.5.1",
         "esri-leaflet": "^2.5.3",
         "esri-leaflet-geocoder": "^2.3.4",
         "font-awesome": "^4.7.0",
-        "htmx.org": "^1.9.10",
+        "htmx.org": "^1.9.12",
         "leaflet": "^1.9.4"
     },
     "frontendDependencies": {
@@ -46,7 +46,7 @@
                 "namespaced": true
             },
             "echarts": {
-                "version": "^5.4.3",
+                "version": "^5.5.1",
                 "src": "dist/echarts.min.js",
                 "target": "dashboard/static/js"
             },
@@ -56,7 +56,7 @@
                 "target": "dashboard/static/fa"
             },
             "htmx.org": {
-                "version": "^1.9.10",
+                "version": "^1.9.12",
                 "src": "dist/htmx.min.js",
                 "target": "dashboard/static/js"
             },
@@ -66,7 +66,7 @@
                 "target": "dashboard/static/leaflet"
             },
             "@geoman-io/leaflet-geoman-free": {
-                "version": "^2.14.2",
+                "version": "^2.17.0",
                 "src": "{dist/leaflet-geoman.min.js,dist/leaflet-geoman.css}",
                 "target": "dashboard/static/leaflet"
             },
