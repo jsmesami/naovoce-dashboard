@@ -8,15 +8,15 @@ aniso8601==9.0.1
     # via flask-restful
 blinker==1.8.2
     # via flask
-boto3==1.34.143
+boto3==1.35.38
     # via dashboard (pyproject.toml)
-botocore==1.34.143
+botocore==1.35.39
     # via
     #   boto3
     #   s3transfer
-certifi==2024.7.4
+certifi==2024.8.30
     # via requests
-charset-normalizer==3.3.2
+charset-normalizer==3.4.0
     # via requests
 click==8.1.7
     # via flask
@@ -27,7 +27,7 @@ flask==3.0.3
     #   flask-login
     #   flask-restful
     #   flask-sqlalchemy
-flask-htmx==0.3.2
+flask-htmx==0.4.0
     # via dashboard (pyproject.toml)
 flask-login==0.6.3
     # via dashboard (pyproject.toml)
@@ -37,13 +37,13 @@ flask-sqlalchemy==3.1.1
     # via dashboard (pyproject.toml)
 geoalchemy2==0.15.2
     # via dashboard (pyproject.toml)
-gevent==24.2.1
+gevent==24.10.2
     # via gunicorn
-greenlet==3.0.3
+greenlet==3.1.1
     # via gevent
-gunicorn[gevent]==22.0.0
+gunicorn[gevent]==23.0.0
     # via dashboard (pyproject.toml)
-idna==3.7
+idna==3.10
     # via requests
 itsdangerous==2.2.0
     # via flask
@@ -51,17 +51,17 @@ jinja2==3.1.4
     # via
     #   flask
     #   jinja2-fragments
-jinja2-fragments==1.5.0
+jinja2-fragments==1.6.0
     # via dashboard (pyproject.toml)
 jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-markupsafe==2.1.5
+markupsafe==3.0.1
     # via
     #   jinja2
     #   werkzeug
-numpy==2.0.0
+numpy==2.1.2
     # via shapely
 packaging==24.1
     # via
@@ -73,36 +73,36 @@ python-dateutil==2.9.0.post0
     # via botocore
 python-dotenv==1.0.1
     # via dashboard (pyproject.toml)
-pytz==2024.1
+pytz==2024.2
     # via flask-restful
 requests==2.32.3
     # via dashboard (pyproject.toml)
-s3transfer==0.10.2
+s3transfer==0.10.3
     # via boto3
-shapely==2.0.4
+shapely==2.0.6
     # via dashboard (pyproject.toml)
 six==1.16.0
     # via
     #   flask-restful
     #   python-dateutil
-sqlalchemy==2.0.31
+sqlalchemy==2.0.35
     # via
     #   flask-sqlalchemy
     #   geoalchemy2
 typing-extensions==4.12.2
     # via sqlalchemy
-urllib3==2.2.2
+urllib3==2.2.3
     # via
     #   botocore
     #   requests
-werkzeug==3.0.3
+werkzeug==3.0.4
     # via
     #   dashboard (pyproject.toml)
     #   flask
     #   flask-login
 zope-event==5.0
     # via gevent
-zope-interface==6.4.post2
+zope-interface==7.1.0
     # via gevent
 
 # The following packages are considered to be unsafe in a requirements file:
