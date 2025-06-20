@@ -7,11 +7,11 @@
     "engines": {
         "node": ">=v20.15.0"
     },
-    "packageManager": "yarn@1.22.19",
+    "packageManager": "yarn@1.22.22",
     "devDependencies": {
-        "frontend-dependencies": "^2.0.0",
-        "npm-watch": "^0.11.0",
-        "sass": "^1.77.7"
+        "frontend-dependencies": "2.0.1",
+        "npm-watch": "0.13.0",
+        "sass": "1.77.6"
     },
     "watch": {
         "dev": {
@@ -28,55 +28,55 @@
         "build": "sass dashboard/resources/styles/dashboard.sass dashboard/static/css/dashboard.css --style=compressed"
     },
     "dependencies": {
-        "@geoman-io/leaflet-geoman-free": "^2.17.0",
-        "bulma": "^0.9.4",
-        "echarts": "^5.5.1",
-        "esri-leaflet": "^2.5.3",
-        "esri-leaflet-geocoder": "^2.3.4",
-        "font-awesome": "^4.7.0",
-        "htmx.org": "^1.9.12",
-        "leaflet": "^1.9.4"
+        "@geoman-io/leaflet-geoman-free": "2.18.3",
+        "bulma": "0.9.4",
+        "echarts": "5.6.0",
+        "esri-leaflet": "2.5.3",
+        "esri-leaflet-geocoder": "2.3.4",
+        "font-awesome": "4.7.0",
+        "htmx.org": "1.9.12",
+        "leaflet": "1.9.4"
     },
     "frontendDependencies": {
         "packages": {
             "bulma": {
-                "version": "^0.9.4",
+                "version": "0.9.4",
                 "src": "sass/*",
                 "target": "dashboard/resources/vendor",
                 "namespaced": true
             },
             "echarts": {
-                "version": "^5.5.1",
+                "version": "5.6.0",
                 "src": "dist/echarts.min.js",
                 "target": "dashboard/static/js"
             },
             "font-awesome": {
-                "version": "^4.7.0",
+                "version": "4.7.0",
                 "src": "{fonts,css}",
                 "target": "dashboard/static/fa"
             },
             "htmx.org": {
-                "version": "^1.9.12",
+                "version": "1.9.12",
                 "src": "dist/htmx.min.js",
                 "target": "dashboard/static/js"
             },
             "leaflet": {
-                "version": "^1.9.4",
+                "version": "1.9.4",
                 "src": "{dist/leaflet.js,dist/leaflet.css}",
                 "target": "dashboard/static/leaflet"
             },
             "@geoman-io/leaflet-geoman-free": {
-                "version": "^2.17.0",
+                "version": "2.18.3",
                 "src": "{dist/leaflet-geoman.min.js,dist/leaflet-geoman.css}",
                 "target": "dashboard/static/leaflet"
             },
             "esri-leaflet": {
-                "version": "^2.5.3",
+                "version": "2.5.3",
                 "src": "dist/esri-leaflet.js",
                 "target": "dashboard/static/leaflet"
             },
             "esri-leaflet-geocoder": {
-                "version": "^2.3.4",
+                "version": "2.3.4",
                 "src": "{dist/esri-leaflet-geocoder.css,dist/esri-leaflet-geocoder.js,dist/img}",
                 "target": "dashboard/static/leaflet"
             }
