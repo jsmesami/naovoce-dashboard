@@ -1,6 +1,5 @@
 import contextlib
 import re
-from datetime import datetime
 
 
 def select_keys(d, keys):
@@ -9,15 +8,16 @@ def select_keys(d, keys):
 
 def str_to_datetime(s):
     dt_match = r"\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}"
-    dt_format = "%Y-%m-%d %H:%M:%S"
 
-    if match := re.search(dt_match, s):
-        return datetime.strptime(match.group(0), dt_format)
+    if re.search(dt_match, s):
+        return s
 
 
 def latlng_to_point(lat, lng):
     with contextlib.suppress(ValueError, TypeError):
-        return f"POINT({float(lat)} {float(lng)})"
+        return (
+            f"POINT({float(format(float(lat), "f"))} {float(format(float(lng), "f"))})"
+        )
 
 
 def str_to_bool(s):

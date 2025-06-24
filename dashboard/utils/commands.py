@@ -1,7 +1,7 @@
 from .email import send_email
 
 
-def wrap_command(app):
+def report_exception(app):
     def wrapper(func):
         def closure(*args, **kwargs):
             try:

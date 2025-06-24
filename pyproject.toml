@@ -25,7 +25,6 @@ dependencies = [
     "gunicorn",
     "gunicorn[gevent]",
     "jinja2-fragments",
-    "psycopg2-binary",
     "python-dotenv",
     "requests",
     "shapely",

@@ -8,13 +8,13 @@ from ..extensions import db
 def subscribe(nl_url, nl_list_id, nl_api_key):
     query = """
         SELECT
-        TRIM(CONCAT(first_name, ' ', last_name)) as "name",
+        TRIM(first_name || ' ' || last_name) as "name",
         email
         FROM creator
-        WHERE is_deleted = false
-        AND created > current_date - 1
-        AND TRIM(email) NOT ILIKE '%@privaterelay.appleid.com'
-        AND TRIM(email) NOT ILIKE '%@users.mapotic.com'
+        WHERE is_deleted = FALSE
+        AND created > date('now', '-1 day')
+        AND UPPER(TRIM(email)) NOT LIKE UPPER('%@privaterelay.appleid.com')
+        AND UPPER(TRIM(email)) NOT LIKE UPPER('%@users.mapotic.com')
     """
     creators = db.session.execute(text(query)).mappings().all()
 
@@ -40,8 +40,8 @@ def unsubscribe(nl_url, nl_list_id, nl_api_key):
     query = """
         SELECT email
         FROM creator
-        WHERE is_deleted = true
-        AND modified > current_date - 1
+        WHERE is_deleted = TRUE
+        AND modified > date('now', '-1 day')
     """
     creators = db.session.execute(text(query)).mappings().all()
 
@@ -74,11 +74,11 @@ def update():
 def dump_emails():
     query = """
         SELECT
-        TRIM(CONCAT(first_name, ' ', last_name)) as "name",
+        TRIM(first_name || ' ' || last_name) as "name",
         email,
-        to_char(created, 'YYYY-MM-DD')
+        strftime('%Y-%m-%d', created)
         FROM creator
-        WHERE is_deleted = false
+        WHERE is_deleted = FALSE
         ORDER BY created DESC
     """
     for c in db.session.execute(text(query)).all():

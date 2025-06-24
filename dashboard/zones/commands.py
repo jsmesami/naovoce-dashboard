@@ -4,7 +4,7 @@ from flask import current_app, render_template
 from sqlalchemy import text
 
 from ..extensions import db
-from ..utils.commands import wrap_command
+from ..utils.commands import report_exception
 from ..utils.email import send_email
 from . import data, zones
 
@@ -23,7 +23,7 @@ def dump_pois():
 
 
 @zones.cli.command("check-zones")
-@wrap_command(current_app)
+@report_exception(current_app)
 def check_zones():
     """Checks if there are POIs within Zones, executed daily with Cron"""
     current_app.logger.setLevel(logging.INFO)

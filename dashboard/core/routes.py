@@ -33,7 +33,6 @@ def toggle_controls():
     params = {"show_controls": show_controls}
     params |= par.section_params(section)
     params |= par.SECTION_COUNT_FETCHERS[section](**params)
-
     return render_block("tables/base.html", "table_controls", **params)
 
 
@@ -47,7 +46,6 @@ def index():
     params |= par.section_params(section)
     params |= par.SECTION_ROWS_FETCHERS[section](**params)
     params |= par.SECTION_COUNT_FETCHERS[section](**params)
-
     if htmx:
         return render_block("index.html", "content", **params)
 

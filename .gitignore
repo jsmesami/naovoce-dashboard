@@ -4,7 +4,9 @@ __pycache__
 .env
 .idea
 naovoce-dashboard.iml
-dashboard.db
+dashboard.sqlite3
+dashboard.sqlite3-shm
+dashboard.sqlite3-wal
 dashboard.egg-info
 /node_modules
 /venv

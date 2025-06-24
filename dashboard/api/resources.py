@@ -10,13 +10,13 @@ class TopUsers(Resource):
             WITH filtered_poi AS (
               SELECT creator_id
               FROM poi
-              WHERE created >= now() - interval '30 day'
-                AND is_deleted = false
-                AND is_published = true
+              WHERE created >= datetime('now', '-30 days')
+                AND is_deleted = FALSE
+                AND is_published = TRUE
             )
             SELECT
               creator.id,
-              TRIM(CONCAT(creator.first_name, ' ', creator.last_name)) as "name",
+              TRIM(creator.first_name || ' ' || creator.last_name) as "name",
               (
                 SELECT COUNT(*)
                 FROM filtered_poi
@@ -24,7 +24,7 @@ class TopUsers(Resource):
               ) AS poi_count
             FROM creator
             WHERE (
-              creator.is_deleted = false
+              creator.is_deleted = FALSE
               AND EXISTS(
                 SELECT 1
                 FROM filtered_poi
