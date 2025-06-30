@@ -5,7 +5,7 @@ from sqlalchemy import text
 
 from ..extensions import db
 from ..utils.commands import report_exception
-from . import core, importer, newsletter
+from . import core, importer, maintenance, newsletter
 
 
 @core.cli.command("init-db")
@@ -37,3 +37,11 @@ def update_newsletter():
     """Subscribes new users to Sendy, executed daily with Cron"""
     current_app.logger.setLevel(logging.INFO)
     newsletter.update()
+
+
+@core.cli.command("purge-exports")
+@report_exception(current_app)
+def purge_exports():
+    """Purges old exports from the S3 bucket, executed daily with Cron"""
+    current_app.logger.setLevel(logging.INFO)
+    maintenance.purge_old_exports(current_app)
